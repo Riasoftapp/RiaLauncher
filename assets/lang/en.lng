@@ -1,0 +1,213 @@
+; WinLauncher English Language File
+; Format: Key=Value
+
+; Menu - File
+MenuDosya=File
+MenuDosyaCikis=Exit
+
+; Menu - Tabs
+MenuSekmeler=Tabs
+MenuSekmelerYeni=New Tab
+MenuSekmelerAdDegistir=Rename Tab
+MenuSekmelerSil=Delete Tab
+MenuSekmelerYenile=Refresh Tab
+
+; Menu - Sorting
+MenuSiralama=Sorting
+MenuManuelSiralama=Manual Sort...
+
+; Menu - Tools
+MenuAraclar=Tools
+MenuToolsCmd=Command Prompt
+MenuToolsPowershell=PowerShell
+MenuToolsTaskMgr=Task Manager
+MenuToolsServices=Services Manager
+MenuToolsShowDesktop=Show Desktop
+MenuToolsRestoreDesktop=Restore Desktop
+MenuToolsControlPanel=Control Panel
+MenuToolsNetworkCenter=Network and Sharing Center
+MenuToolsDeviceManager=Device Manager
+MenuToolsComputerName=Show Computer Name
+MenuToolsIPAddress=Show IP Addresses
+
+; Menu - Settings
+MenuAyarlar=Settings
+
+; Menu - Help
+MenuYardim=Help
+MenuYardimDokumanlar=Help
+MenuYardimDokumanIndir=Download Documentation
+MenuYardimLisans=License Terms
+MenuYardimBagis=Donate
+MenuYardimAnaSayfa=Home Page
+MenuYardimHakkinda=About...
+
+; Context Menu - Item
+MenuItemLaunch=Launch
+MenuItemCopyMove=Copy/Move...
+MenuItemRename=Rename
+MenuItemChangeIcon=Change Icon
+MenuItemUpdatePath=Update Path
+MenuItemOpenFolder=Show in Folder
+MenuItemDelete=Delete
+MenuItemProperties=Properties
+
+; Context Menu - Tab
+MenuTabYeni=New Tab
+MenuTabAdDegistir=Rename Tab
+MenuTabSil=Delete Tab
+
+; Search Panel
+lblSearch=Search:
+btnSearch=Search
+
+; Messages - General
+MsgError=Error
+MsgWarning=Warning
+MsgInfo=Information
+MsgConfirm=Confirm
+MsgSuccess=Success
+MsgCopiedToClipboard=(Copied to clipboard)
+
+; Messages - Tools Menu
+MsgToolsCmdError=Cannot open Command Prompt: {0}
+MsgToolsPowershellError=Cannot open PowerShell: {0}
+MsgToolsTaskMgrError=Cannot open Task Manager: {0}
+MsgToolsServicesError=Cannot open Services Manager: {0}
+MsgToolsShowDesktopError=Cannot show desktop: {0}
+MsgToolsDesktopRestored=Desktop restored.
+MsgToolsRestoreDesktopError=Cannot restore desktop: {0}
+MsgToolsControlPanelError=Cannot open Control Panel: {0}
+MsgToolsNetworkCenterError=Cannot open Network and Sharing Center: {0}
+MsgToolsDeviceManagerError=Cannot open Device Manager: {0}
+MsgToolsComputerName=Computer Name: {0}
+MsgToolsComputerNameTitle=Computer Name
+MsgToolsComputerNameError=Cannot get computer name: {0}
+MsgToolsLocalIP=Local IP: {0}
+MsgToolsRemoteIP=Remote IP: {0}
+MsgToolsIPTitle=IP Addresses
+MsgToolsIPError=Cannot get IP addresses: {0}
+MsgToolsIPNotFound=Not found
+
+; Messages - Help Menu
+MsgHelpComingSoon=Help documentation will be added soon.
+MsgHelpTitle=Help
+MsgHelpDocError=Cannot open documentation page: {0}
+MsgDonateTitle=Donate
+MsgDonateMessage=If you like the WinLauncher project, you can donate to support its development. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Thank you! 🙏
+MsgDonateError=Cannot open donation page: {0}
+MsgHomePageError=Cannot open home page: {0}
+
+; Messages - AboutForm
+MsgWebSiteError=Cannot open website: {0}
+MsgEmailError=Cannot open email application: {0}
+
+; Messages - Manual Sort
+MsgSortSaved=Sorting saved successfully!
+MsgSortNoTabSelected=Please select a tab first.
+MsgSortNoItems=No items to sort in this tab.
+
+; Messages - Copy/Move
+MsgCopyError=Copy error: {0}
+MsgMoveError=Move error: {0}
+MsgCopyFailed=Copy operation failed.
+MsgMoveFailed=Move operation failed.
+MsgCannotMoveSameTab=Cannot move item within the same tab.
+
+; Messages - Tab Operations
+MsgTabRefreshError=Tab refresh error: {0}
+MsgTabRefreshed=Tab '{0}' refreshed.
+MsgAtLeastOneTab=At least one tab must remain.
+MsgDeleteTabConfirm=Are you sure you want to delete the tab '{0}'?
+MsgDeleteTabTitle=Delete Tab
+
+; Messages - General Operations
+MsgXMLLoadError=XML load error: {0}
+MsgFileNotFound=File not found: {0}
+MsgLaunchError=Launch error: {0}
+MsgSaveError=Save error: {0}
+MsgIconLoadError=Icon load error: {0}
+MsgPathUpdated=Path successfully updated.
+MsgFileOrFolderNotFound=File or folder not found: {0}
+MsgOpenFolderError=Error opening folder: {0}
+MsgDeleteItemConfirm=Are you sure you want to delete '{0}'?
+MsgDeleteItemTitle=Delete Item
+MsgItemPropertiesTitle=Item Properties
+MsgSettingsSaved=Settings saved. Please exit the application for changes to take full effect.
+
+; Common Buttons
+BtnOK=OK
+BtnCancel=Cancel
+BtnYes=Yes
+BtnNo=No
+BtnClose=Close
+
+; AboutForm
+AboutTitle=About
+AboutAppName=WinLauncher - Windows Launcher
+AboutVersion=Version 2.0
+AboutLicenseStatus=Not Yet Licensed for Commercial Use
+AboutFreeUse=Free for Personal Use
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
+AboutWebSiteLabel=Web Site:
+AboutEmailLabel=Support Email:
+AboutBtnAnaSayfa=Home Page
+AboutBtnLisans=License Terms
+AboutBtnKapat=Close
+
+; License Text
+LicenseTitle=WinLauncher - Personal Use License
+LicenseFree=This software is free for personal use.
+LicenseRights=All rights reserved.
+LicenseAsIs=This software is provided ""AS IS"".
+
+; Settings Form
+SettingsTitle=Settings
+SettingsLaunchMode=Launch Mode:
+SettingsSingleClick=Single Click
+SettingsDoubleClick=Double Click
+SettingsViewMode=View Mode:
+SettingsIconText=Icon + Text
+SettingsIconOnly=Icon Only
+SettingsAlwaysOnTop=Always On Top
+SettingsBtnSave=Save
+SettingsBtnCancel=Cancel
+
+; Manual Sort Form
+ManualSortTitle=Manual Sort
+ManualSortColOrder=Order
+ManualSortColIcon=Icon
+ManualSortColName=Item Name
+ManualSortColPath=Program / Path
+ManualSortBtnUp=▲ Up
+ManualSortBtnDown=▼ Down
+ManualSortBtnSave=Save and Exit
+ManualSortBtnCancel=✗ Cancel
+ManualSortLabel1=Select the items (check the checkbox) and sort them using the Up/Down buttons:
+
+; Copy/Move Form
+CopyMoveTitle=Copy/Move
+CopyMoveSourceTab=Source Tab:
+CopyMoveTargetTab=Target Tab:
+CopyMoveItemName=Item Name:
+CopyMoveBtnCopy=Copy
+CopyMoveBtnMove=Move
+CopyMoveBtnCancel=Cancel
+
+; Settings Form
+Settings=Settings
+LaunchMode=Launch Mode
+ViewMode=View Mode
+Language=Language
+LastActiveTab=Last Active Tab
+SelectLanguage=Select Language:
+SelectTab=Select Tab:
+LaunchDoubleClick=Double Click
+LaunchSingleClick=Single Click
+ViewIconText=Icon+Text
+ViewIcon=Icon
+ViewList=List
+ViewTile=Tile
+AlwaysOnTop=Always On Top
+OK=OK
+Cancel=Cancel

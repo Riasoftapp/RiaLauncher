@@ -1,0 +1,213 @@
+; WinLauncher Turkish Language File
+; Format: Key=Value
+
+; Menu - Dosya
+MenuDosya=Dosya
+MenuDosyaCikis=Çıkış
+
+; Menu - Sekmeler
+MenuSekmeler=Sekmeler
+MenuSekmelerYeni=Yeni Sekme
+MenuSekmelerAdDegistir=Sekme Adını Değiştir
+MenuSekmelerSil=Sekmeyi Sil
+MenuSekmelerYenile=Sekmeyi Yenile
+
+; Menu - Sıralama
+MenuSiralama=Sıralama
+MenuManuelSiralama=Manuel Sıralama...
+
+; Menu - Araçlar
+MenuAraclar=Araçlar
+MenuToolsCmd=Komut İstemi
+MenuToolsPowershell=PowerShell
+MenuToolsTaskMgr=Görev Yöneticisi
+MenuToolsServices=Hizmet Yöneticisi
+MenuToolsShowDesktop=Masaüstünü Göster
+MenuToolsRestoreDesktop=Masaüstünü Geri Yükle
+MenuToolsControlPanel=Denetim Masası
+MenuToolsNetworkCenter=Ağ ve Paylaşım Merkezi
+MenuToolsDeviceManager=Aygıt Yöneticisi
+MenuToolsComputerName=Bilgisayar Adını Göster
+MenuToolsIPAddress=IP Adreslerini Göster
+
+; Menu - Ayarlar
+MenuAyarlar=Ayarlar
+
+; Menu - Yardım
+MenuYardim=Yardım
+MenuYardimDokumanlar=Yardım
+MenuYardimDokumanIndir=Döküman İndir
+MenuYardimLisans=Lisans Koşulları
+MenuYardimBagis=Bağış Yap
+MenuYardimAnaSayfa=Ana Sayfa
+MenuYardimHakkinda=Hakkında...
+
+; Context Menu - Item
+MenuItemLaunch=Başlat
+MenuItemCopyMove=Kopyala/Taşı...
+MenuItemRename=Yeniden Adlandır
+MenuItemChangeIcon=İkonu Değiştir
+MenuItemUpdatePath=Yolu Güncelle
+MenuItemOpenFolder=Klasörde Göster
+MenuItemDelete=Sil
+MenuItemProperties=Özellikler
+
+; Context Menu - Tab
+MenuTabYeni=Yeni Sekme
+MenuTabAdDegistir=Sekme Adını Değiştir
+MenuTabSil=Sekmeyi Sil
+
+; Search Panel
+lblSearch=Ara:
+btnSearch=Ara
+
+; Messages - General
+MsgError=Hata
+MsgWarning=Uyarı
+MsgInfo=Bilgi
+MsgConfirm=Onay
+MsgSuccess=Başarılı
+MsgCopiedToClipboard=(Panoya kopyalandı)
+
+; Messages - Tools Menu
+MsgToolsCmdError=Komut İstemi açılamıyor: {0}
+MsgToolsPowershellError=PowerShell açılamıyor: {0}
+MsgToolsTaskMgrError=Görev Yöneticisi açılamıyor: {0}
+MsgToolsServicesError=Hizmet Yöneticisi açılamıyor: {0}
+MsgToolsShowDesktopError=Masaüstü gösterilemiyor: {0}
+MsgToolsDesktopRestored=Masaüstü geri yüklendi.
+MsgToolsRestoreDesktopError=Masaüstü geri yüklenemedi: {0}
+MsgToolsControlPanelError=Denetim Masası açılamıyor: {0}
+MsgToolsNetworkCenterError=Ağ ve Paylaşım Merkezi açılamıyor: {0}
+MsgToolsDeviceManagerError=Aygıt Yöneticisi açılamıyor: {0}
+MsgToolsComputerName=Bilgisayar Adı: {0}
+MsgToolsComputerNameTitle=Bilgisayar Adı
+MsgToolsComputerNameError=Bilgisayar adı alınamıyor: {0}
+MsgToolsLocalIP=Yerel IP: {0}
+MsgToolsRemoteIP=Uzak IP: {0}
+MsgToolsIPTitle=IP Adresleri
+MsgToolsIPError=IP adresleri alınamıyor: {0}
+MsgToolsIPNotFound=Bulunamadı
+
+; Messages - Help Menu
+MsgHelpComingSoon=Yardım dökümanları yakında eklenecektir.
+MsgHelpTitle=Yardım
+MsgHelpDocError=Döküman sayfası açılamadı: {0}
+MsgDonateTitle=Bağış Yap
+MsgDonateMessage=WinLauncher projesini beğendiyseniz, geliştirilmesine destek olmak için bağış yapabilirsiniz. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Teşekkür ederiz! 🙏
+MsgDonateError=Bağış sayfası açılamadı: {0}
+MsgHomePageError=Ana sayfa açılamadı: {0}
+
+; Messages - AboutForm
+MsgWebSiteError=Web sitesi açılamadı: {0}
+MsgEmailError=E-posta uygulaması açılamadı: {0}
+
+; Messages - Manual Sort
+MsgSortSaved=Sıralama başarıyla kaydedildi!
+MsgSortNoTabSelected=Lütfen önce bir sekme seçin.
+MsgSortNoItems=Bu sekmede sıralanacak öğe bulunmuyor.
+
+; Messages - Copy/Move
+MsgCopyError=Kopyalama hatası: {0}
+MsgMoveError=Taşıma hatası: {0}
+MsgCopyFailed=Kopyalama işlemi başarısız oldu.
+MsgMoveFailed=Taşıma işlemi başarısız oldu.
+MsgCannotMoveSameTab=Simge aynı sekme içinde taşınamaz.
+
+; Messages - Tab Operations
+MsgTabRefreshError=Tab yenileme hatası: {0}
+MsgTabRefreshed='{0}' sekmesi yenilendi.
+MsgAtLeastOneTab=En az bir sekme bulunmalıdır.
+MsgDeleteTabConfirm='{0}' sekmesini silmek istediğinizden emin misiniz?
+MsgDeleteTabTitle=Sekme Sil
+
+; Messages - General Operations
+MsgXMLLoadError=XML yükleme hatası: {0}
+MsgFileNotFound=Dosya bulunamadı: {0}
+MsgLaunchError=Başlatma hatası: {0}
+MsgSaveError=Kaydetme hatası: {0}
+MsgIconLoadError=İkon yükleme hatası: {0}
+MsgPathUpdated=Yol başarıyla güncellendi.
+MsgFileOrFolderNotFound=Dosya veya klasör bulunamadı: {0}
+MsgOpenFolderError=Klasör açılırken hata oluştu: {0}
+MsgDeleteItemConfirm='{0}' öğesini silmek istediğinizden emin misiniz?
+MsgDeleteItemTitle=Öğe Sil
+MsgItemPropertiesTitle=Öğe Özellikleri
+MsgSettingsSaved=Ayarlar kaydedildi. Değişikliklerin tam olarak uygulanması için uygulamadan çıkınız.
+
+; Common Buttons
+BtnOK=Tamam
+BtnCancel=İptal
+BtnYes=Evet
+BtnNo=Hayır
+BtnClose=Kapat
+
+; AboutForm
+AboutTitle=Hakkında
+AboutAppName=WinLauncher - Windows Launcher
+AboutVersion=Versiyon 2.0
+AboutLicenseStatus=Ticari Kullanım İçin Henüz Lisanslanmamıştır
+AboutFreeUse=Kişisel Kullanım İçin Ücretsizdir
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
+AboutWebSiteLabel=Web Site:
+AboutEmailLabel=Destek E-posta:
+AboutBtnAnaSayfa=Ana Sayfa
+AboutBtnLisans=Lisans Koşulları
+AboutBtnKapat=Kapat
+
+; License Text
+LicenseTitle=WinLauncher - Kişisel Kullanım Lisansı
+LicenseFree=Bu yazılım kişisel kullanım için ücretsizdir.
+LicenseRights=Tüm hakları saklıdır.
+LicenseAsIs=Bu yazılım ""OLDUĞU GİBİ"" sağlanmaktadır.
+
+; Settings Form
+SettingsTitle=Ayarlar
+SettingsLaunchMode=Başlatma Modu:
+SettingsSingleClick=Tek Tık
+SettingsDoubleClick=Çift Tık
+SettingsViewMode=Görünüm Modu:
+SettingsIconText=İkon + Metin
+SettingsIconOnly=Sadece İkon
+SettingsAlwaysOnTop=Her Zaman Üstte
+SettingsBtnSave=Kaydet
+SettingsBtnCancel=İptal
+
+; Manual Sort Form
+ManualSortTitle=Manuel Sıralama
+ManualSortColOrder=Sıra
+ManualSortColIcon=İkon
+ManualSortColName=Öğe Adı
+ManualSortColPath=Program / Yolu
+ManualSortBtnUp=▲ Yukarı
+ManualSortBtnDown=▼ Aşağı
+ManualSortBtnSave=Kaydet ve Çık
+ManualSortBtnCancel=✗ İptal
+ManualSortLabel1=Öğeleri seçin (onay kutusunu işaretleyin) ve Yukarı/Aşağı düğmelerini kullanarak sıralayın:
+
+; Copy/Move Form
+CopyMoveTitle=Kopyala/Taşı
+CopyMoveSourceTab=Kaynak Sekme:
+CopyMoveTargetTab=Hedef Sekme:
+CopyMoveItemName=Öğe Adı:
+CopyMoveBtnCopy=Kopyala
+CopyMoveBtnMove=Taşı
+CopyMoveBtnCancel=İptal
+
+; Settings Form
+Settings=Ayarlar
+LaunchMode=Başlatma Modu
+ViewMode=Görünüm Modu
+Language=Dil
+LastActiveTab=Son Aktif Sekme
+SelectLanguage=Dil Seçin:
+SelectTab=Sekme Seçin:
+LaunchDoubleClick=Çift Tıkla
+LaunchSingleClick=Tek Tıkla
+ViewIconText=İkon+Metin
+ViewIcon=İkon
+ViewList=Liste
+ViewTile=Karo
+AlwaysOnTop=Her Zaman Üstte
+OK=Tamam
+Cancel=İptal

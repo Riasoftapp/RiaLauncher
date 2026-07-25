@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WinLauncher>
+  <Settings>
+    <IconSize>48</IconSize>
+    <DefaultSort>XML</DefaultSort>
+    <LaunchMode>SingleClick</LaunchMode>
+    <ViewMode>IconText</ViewMode>
+    <AlwaysOnTop>false</AlwaysOnTop>
+  </Settings>
+  <Categories>
+    <Category Name="Geliştirme">
+      <Item>
+        <Name>chrome</Name>
+        <Path>C:\Program Files\Google\Chrome\Application\chrome.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>0</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>devenv</Name>
+        <Path>C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\devenv.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>1</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>OpenCode</Name>
+        <Path>C:\Users\user\AppData\Local\Programs\@opencode-aidesktop\OpenCode.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>2</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Qwen</Name>
+        <Path>C:\Program Files\Qwen\Qwen.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>3</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>notepad++</Name>
+        <Path>C:\Program Files\Notepad++\notepad++.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>4</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Notepad3</Name>
+        <Path>C:\Program Files\Notepad3\Notepad3.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>5</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>setup</Name>
+        <Path>C:\Program Files (x86)\Microsoft Visual Studio\Installer\setup.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>6</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Laragon</Name>
+        <Path>C:\laragon\laragon.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>7</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>MyShortcuts</Name>
+        <Path>D:\myapps\MyShortcuts</Path>
+        <IconPath></IconPath>
+        <OrderIndex>8</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>slugs</Name>
+        <Path>D:\myapps\bagimsiz uygulamalar\slugs.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>9</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>md</Name>
+        <Path>C:\Users\user\Pictures\md.ico</Path>
+        <IconPath></IconPath>
+        <OrderIndex>10</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>shortcut-64</Name>
+        <Path>C:\Users\user\Pictures\shortcut-64.png</Path>
+        <IconPath></IconPath>
+        <OrderIndex>11</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Lazarus</Name>
+        <Path>D:\myapps\dev\lazarus\lazarus.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>12</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>codeblocks</Name>
+        <Path>D:\myapps\dev\codeblock\codeblocks.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>13</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>myprojects</Name>
+        <Path>C:\myprojects</Path>
+        <IconPath></IconPath>
+        <OrderIndex>14</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+    </Category>
+    <Category Name="Dizinler">
+      <Item>
+        <Name>P:</Name>
+        <Path>P:\</Path>
+        <IconPath></IconPath>
+        <OrderIndex>0</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>myapps</Name>
+        <Path>D:\myapps</Path>
+        <IconPath></IconPath>
+        <OrderIndex>1</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>riablog</Name>
+        <Path>C:\myprojects\web\riablog</Path>
+        <IconPath></IconPath>
+        <OrderIndex>3</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Local Temp</Name>
+        <Path>C:\Users\user\AppData\Local\Temp</Path>
+        <IconPath></IconPath>
+        <OrderIndex>4</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>MCPServer</Name>
+        <Path>C:\Users\user\AppData\Local\Temp\MCPServer</Path>
+        <IconPath></IconPath>
+        <OrderIndex>5</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Zed</Name>
+        <Path>C:\Users\user\AppData\Roaming\Zed</Path>
+        <IconPath></IconPath>
+        <OrderIndex>6</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Documents</Name>
+        <Path>C:\Users\user\Documents</Path>
+        <IconPath></IconPath>
+        <OrderIndex>7</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>notlar</Name>
+        <Path>C:\Users\user\Documents\Belgeler hikmet\notlar</Path>
+        <IconPath></IconPath>
+        <OrderIndex>8</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Downloads</Name>
+        <Path>d:\Downloads</Path>
+        <IconPath></IconPath>
+        <OrderIndex>9</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Pictures</Name>
+        <Path>C:\Users\user\Pictures</Path>
+        <IconPath></IconPath>
+        <OrderIndex>10</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>mysql-8.4</Name>
+        <Path>C:\laragon\bin\mysql\mysql-8.4.3-winx64</Path>
+        <IconPath></IconPath>
+        <OrderIndex>11</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>md-editor release</Name>
+        <Path>C:\myprojects\web\ThinkerDan-browser-markdown-editor\src-tauri\target\release</Path>
+        <IconPath></IconPath>
+        <OrderIndex>12</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>opencode</Name>
+        <Path>C:\Users\user\.local\share\opencode</Path>
+        <IconPath></IconPath>
+        <OrderIndex>13</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>@opencode-aidesktop</Name>
+        <Path>C:\Users\user\AppData\Local\Programs\@opencode-aidesktop</Path>
+        <IconPath></IconPath>
+        <OrderIndex>14</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Belgeler hikmet</Name>
+        <Path>C:\Users\user\Documents\Belgeler hikmet</Path>
+        <IconPath></IconPath>
+        <OrderIndex>15</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>notlar</Name>
+        <Path>C:\Users\user\Documents\Belgeler hikmet\notlar</Path>
+        <IconPath></IconPath>
+        <OrderIndex>16</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+    </Category>
+    <Category Name="kisayollar">
+      <Item>
+        <Name>BCompare.exe</Name>
+        <Path>D:\myapps\Beyond Compare 5\BCompare.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>0</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Core Temp.exe</Name>
+        <Path>D:\myapps\coretemp\Core Temp.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>1</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>EcMenu_x64.exe</Name>
+        <Path>D:\myapps\EcMenu_v1.6\EcMenu_x64.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>2</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Git Bash</Name>
+        <Path>C:\Program Files\Git\git-bash.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>3</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Everything</Name>
+        <Path>C:\Program Files\Everything\Everything.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>4</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>GitHub Desktop</Name>
+        <Path>C:\Users\user\AppData\Local\GitHubDesktop\GitHubDesktop.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>5</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Obsidian</Name>
+        <Path>C:\Obsidian\Obsidian.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>6</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>PathEditor.exe</Name>
+        <Path>D:\myapps\Path Editor\PathEditor.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>7</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>picpick.exe</Name>
+        <Path>D:\myapps\picpic\picpick.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>8</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Radmin VPN</Name>
+        <Path>C:\Program Files (x86)\Radmin VPN\RvRvpnGui.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>9</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>ReIcon_x64.exe</Name>
+        <Path>D:\myapps\ReIcon\ReIcon_x64.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>10</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Wapper html  To EXE</Name>
+        <Path>D:\myapps\Wapper - HTML To EXE - v1.4.1 - rv1.1.6 - Free\Wapper - HTML To EXE - v1.4.1 - rv1.1.6 - Free.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>11</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>WinaeroTweaker.exe</Name>
+        <Path>D:\myapps\WinaeroTweaker\WinaeroTweaker.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>12</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>OORegEdt</Name>
+        <Path>D:\myapps\ooregedit\OORegEdt.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>13</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Q-Dir_x64</Name>
+        <Path>D:\myapps\Q-Dir\Q-Dir_x64.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>14</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Cmder</Name>
+        <Path>D:\myapps\cmder-mini\Cmder.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>15</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>OpenStartupFolder</Name>
+        <Path>D:\myapps\_Batch\OpenStartupFolder.bat</Path>
+        <IconPath></IconPath>
+        <OrderIndex>16</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Show Desktop</Name>
+        <Path>C:\Windows\explorer.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>17</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Immersive Control Panel</Name>
+        <Path>C:\Windows\System32\Control.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>18</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Lightshot</Name>
+        <Path>C:\Program Files (x86)\Skillbrains\lightshot\Lightshot.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>19</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Command Prompt</Name>
+        <Path>C:\Windows\system32\cmd.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>20</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>TMX64</Name>
+        <Path>D:\myapps\bagimsiz uygulamalar\taskManagers\TMX64.exe</Path>
+        <IconPath></IconPath>
+        <OrderIndex>21</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Documents</Name>
+        <Path>C:\Users\user\Documents</Path>
+        <IconPath></IconPath>
+        <OrderIndex>22</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+    </Category>
+    <Category Name="Url">
+      <Item>
+        <Name>cubiclesoft-php-app-server- Create lightweight, installable applications written in HTML, CSS, Javascript, and PHP for the Wi</Name>
+        <Path>D:\myapps\MyShortcuts\cubiclesoft-php-app-server- Create lightweight, installable applications written in HTML, CSS, Javascript, and PHP for the Wi.url</Path>
+        <IconPath></IconPath>
+        <OrderIndex>0</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Google Gemini</Name>
+        <Path>D:\myapps\MyShortcuts\Google Gemini.url</Path>
+        <IconPath></IconPath>
+        <OrderIndex>1</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+    </Category>
+    <Category Name="Notlar" />
+  </Categories>
+</WinLauncher>

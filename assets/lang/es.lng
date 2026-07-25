@@ -1,0 +1,213 @@
+; WinLauncher Spanish Language File
+; Format: Key=Value
+
+; Menu - File
+MenuDosya=Archivo
+MenuDosyaCikis=Salir
+
+; Menu - Tabs
+MenuSekmeler=Pestañas
+MenuSekmelerYeni=Nueva Pestaña
+MenuSekmelerAdDegistir=Renombrar Pestaña
+MenuSekmelerSil=Eliminar Pestaña
+MenuSekmelerYenile=Actualizar Pestaña
+
+; Menu - Sorting
+MenuSiralama=Ordenamiento
+MenuManuelSiralama=Ordenamiento Manual...
+
+; Menu - Tools
+MenuAraclar=Herramientas
+MenuToolsCmd=Símbolo del Sistema
+MenuToolsPowershell=PowerShell
+MenuToolsTaskMgr=Administrador de Tareas
+MenuToolsServices=Administrador de Servicios
+MenuToolsShowDesktop=Mostrar Escritorio
+MenuToolsRestoreDesktop=Restaurar Escritorio
+MenuToolsControlPanel=Panel de Control
+MenuToolsNetworkCenter=Centro de Redes y Recursos Compartidos
+MenuToolsDeviceManager=Administrador de Dispositivos
+MenuToolsComputerName=Mostrar Nombre del Equipo
+MenuToolsIPAddress=Mostrar Direcciones IP
+
+; Menu - Settings
+MenuAyarlar=Configuración
+
+; Menu - Help
+MenuYardim=Ayuda
+MenuYardimDokumanlar=Ayuda
+MenuYardimDokumanIndir=Descargar Documentación
+MenuYardimLisans=Términos de Licencia
+MenuYardimBagis=Donar
+MenuYardimAnaSayfa=Página de Inicio
+MenuYardimHakkinda=Acerca de...
+
+; Context Menu - Item
+MenuItemLaunch=Ejecutar
+MenuItemCopyMove=Copiar/Mover...
+MenuItemRename=Renombrar
+MenuItemChangeIcon=Cambiar Icono
+MenuItemUpdatePath=Actualizar Ruta
+MenuItemOpenFolder=Mostrar en Carpeta
+MenuItemDelete=Eliminar
+MenuItemProperties=Propiedades
+
+; Context Menu - Tab
+MenuTabYeni=Nueva Pestaña
+MenuTabAdDegistir=Renombrar Pestaña
+MenuTabSil=Eliminar Pestaña
+
+; Search Panel
+lblSearch=Buscar:
+btnSearch=Buscar
+
+; Messages - General
+MsgError=Error
+MsgWarning=Advertencia
+MsgInfo=Información
+MsgConfirm=Confirmar
+MsgSuccess=Éxito
+MsgCopiedToClipboard=(Copiado al portapapeles)
+
+; Messages - Tools Menu
+MsgToolsCmdError=No se puede abrir el Símbolo del Sistema: {0}
+MsgToolsPowershellError=No se puede abrir PowerShell: {0}
+MsgToolsTaskMgrError=No se puede abrir el Administrador de Tareas: {0}
+MsgToolsServicesError=No se puede abrir el Administrador de Servicios: {0}
+MsgToolsShowDesktopError=No se puede mostrar el escritorio: {0}
+MsgToolsDesktopRestored=Escritorio restaurado.
+MsgToolsRestoreDesktopError=No se puede restaurar el escritorio: {0}
+MsgToolsControlPanelError=No se puede abrir el Panel de Control: {0}
+MsgToolsNetworkCenterError=No se puede abrir el Centro de Redes y Recursos Compartidos: {0}
+MsgToolsDeviceManagerError=No se puede abrir el Administrador de Dispositivos: {0}
+MsgToolsComputerName=Nombre del Equipo: {0}
+MsgToolsComputerNameTitle=Nombre del Equipo
+MsgToolsComputerNameError=No se puede obtener el nombre del equipo: {0}
+MsgToolsLocalIP=IP Local: {0}
+MsgToolsRemoteIP=IP Remota: {0}
+MsgToolsIPTitle=Direcciones IP
+MsgToolsIPError=No se puede obtener las direcciones IP: {0}
+MsgToolsIPNotFound=No encontrado
+
+; Messages - Help Menu
+MsgHelpComingSoon=La documentación de ayuda se agregará pronto.
+MsgHelpTitle=Ayuda
+MsgHelpDocError=No se puede abrir la página de documentación: {0}
+MsgDonateTitle=Donar
+MsgDonateMessage=Si te gusta el proyecto WinLauncher, puedes donar para apoyar su desarrollo. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu ¡Gracias! 🙏
+MsgDonateError=No se puede abrir la página de donación: {0}
+MsgHomePageError=No se puede abrir la página de inicio: {0}
+
+; Messages - AboutForm
+MsgWebSiteError=No se puede abrir el sitio web: {0}
+MsgEmailError=No se puede abrir la aplicación de correo: {0}
+
+; Messages - Manual Sort
+MsgSortSaved=¡Ordenamiento guardado exitosamente!
+MsgSortNoTabSelected=Por favor, seleccione una pestaña primero.
+MsgSortNoItems=No hay elementos para ordenar en esta pestaña.
+
+; Messages - Copy/Move
+MsgCopyError=Error de copia: {0}
+MsgMoveError=Error de movimiento: {0}
+MsgCopyFailed=La operación de copia falló.
+MsgMoveFailed=La operación de movimiento falló.
+MsgCannotMoveSameTab=No se puede mover el elemento dentro de la misma pestaña.
+
+; Messages - Tab Operations
+MsgTabRefreshError=Error de actualización de pestaña: {0}
+MsgTabRefreshed=La pestaña '{0}' fue actualizada.
+MsgAtLeastOneTab=Debe permanecer al menos una pestaña.
+MsgDeleteTabConfirm=¿Está seguro de que desea eliminar la pestaña '{0}'?
+MsgDeleteTabTitle=Eliminar Pestaña
+
+; Messages - General Operations
+MsgXMLLoadError=Error de carga de XML: {0}
+MsgFileNotFound=Archivo no encontrado: {0}
+MsgLaunchError=Error de ejecución: {0}
+MsgSaveError=Error al guardar: {0}
+MsgIconLoadError=Error de carga de icono: {0}
+MsgPathUpdated=La ruta se actualizó exitosamente.
+MsgFileOrFolderNotFound=Archivo o carpeta no encontrado: {0}
+MsgOpenFolderError=Error al abrir la carpeta: {0}
+MsgDeleteItemConfirm=¿Está seguro de que desea eliminar '{0}'?
+MsgDeleteItemTitle=Eliminar Elemento
+MsgItemPropertiesTitle=Propiedades del Elemento
+MsgSettingsSaved=Configuración guardada. Por favor, salga de la aplicación para que los cambios surtan efecto.
+
+; Common Buttons
+BtnOK=OK
+BtnCancel=Cancelar
+BtnYes=Sí
+BtnNo=No
+BtnClose=Cerrar
+
+; AboutForm
+AboutTitle=Acerca de
+AboutAppName=WinLauncher - Lanzador de Windows
+AboutVersion=Versión 2.0
+AboutLicenseStatus=Aún No Licenciado para Uso Comercial
+AboutFreeUse=Gratuito para Uso Personal
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
+AboutWebSiteLabel=Sitio Web:
+AboutEmailLabel=Correo de Soporte:
+AboutBtnAnaSayfa=Página de Inicio
+AboutBtnLisans=Términos de Licencia
+AboutBtnKapat=Cerrar
+
+; License Text
+LicenseTitle=WinLauncher - Licencia de Uso Personal
+LicenseFree=Este software es gratuito para uso personal.
+LicenseRights=Todos los derechos reservados.
+LicenseAsIs=Este software se proporciona "TAL CUAL".
+
+; Settings Form
+SettingsTitle=Configuración
+SettingsLaunchMode=Modo de Ejecución:
+SettingsSingleClick=Un Clic
+SettingsDoubleClick=Doble Clic
+SettingsViewMode=Modo de Visualización:
+SettingsIconText=Icono + Texto
+SettingsIconOnly=Solo Icono
+SettingsAlwaysOnTop=Siempre en Primer Plano
+SettingsBtnSave=Guardar
+SettingsBtnCancel=Cancelar
+
+; Manual Sort Form
+ManualSortTitle=Ordenamiento Manual
+ManualSortColOrder=Orden
+ManualSortColIcon=Icono
+ManualSortColName=Nombre del Elemento
+ManualSortColPath=Programa / Ruta
+ManualSortBtnUp=▲ Arriba
+ManualSortBtnDown=▼ Abajo
+ManualSortBtnSave=Guardar y Salir
+ManualSortBtnCancel=✗ Cancelar
+ManualSortLabel1=Seleccione los elementos (marque la casilla de verificación) y ordénelos usando los botones Arriba/Abajo:
+
+; Copy/Move Form
+CopyMoveTitle=Copiar/Mover
+CopyMoveSourceTab=Pestaña de Origen:
+CopyMoveTargetTab=Pestaña de Destino:
+CopyMoveItemName=Nombre del Elemento:
+CopyMoveBtnCopy=Copiar
+CopyMoveBtnMove=Mover
+CopyMoveBtnCancel=Cancelar
+
+; Settings Form
+Settings=Configuración
+LaunchMode=Modo de Lanzamiento
+ViewMode=Modo de Vista
+Language=Idioma
+LastActiveTab=Última Pestaña Activa
+SelectLanguage=Seleccionar Idioma:
+SelectTab=Seleccionar Pestaña:
+LaunchDoubleClick=Doble Clic
+LaunchSingleClick=Clic Simple
+ViewIconText=Icono+Texto
+ViewIcon=Icono
+ViewList=Lista
+ViewTile=Icono Grande
+AlwaysOnTop=Siempre Visible
+OK=Aceptar
+Cancel=Cancelar

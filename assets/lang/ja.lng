@@ -1,0 +1,213 @@
+; WinLauncher Japanese Language File
+; Format: Key=Value
+
+; Menu - File
+MenuDosya=ファイル
+MenuDosyaCikis=終了
+
+; Menu - Tabs
+MenuSekmeler=タブ
+MenuSekmelerYeni=新しいタブ
+MenuSekmelerAdDegistir=タブ名を変更
+MenuSekmelerSil=タブを削除
+MenuSekmelerYenile=タブを更新
+
+; Menu - Sorting
+MenuSiralama=並べ替え
+MenuManuelSiralama=手動並べ替え...
+
+; Menu - Tools
+MenuAraclar=ツール
+MenuToolsCmd=コマンドプロンプト
+MenuToolsPowershell=PowerShell
+MenuToolsTaskMgr=タスクマネージャー
+MenuToolsServices=サービス管理
+MenuToolsShowDesktop=デスクトップを表示
+MenuToolsRestoreDesktop=デスクトップを復元
+MenuToolsControlPanel=コントロールパネル
+MenuToolsNetworkCenter=ネットワークと共有センター
+MenuToolsDeviceManager=デバイスマネージャー
+MenuToolsComputerName=コンピューター名を表示
+MenuToolsIPAddress=IPアドレスを表示
+
+; Menu - Settings
+MenuAyarlar=設定
+
+; Menu - Help
+MenuYardim=ヘルプ
+MenuYardimDokumanlar=ヘルプ
+MenuYardimDokumanIndir=ドキュメントのダウンロード
+MenuYardimLisans=ライセンス条項
+MenuYardimBagis=寄付
+MenuYardimAnaSayfa=ホームページ
+MenuYardimHakkinda=について...
+
+; Context Menu - Item
+MenuItemLaunch=起動
+MenuItemCopyMove=コピー/移動...
+MenuItemRename=名前変更
+MenuItemChangeIcon=アイコンを変更
+MenuItemUpdatePath=パスの更新
+MenuItemOpenFolder=フォルダーに表示
+MenuItemDelete=削除
+MenuItemProperties=プロパティ
+
+; Context Menu - Tab
+MenuTabYeni=新しいタブ
+MenuTabAdDegistir=タブ名を変更
+MenuTabSil=タブを削除
+
+; Search Panel
+lblSearch=検索:
+btnSearch=検索
+
+; Messages - General
+MsgError=エラー
+MsgWarning=警告
+MsgInfo=情報
+MsgConfirm=確認
+MsgSuccess=成功
+MsgCopiedToClipboard=(クリップボードにコピーしました)
+
+; Messages - Tools Menu
+MsgToolsCmdError=コマンドプロンプトを開けません: {0}
+MsgToolsPowershellError=PowerShellを開けません: {0}
+MsgToolsTaskMgrError=タスクマネージャーを開けません: {0}
+MsgToolsServicesError=サービス管理を開けません: {0}
+MsgToolsShowDesktopError=デスクトップを表示できません: {0}
+MsgToolsDesktopRestored=デスクトップが復元されました。
+MsgToolsRestoreDesktopError=デスクトップを復元できません: {0}
+MsgToolsControlPanelError=コントロールパネルを開けません: {0}
+MsgToolsNetworkCenterError=ネットワークと共有センターを開けません: {0}
+MsgToolsDeviceManagerError=デバイスマネージャーを開けません: {0}
+MsgToolsComputerName=コンピューター名: {0}
+MsgToolsComputerNameTitle=コンピューター名
+MsgToolsComputerNameError=コンピューター名を取得できません: {0}
+MsgToolsLocalIP=ローカルIP: {0}
+MsgToolsRemoteIP=リモートIP: {0}
+MsgToolsIPTitle=IPアドレス
+MsgToolsIPError=IPアドレスを取得できません: {0}
+MsgToolsIPNotFound=見つかりません
+
+; Messages - Help Menu
+MsgHelpComingSoon=ヘルプドキュメントはまもなく追加されます。
+MsgHelpTitle=ヘルプ
+MsgHelpDocError=ドキュメントページを開けません: {0}
+MsgDonateTitle=寄付
+MsgDonateMessage=WinLauncherプロジェクトが気に入った場合は、開発をサポートするために寄付することができます。GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu ありがとうございます! 🙏
+MsgDonateError=寄付ページを開けません: {0}
+MsgHomePageError=ホームページを開けません: {0}
+
+; Messages - AboutForm
+MsgWebSiteError=Webサイトを開けません: {0}
+MsgEmailError=メールアプリケーションを開けません: {0}
+
+; Messages - Manual Sort
+MsgSortSaved=並べ替えが正常に保存されました!
+MsgSortNoTabSelected=先にタブを選択してください。
+MsgSortNoItems=このタブに並べ替えるアイテムがありません。
+
+; Messages - Copy/Move
+MsgCopyError=コピーエラー: {0}
+MsgMoveError=移動エラー: {0}
+MsgCopyFailed=コピー操作に失敗しました。
+MsgMoveFailed=移動操作に失敗しました。
+MsgCannotMoveSameTab=同じタブ内でアイテムを移動することはできません。
+
+; Messages - Tab Operations
+MsgTabRefreshError=タブ更新エラー: {0}
+MsgTabRefreshed=タブ '{0}' が更新されました。
+MsgAtLeastOneTab=少なくとも1つのタブが残っている必要があります。
+MsgDeleteTabConfirm=タブ '{0}' を削除してもよろしいですか?
+MsgDeleteTabTitle=タブを削除
+
+; Messages - General Operations
+MsgXMLLoadError=XML読み込みエラー: {0}
+MsgFileNotFound=ファイルが見つかりません: {0}
+MsgLaunchError=起動エラー: {0}
+MsgSaveError=保存エラー: {0}
+MsgIconLoadError=アイコン読み込みエラー: {0}
+MsgPathUpdated=パスが正常に更新されました。
+MsgFileOrFolderNotFound=ファイルまたはフォルダーが見つかりません: {0}
+MsgOpenFolderError=フォルダーを開くのに失敗しました: {0}
+MsgDeleteItemConfirm='{0}' を削除してもよろしいですか?
+MsgDeleteItemTitle=アイテムを削除
+MsgItemPropertiesTitle=アイテムのプロパティ
+MsgSettingsSaved=設定が保存されました。変更を完全に適用するにはアプリケーションを終了してください。
+
+; Common Buttons
+BtnOK=OK
+BtnCancel=キャンセル
+BtnYes=はい
+BtnNo=いいえ
+BtnClose=閉じる
+
+; AboutForm
+AboutTitle=について
+AboutAppName=WinLauncher - Windowsランチャー
+AboutVersion=バージョン 2.0
+AboutLicenseStatus=商用利用のためのライセンスはまだです
+AboutFreeUse=個人利用は無料です
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
+AboutWebSiteLabel=Webサイト:
+AboutEmailLabel=サポートメール:
+AboutBtnAnaSayfa=ホームページ
+AboutBtnLisans=ライセンス条項
+AboutBtnKapat=閉じる
+
+; License Text
+LicenseTitle=WinLauncher - 個人利用ライセンス
+LicenseFree=このソフトウェアは個人利用で無料です。
+LicenseRights=すべての著作権は保有します。
+LicenseAsIs=このソフトウェアは「現状のまま」提供されます。
+
+; Settings Form
+SettingsTitle=設定
+SettingsLaunchMode=起動モード:
+SettingsSingleClick=シングルクリック
+SettingsDoubleClick=ダブルクリック
+SettingsViewMode=表示モード:
+SettingsIconText=アイコン + テキスト
+SettingsIconOnly=アイコンのみ
+SettingsAlwaysOnTop=常に最前面
+SettingsBtnSave=保存
+SettingsBtnCancel=キャンセル
+
+; Manual Sort Form
+ManualSortTitle=手動並べ替え
+ManualSortColOrder=順序
+ManualSortColIcon=アイコン
+ManualSortColName=アイテム名
+ManualSortColPath=プログラム / パス
+ManualSortBtnUp=▲ 上へ
+ManualSortBtnDown=▼ 下へ
+ManualSortBtnSave=保存して終了
+ManualSortBtnCancel=✗ キャンセル
+ManualSortLabel1=項目を選択(チェックボックスをチェック)し、上下ボタンを使用して並べ替えます:
+
+; Copy/Move Form
+CopyMoveTitle=コピー/移動
+CopyMoveSourceTab=ソースタブ:
+CopyMoveTargetTab=対象タブ:
+CopyMoveItemName=アイテム名:
+CopyMoveBtnCopy=コピー
+CopyMoveBtnMove=移動
+CopyMoveBtnCancel=キャンセル
+
+; Settings Form
+Settings=設定
+LaunchMode=起動モード
+ViewMode=ビューモード
+Language=言語
+LastActiveTab=最後のアクティブタブ
+SelectLanguage=言語を選択:
+SelectTab=タブを選択:
+LaunchDoubleClick=ダブルクリック
+LaunchSingleClick=シングルクリック
+ViewIconText=アイコン+テキスト
+ViewIcon=アイコン
+ViewList=リスト
+ViewTile=タイル
+AlwaysOnTop=常に前面に表示
+OK=OK
+Cancel=キャンセル

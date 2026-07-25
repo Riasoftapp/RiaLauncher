@@ -1,0 +1,8 @@
+Apache Lisansı, Sürüm 2.0 (Özet Çeviri)
+Telif Hakkı 2026 [paylas24.com]
+
+Bu yazılım, Apache Lisansı, Sürüm 2.0 ("Lisans") kapsamında lisanslanmıştır. Bu dosyayı Lisans'a uygun olmadıkça kullanamazsınız. Lisansın bir kopyasını aşağıdaki adresten temin edebilirsiniz:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Yürürlükteki yasalarca zorunlu kılınmadıkça veya yazılı olarak kabul edilmedikçe, Lisans kapsamında dağıtılan yazılım, "OLDUĞU GİBİ" ESASINA GÖRE, HERHANGİ BİR GARANTİ VEYA KOŞUL OLMAKSIZIN dağıtılır.

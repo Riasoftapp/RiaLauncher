@@ -1,0 +1,215 @@
+; WinLauncher Arabic Language File
+; Format: Key=Value
+; Note: This file contains Arabic text (Right-to-Left)
+
+; Menu - File
+MenuDosya=ملف
+MenuDosyaCikis=إنهاء
+
+; Menu - Tabs
+MenuSekmeler=علامات التبويب
+MenuSekmelerYeni=علامة تبويب جديدة
+MenuSekmelerAdDegistir=إعادة تسمية العلامة
+MenuSekmelerSil=حذف العلامة
+MenuSekmelerYenile=تحديث العلامة
+
+; Menu - Sorting
+MenuSiralama=الفرز
+MenuManuelSiralama=فرز يدوي...
+
+; Menu - Tools
+MenuAraclar=أدوات
+MenuToolsCmd=موجه الأوامر
+MenuToolsPowershell=PowerShell
+MenuToolsTaskMgr=إدارة المهام
+MenuToolsServices=إدارة الخدمات
+MenuToolsShowDesktop=إظهار سطح المكتب
+MenuToolsRestoreDesktop=استعادة سطح المكتب
+MenuToolsControlPanel=لوحة التحكم
+MenuToolsNetworkCenter=مركز الشبكة والمشاركة
+MenuToolsDeviceManager=إدارة الأجهزة
+MenuToolsComputerName=عرض اسم الحاسوب
+MenuToolsIPAddress=عرض عناوين IP
+
+; Menu - Settings
+MenuAyarlar=الإعدادات
+
+; Menu - Help
+MenuYardim=مساعدة
+MenuYardimDokumanlar=مساعدة
+MenuYardimDokumanIndir=تحميل التوثيق
+MenuYardimLisans=شروط الترخيص
+MenuYardimBagis=تبرع
+MenuYardimAnaSayfa=الصفحة الرئيسية
+MenuYardimHakkinda=حول...
+
+; Context Menu - Item
+MenuItemLaunch=تشغيل
+MenuItemCopyMove=نسخ/نقل...
+MenuItemRename=إعادة تسمية
+MenuItemChangeIcon=تغيير الأيقونة
+MenuItemUpdatePath=تحديث المسار
+MenuItemOpenFolder=إظهار في المجلد
+MenuItemDelete=حذف
+MenuItemProperties=الخصائص
+
+; Context Menu - Tab
+MenuTabYeni=علامة تبويب جديدة
+MenuTabAdDegistir=إعادة تسمية العلامة
+MenuTabSil=حذف العلامة
+
+; Search Panel
+lblSearch=بحث:
+btnSearch=بحث
+
+; Messages - General
+MsgError=خطأ
+MsgWarning=تحذير
+MsgInfo=معلومات
+MsgConfirm=تأكيد
+MsgSuccess=نجح
+MsgCopiedToClipboard=(تم النسخ إلى الحافظة)
+
+; Messages - Tools Menu
+MsgToolsCmdError=لا يمكن فتح موجه الأوامر: {0}
+MsgToolsPowershellError=لا يمكن فتح PowerShell: {0}
+MsgToolsTaskMgrError=لا يمكن فتح إدارة المهام: {0}
+MsgToolsServicesError=لا يمكن فتح إدارة الخدمات: {0}
+MsgToolsShowDesktopError=لا يمكن إظهار سطح المكتب: {0}
+MsgToolsDesktopRestored=تم استعادة سطح المكتب.
+MsgToolsRestoreDesktopError=لا يمكن استعادة سطح المكتب: {0}
+MsgToolsControlPanelError=لا يمكن فتح لوحة التحكم: {0}
+MsgToolsNetworkCenterError=لا يمكن فتح مركز الشبكة والمشاركة: {0}
+MsgToolsDeviceManagerError=لا يمكن فتح إدارة الأجهزة: {0}
+MsgToolsComputerName=اسم الحاسوب: {0}
+MsgToolsComputerNameTitle=اسم الحاسوب
+MsgToolsComputerNameError=لا يمكن الحصول على اسم الحاسوب: {0}
+MsgToolsLocalIP=عنوان IP المحلي: {0}
+MsgToolsRemoteIP=عنوان IP البعيد: {0}
+MsgToolsIPTitle=عناوين IP
+MsgToolsIPError=لا يمكن الحصول على عناوين IP: {0}
+MsgToolsIPNotFound=لم يتم العثور عليه
+
+; Messages - Help Menu
+MsgHelpComingSoon=سيتم إضافة وثائق المساعدة قريباً.
+MsgHelpTitle=مساعدة
+MsgHelpDocError=لا يمكن فتح صفحة التوثيق: {0}
+MsgDonateTitle=تبرع
+MsgDonateMessage=إذا أحببت مشروع WinLauncher، يمكنك التبرع لدعم تطويره. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu شكراً! 🙏
+MsgDonateError=لا يمكن فتح صفحة التبرع: {0}
+MsgHomePageError=لا يمكن فتح الصفحة الرئيسية: {0}
+
+; Messages - AboutForm
+MsgWebSiteError=لا يمكن فتح موقع الويب: {0}
+MsgEmailError=لا يمكن فتح تطبيق البريد الإلكتروني: {0}
+
+; Messages - Manual Sort
+MsgSortSaved=تم حفظ الفرز بنجاح!
+MsgSortNoTabSelected=يرجى تحديد علامة تبويب أولاً.
+MsgSortNoItems=لا توجد عناصر للفرز في هذه العلامة.
+
+; Messages - Copy/Move
+MsgCopyError=خطأ في النسخ: {0}
+MsgMoveError=خطأ في النقل: {0}
+MsgCopyFailed=فشلت عملية النسخ.
+MsgMoveFailed=فشلت عملية النقل.
+MsgCannotMoveSameTab=لا يمكن نقل العنصر داخل نفس العلامة.
+
+; Messages - Tab Operations
+MsgTabRefreshError=خطأ في تحديث العلامة: {0}
+MsgTabRefreshed=تم تحديث العلامة '{0}'.
+MsgAtLeastOneTab=يجب أن تبقى علامة تبويب واحدة على الأقل.
+MsgDeleteTabConfirm=هل أنت متأكد من حذف العلامة '{0}'؟
+MsgDeleteTabTitle=حذف العلامة
+
+; Messages - General Operations
+MsgXMLLoadError=خطأ في تحميل XML: {0}
+MsgFileNotFound=الملف غير موجود: {0}
+MsgLaunchError=خطأ في التشغيل: {0}
+MsgSaveError=خطأ في الحفظ: {0}
+MsgIconLoadError=خطأ في تحميل الأيقونة: {0}
+MsgPathUpdated=تم تحديث المسار بنجاح.
+MsgFileOrFolderNotFound=الملف أو المجلد غير موجود: {0}
+MsgOpenFolderError=خطأ في فتح المجلد: {0}
+MsgDeleteItemConfirm=هل أنت متأكد من حذف '{0}'؟
+MsgDeleteItemTitle=حذف العنصر
+MsgItemPropertiesTitle=خصائص العنصر
+MsgSettingsSaved=تم حفظ الإعدادات. يرجى إغلاق التطبيق لتطبيق التغييرات بشكل كامل.
+
+; Common Buttons
+BtnOK=موافق
+BtnCancel=إلغاء
+BtnYes=نعم
+BtnNo=لا
+BtnClose=إغلاق
+
+; AboutForm
+AboutTitle=حول
+AboutAppName=WinLauncher - مشغل Windows
+AboutVersion=الإصدار 2.0
+AboutLicenseStatus=لم يتم الترخيص بعد للاستخدام التجاري
+AboutFreeUse=مجاني للاستخدام الشخصي
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
+AboutWebSiteLabel=الموقع الإلكتروني:
+AboutEmailLabel=بريد المساعدة:
+AboutBtnAnaSayfa=الصفحة الرئيسية
+AboutBtnLisans=شروط الترخيص
+AboutBtnKapat=إغلاق
+
+; License Text
+LicenseTitle=WinLauncher - ترخيص الاستخدام الشخصي
+LicenseFree=هذا البرنامج مجاني للاستخدام الشخصي.
+LicenseRights=جميع الحقوق محفوظة.
+LicenseAsIs=يتم توفير هذا البرنامج "كما هو".
+
+; Settings Form
+SettingsTitle=الإعدادات
+SettingsLaunchMode=وضع التشغيل:
+SettingsSingleClick=نقرة واحدة
+SettingsDoubleClick=نقرة مزدوجة
+SettingsViewMode=وضع العرض:
+SettingsIconText=أيقونة + نص
+SettingsIconOnly=أيقونة فقط
+SettingsAlwaysOnTop=دائماً في الأعلى
+SettingsBtnSave=حفظ
+SettingsBtnCancel=إلغاء
+
+; Manual Sort Form
+ManualSortTitle=فرز يدوي
+ManualSortColOrder=الترتيب
+ManualSortColIcon=الأيقونة
+ManualSortColName=اسم العنصر
+ManualSortColPath=البرنامج / المسار
+ManualSortBtnUp=▲ لأعلى
+ManualSortBtnDown=▼ لأسفل
+ManualSortBtnSave=حفظ والخروج
+ManualSortBtnCancel=✗ إلغاء
+ManualSortLabel1=حدد العناصر (حدد المربع) وقم بفرزها باستخدام أزرار لأعلى/لأسفل:
+
+; Copy/Move Form
+CopyMoveTitle=نسخ/نقل
+CopyMoveSourceTab=علامة المصدر:
+CopyMoveTargetTab=علامة الهدف:
+CopyMoveItemName=اسم العنصر:
+CopyMoveBtnCopy=نسخ
+CopyMoveBtnMove=نقل
+CopyMoveBtnCancel=إلغاء
+
+; Settings Form
+Settings=الإعدادات
+LaunchMode=وضع الإطلاق
+ViewMode=وضع العرض
+Language=اللغة
+LastActiveTab=آخر علامة نشطة
+SelectLanguage=اختر اللغة:
+SelectTab=اختر علامة التبويب:
+LaunchDoubleClick=انقر نقراً مزدوجاً
+LaunchSingleClick=انقر مرة واحدة
+ViewIconText=أيقونة+نص
+ViewIcon=أيقونة
+ViewList=قائمة
+ViewTile=فسيفساء
+AlwaysOnTop=دائماً في الأمام
+OK=موافق
+Cancel=إلغاء
+CopyMoveBtnCancel=إلغاء

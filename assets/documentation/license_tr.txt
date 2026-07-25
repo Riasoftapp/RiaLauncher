@@ -1,0 +1,3 @@
+http://www.apache.org/licenses/LICENSE-2.0
+
+Yürürlükteki yasalarca zorunlu kılınmadıkça veya yazılı olarak kabul edilmedikçe, Lisans kapsamında dağıtılan yazılım, "OLDUĞU GİBİ" ESASINA GÖRE, HERHANGİ BİR GARANTİ VEYA KOŞUL OLMAKSIZIN dağıtılır.

@@ -1,0 +1,213 @@
+; WinLauncher Latin Language File
+; Format: Key=Value
+
+; Menu - File
+MenuDosya=Liber
+MenuDosyaCikis=Exitus
+
+; Menu - Tabs
+MenuSekmeler=Scheda
+MenuSekmelerYeni=Scheda Nova
+MenuSekmelerAdDegistir=Nomina Scheda
+MenuSekmelerSil=Dele Scheda
+MenuSekmelerYenile=Renovatio Schedam
+
+; Menu - Sorting
+MenuSiralama=Ordinatio
+MenuManuelSiralama=Ordinatio Manualis...
+
+; Menu - Tools
+MenuAraclar=Instrumenta
+MenuToolsCmd=Imperium Exemplum
+MenuToolsPowershell=PowerShell
+MenuToolsTaskMgr=Munus Rector
+MenuToolsServices=Rector Officii
+MenuToolsShowDesktop=Mensa Monstra
+MenuToolsRestoreDesktop=Mensa Restaura
+MenuToolsControlPanel=Tabella Imperium
+MenuToolsNetworkCenter=Centrum Rete et Consortii
+MenuToolsDeviceManager=Rector Instrumenti
+MenuToolsComputerName=Nomen Computatri Monstra
+MenuToolsIPAddress=Sedes IP Monstra
+
+; Menu - Settings
+MenuAyarlar=Conditiones
+
+; Menu - Help
+MenuYardim=Auxilium
+MenuYardimDokumanlar=Auxilium
+MenuYardimDokumanIndir=Documenta Download
+MenuYardimLisans=Conditiones Licentiae
+MenuYardimBagis=Da Munus
+MenuYardimAnaSayfa=Pagina Prima
+MenuYardimHakkinda=De Programma...
+
+; Context Menu - Item
+MenuItemLaunch=Incepe
+MenuItemCopyMove=Copia/Move...
+MenuItemRename=Nomina
+MenuItemChangeIcon=Mutatio Imagunculus
+MenuItemUpdatePath=Via Renovatio
+MenuItemOpenFolder=In Bursa Monstra
+MenuItemDelete=Dele
+MenuItemProperties=Proprietates
+
+; Context Menu - Tab
+MenuTabYeni=Scheda Nova
+MenuTabAdDegistir=Nomina Scheda
+MenuTabSil=Dele Scheda
+
+; Search Panel
+lblSearch=Quaere:
+btnSearch=Quaere
+
+; Messages - General
+MsgError=Error
+MsgWarning=Monitio
+MsgInfo=Informationes
+MsgConfirm=Confirma
+MsgSuccess=Successus
+MsgCopiedToClipboard=(Copiae in Schedario)
+
+; Messages - Tools Menu
+MsgToolsCmdError=Imperium Exemplum aperire non potest: {0}
+MsgToolsPowershellError=PowerShell aperire non potest: {0}
+MsgToolsTaskMgrError=Munus Rector aperire non potest: {0}
+MsgToolsServicesError=Rector Officii aperire non potest: {0}
+MsgToolsShowDesktopError=Mensa monstrare non potest: {0}
+MsgToolsDesktopRestored=Mensa restaurata.
+MsgToolsRestoreDesktopError=Mensa restaurare non potest: {0}
+MsgToolsControlPanelError=Tabella Imperium aperire non potest: {0}
+MsgToolsNetworkCenterError=Centrum Rete aperire non potest: {0}
+MsgToolsDeviceManagerError=Rector Instrumenti aperire non potest: {0}
+MsgToolsComputerName=Nomen Computatri: {0}
+MsgToolsComputerNameTitle=Nomen Computatri
+MsgToolsComputerNameError=Nomen computatri adipisci non potest: {0}
+MsgToolsLocalIP=IP Localis: {0}
+MsgToolsRemoteIP=IP Remotum: {0}
+MsgToolsIPTitle=Sedes IP
+MsgToolsIPError=Sedes IP adipisci non potest: {0}
+MsgToolsIPNotFound=Non inventum
+
+; Messages - Help Menu
+MsgHelpComingSoon=Documentatio auxilii mox addebitur.
+MsgHelpTitle=Auxilium
+MsgHelpDocError=Pagina documentationis aperire non potest: {0}
+MsgDonateTitle=Da Munus
+MsgDonateMessage=Si tibi placet WinLauncher, munus dare potes pro evolutione sustinenda. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Gratias! 🙏
+MsgDonateError=Pagina muneris aperire non potest: {0}
+MsgHomePageError=Pagina prima aperire non potest: {0}
+
+; Messages - AboutForm
+MsgWebSiteError=Vitae tela aperire non potest: {0}
+MsgEmailError=Applicatio postae aperire non potest: {0}
+
+; Messages - Manual Sort
+MsgSortSaved=Ordinatio prospere servata!
+MsgSortNoTabSelected=Velim primum schedam eligere.
+MsgSortNoItems=Nulla elementa in hac scheda ordinanda.
+
+; Messages - Copy/Move
+MsgCopyError=Error copiae: {0}
+MsgMoveError=Error motus: {0}
+MsgCopyFailed=Operatio copiae defecit.
+MsgMoveFailed=Operatio motus defecit.
+MsgCannotMoveSameTab=Elementum in eadem scheda movere non potest.
+
+; Messages - Tab Operations
+MsgTabRefreshError=Error renovationis schedam: {0}
+MsgTabRefreshed=Scheda '{0}' renovata.
+MsgAtLeastOneTab=Saltem una scheda manere debet.
+MsgDeleteTabConfirm=Certusne vis schedam '{0}' delere?
+MsgDeleteTabTitle=Dele Schedam
+
+; Messages - General Operations
+MsgXMLLoadError=Error onustationis XML: {0}
+MsgFileNotFound=Liber non inventus: {0}
+MsgLaunchError=Error incubationis: {0}
+MsgSaveError=Error servationis: {0}
+MsgIconLoadError=Error onustationis imagunculi: {0}
+MsgPathUpdated=Via prospere renovata.
+MsgFileOrFolderNotFound=Liber vel bursa non inventa: {0}
+MsgOpenFolderError=Error aperturae bursae: {0}
+MsgDeleteItemConfirm=Certusne vis '{0}' delere?
+MsgDeleteItemTitle=Dele Elementum
+MsgItemPropertiesTitle=Proprietates Elementi
+MsgSettingsSaved=Conditiones servatae. Applica abjice pro mutationibus plene effectis.
+
+; Common Buttons
+BtnOK=Aprobatio
+BtnCancel=Reicio
+BtnYes=Ita
+BtnNo=Non
+BtnClose=Claudi
+
+; AboutForm
+AboutTitle=De Programma
+AboutAppName=WinLauncher - Launcher Finestras
+AboutVersion=Versio 2.0
+AboutLicenseStatus=Nondum Licentia Usus Mercaturae
+AboutFreeUse=Libenum ad Personalis Usus
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
+AboutWebSiteLabel=Vitae Tela:
+AboutEmailLabel=Electriones Auxilium:
+AboutBtnAnaSayfa=Pagina Prima
+AboutBtnLisans=Conditiones Licentiae
+AboutBtnKapat=Claudi
+
+; License Text
+LicenseTitle=WinLauncher - Licentia Personalis Usus
+LicenseFree=Hoc software libenum est ad personales usus.
+LicenseRights=Omnia iura servata.
+LicenseAsIs=Hoc software praebetur "QUALIS EST".
+
+; Settings Form
+SettingsTitle=Conditiones
+SettingsLaunchMode=Modus Incubationis:
+SettingsSingleClick=Unus Ictus
+SettingsDoubleClick=Ictus Dualis
+SettingsViewMode=Modus Visionis:
+SettingsIconText=Imagunculus + Textus
+SettingsIconOnly=Imagunculus Solum
+SettingsAlwaysOnTop=Semper Supra
+SettingsBtnSave=Serva
+SettingsBtnCancel=Reicio
+
+; Manual Sort Form
+ManualSortTitle=Ordinatio Manualis
+ManualSortColOrder=Ordo
+ManualSortColIcon=Imagunculus
+ManualSortColName=Nomen Elementi
+ManualSortColPath=Programma / Via
+ManualSortBtnUp=▲ Supra
+ManualSortBtnDown=▼ Deorsum
+ManualSortBtnSave=Serva et Exitus
+ManualSortBtnCancel=✗ Reicio
+ManualSortLabel1=Elementa (checkboxem verifica) et usa buttones Supra/Deorsum ad ordinandum:
+
+; Copy/Move Form
+CopyMoveTitle=Copia/Move
+CopyMoveSourceTab=Scheda Fontis:
+CopyMoveTargetTab=Scheda Finis:
+CopyMoveItemName=Nomen Elementi:
+CopyMoveBtnCopy=Copia
+CopyMoveBtnMove=Move
+CopyMoveBtnCancel=Reicio
+
+; Settings Form
+Settings=Constitutiones
+LaunchMode=Modus Incitationis
+ViewMode=Modus Visionis
+Language=Lingua
+LastActiveTab=Ultimum Schedarium Activum
+SelectLanguage=Lige Linguam:
+SelectTab=Lige Schedarum:
+LaunchDoubleClick=Duplex Click
+LaunchSingleClick=Simplex Click
+ViewIconText=Icon+Textus
+ViewIcon=Icon
+ViewList=Catalogus
+ViewTile=Tegula
+AlwaysOnTop=Semper Supra
+OK=OK
+Cancel=Reicio

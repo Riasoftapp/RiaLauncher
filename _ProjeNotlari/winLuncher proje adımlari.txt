@@ -1,0 +1,399 @@
+Proje Adı: Custom Windows Launcher (VB.NET)
+
+═══════════════════════════════════════════════════════════════════════════
+1. Projenin Amacı
+═══════════════════════════════════════════════════════════════════════════
+Kullanıcın sık kullandığı uygulama, dosya ve klasörlere tek bir merkezden, kategorize edilmiş 
+bir arayüzle erişmesini sağlamaktır. Masaüstü kalabalığını azaltmak ve yazılım geliştirme 
+sürecinde ihtiyaç duyulan araçlara (IDE, Terminal, Tarayıcı vb.) hızlı ulaşım imkanı sunmak 
+temel hedeftir.
+
+Referans Uygulama: FSL Launcher 
+- Web: https://freewaregenius.com/fsl-launcher-a-tabbed-mouse-activated-launcher/#google_vignette
+- Screenshot: C:\999Projects\ProjectVs\ProjectVb.net\winLuncher\FSL-Launcher-Screenshot.jpg
+- Temel özellikler: Mouse-activated launcher, tabbed interface, drag-drop support, 
+  customizable hotcorner activation, single/double click launch options
+
+═══════════════════════════════════════════════════════════════════════════
+2. Kapsam ve Temel Özellikler
+═══════════════════════════════════════════════════════════════════════════
+
+2.1. Kategorizasyon ve Sekme Yönetimi
+    • Sekmeli (TabControl) yapı ile uygulama/dosya gruplandırma
+    • Kullanıcı kendi sekmelerini (kategorilerini) oluşturabilir
+    • Sekme ekleme, silme ve düzenleme özellikleri
+    • Her sekme ayrı bir FlowLayoutPanel içerir
+
+2.2. Hızlı Erişim ve Ekleme
+    • Sürükle-bırak (Drag & Drop) yöntemiyle uygulama/dosya ekleme
+    • Tek veya Çift tıklama ile uygulama/dosya başlatma (kullanıcı tercihi)
+    • Sağ tık menüsü ile öğe yönetimi (silme, düzenleme)
+    • Klavye kısayolları:
+      - Tab tuşu: Sekmeler arası geçiş
+      - < ve > tuşları: Sekme navigasyonu
+      - Delete tuşu: Seçili öğeyi sil
+
+2.3. İkon Yönetimi
+    • İkon Boyutu: 48x48 pixel (standart)
+    • Otomatik İkon Çekme: System.Drawing.Icon.ExtractAssociatedIcon ile
+    • İkon Kütüphanesi: Resources/Icons/ klasörü
+      - Kullanıcı buraya kendi ikonlarını kopyalayabilir
+      - Uygulama ile birlikte varsayılan ikonlar sağlanır
+      - Generic/Default ikonlar (uygulama, klasör, dosya vb.)
+    • İkon bulunamazsa kullanıcı kütüphaneden seçebilir
+
+2.4. Arama ve Sıralama
+    • Arama Fonksiyonu: Eklenen öğeleri isimle arama
+    • Sıralama Seçenekleri:
+      - Varsayılan: XML'de tanımlı sıra
+      - Alfabetik sıralama (opsiyonel)
+      - Kullanım sıklığı takibi YOK
+
+2.5. Veri Saklama ve Kalıcılık
+    • Format: XML (elle düzenlenebilir, free editörlerle oynama yapılabilir)
+    • Kayıt Edilen Bilgiler:
+      - Uygulama/dosya yolları
+      - İkon bilgileri (yol veya kütüphane referansı)
+      - Sekme/kategori yapısı
+      - Öğe isimleri ve özellikleri
+    • Bilgisayar kapansa bile veriler korunur
+
+2.6. Dinamik Kontrol
+    • Dosya yolu değişen veya silinen uygulamaları tespit
+    • Kullanıcıya uyarı ve düzeltme seçeneği sunma
+
+2.7. Görünüm ve Kullanıcı Tercihleri (FSL Launcher İlhamlı)
+    • Görünüm Modları:
+      - İkon + Metin (varsayılan)
+      - Sadece İkon modu
+    • Davranış Seçenekleri:
+      - Tek tık / Çift tık başlatma tercihi
+      - Always on Top (her zaman üstte kalma)
+      - Click Outside to Close (dışarı tıklayınca kapanma) - opsiyonel
+    • Sekme Yönetimi:
+      - Manuel sekme sıralama (drag-drop ile)
+      - Sekme renklendirme (opsiyonel)
+
+═══════════════════════════════════════════════════════════════════════════
+3. Teknik Uygulama Planı
+═══════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FAZ 1: Altyapı ve Temel Arayüz                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1.1. Form Tasarımı
+    • Ana formun boyutlandırılması (varsayılan boyut belirleme)
+    • TabControl eklenmesi (sekme yapısı için)
+    • Her sekme için FlowLayoutPanel yerleşimi
+    • Arama TextBox ve buton ekleme
+    • Sekme yönetim butonları (Yeni Sekme, Sil, Düzenle)
+
+1.2. İkon Kütüphanesi Hazırlığı
+    • Resources/Icons/ klasör yapısının oluşturulması
+    • Varsayılan ikonların hazırlanması:
+      - GenericApp.png (genel uygulama)
+      - GenericFolder.png (klasör)
+      - GenericFile.png (dosya)
+    • İkon yükleme/listeleme mekanizması
+
+1.3. İkon Çekme Motoru
+    • System.Drawing.Icon.ExtractAssociatedIcon metodu entegrasyonu
+    • 48x48 piksel boyutlandırma
+    • Hata durumunda varsayılan ikon atama
+    • İkon önbellek (cache) mekanizması
+
+1.4. Sürükle-Bırak Altyapısı
+    • Form AllowDrop = True
+    • DragEnter ve DragDrop event'lerinin kodlanması
+    • Dosya yollarının yakalanması ve doğrulanması
+    • Shortcut (.lnk) dosyalarının orijinal yola çözümlenmesi
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FAZ 2: Fonksiyonellik ve Çalıştırma                                     │
+└─────────────────────────────────────────────────────────────────────────┘
+
+2.1. Öğe Ekleme ve Gösterim
+    • Drag-drop ile öğe ekleme işleminin tamamlanması
+    • FlowLayoutPanel'e öğe ekleme (PictureBox + Label kombinasyonu)
+    • Öğe düzeni ve görsel iyileştirme
+
+2.2. Uygulama Başlatma
+    • Process.Start() ile uygulama/dosya çalıştırma
+    • Çift tıklama event'i
+    • Hata yakalama ve kullanıcı bildirimi
+
+2.3. Bağlam Menüsü (Context Menu)
+    • ContextMenuStrip oluşturma
+    • Menü Seçenekleri:
+      - Öğeyi Sil
+      - İsim Düzenle
+      - İkon Değiştir (kütüphaneden seç)
+      - Yol Bilgisini Güncelle
+      - Özellikleri Görüntüle
+
+2.4. Sekme/Kategori Yönetimi
+    • Yeni sekme ekleme
+    • Sekme silme (onay ile)
+    • Sekme ismini düzenleme
+    • Sekme sıralaması (opsiyonel)
+
+2.5. Hata Yönetimi
+    • IO.File.Exists ile yol kontrolü
+    • Geçersiz yollar için kullanıcı uyarısı
+    • Yol güncelleme veya öğe silme seçeneği
+    • Exception handling (try-catch blokları)
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FAZ 3: Veri Yönetimi ve Kalıcılık (XML)                                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+3.1. XML Şema Tasarımı
+    Örnek Yapı:
+    <?xml version="1.0" encoding="utf-8"?>
+    <WinLauncher>
+      <Settings>
+        <IconSize>48</IconSize>
+        <DefaultSort>XML</DefaultSort> <!-- veya Alphabetic -->
+        <LaunchMode>DoubleClick</LaunchMode> <!-- SingleClick, DoubleClick -->
+        <ViewMode>IconText</ViewMode> <!-- IconOnly, IconText -->
+        <AlwaysOnTop>false</AlwaysOnTop>
+        <CloseOnClickOutside>false</CloseOnClickOutside>
+      </Settings>
+      <Categories>
+        <Category Name="Geliştirme" Order="1">
+          <Item>
+            <Name>Visual Studio</Name>
+            <Path>C:\Program Files\...\devenv.exe</Path>
+            <IconPath>Resources\Icons\vs.png</IconPath>
+            <IconSource>Custom</IconSource> <!-- Auto, Custom, Library -->
+          </Item>
+        </Category>
+        <Category Name="Oyunlar" Order="2">
+          <Item>...</Item>
+        </Category>
+      </Categories>
+    </WinLauncher>
+
+3.2. XML Okuma/Yazma
+    • System.Xml.Linq (XDocument) kullanımı
+    • Uygulama başlangıcında XML'den veri yükleme
+    • Arayüzün dinamik olarak oluşturulması
+    • Her değişiklikte XML'e otomatik kayıt
+
+3.3. Veri Doğrulama
+    • XML şema doğrulaması
+    • Bozuk XML durumunda yedek oluşturma
+    • Varsayılan yapıya geri dönme mekanizması
+
+3.4. XML Yedekleme
+    • Otomatik yedekleme (ör: WinLauncher.xml.bak)
+    • Tarih damgalı yedek kopyalar (opsiyonel)
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FAZ 4: Arama, Sıralama ve Ek Özellikler                                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+4.1. Arama Fonksiyonu
+    • TextBox ile canlı arama (TextChanged event)
+    • Tüm sekmeler veya aktif sekme içinde arama
+    • Eşleşen öğeleri vurgulama
+    • Arama sonuçlarını filtreleme/gösterme
+
+4.2. Sıralama Seçenekleri
+    • Varsayılan: XML sırasına göre
+    • Alfabetik sıralama (A-Z)
+    • Sıralama tercihi kaydetme (XML'de)
+    • Sıralama buton/menü arayüzü
+
+4.3. Görsel İyileştirme
+    • Temiz ve modern arayüz tasarımı
+    • Hover efektleri (üzerine gelindiğinde vurgulama)
+    • Tooltip'ler (ipucu balonları)
+    • İkon ve metin düzeni optimizasyonu
+    • Görünüm modu değiştirme (Icon+Text / Icon Only)
+
+4.4. Kullanıcı Deneyimi
+    • Öğe düzenleme dialogları
+    • İkon seçici dialog (Resources/Icons klasöründen)
+    • Onay dialogları (silme işlemleri için)
+    • Hata mesajları ve bilgilendirmeler
+    • Ayarlar dialogu:
+      - Tek/Çift tık başlatma tercihi
+      - Görünüm modu seçimi
+      - Always on Top tercihi
+      - Click Outside to Close tercihi
+
+4.5. Klavye Navigasyonu (FSL Launcher İlhamlı)
+    • Tab tuşu ile sekmeler arası geçiş
+    • < ve > tuşları ile sekme navigasyonu
+    • Delete tuşu ile seçili öğeyi silme
+    • Ctrl+N: Yeni sekme
+    • Ctrl+W: Aktif sekmeyi kapat
+    • Ctrl+F: Arama kutusuna odaklan
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FAZ 5: Test, Optimizasyon ve Son Rötuşlar                              │
+└─────────────────────────────────────────────────────────────────────────┘
+
+5.1. Test Senaryoları
+    • Tüm özelliklerin çalışma testi
+    • Hata durumlarının testi
+    • Farklı dosya türlerinde test
+    • XML bozulma durumlarında test
+    • Performans testleri
+
+5.2. Performans Optimizasyonu
+    • Büyük miktarda öğe ile test
+    • İkon cache mekanizması optimizasyonu
+    • XML okuma/yazma optimizasyonu
+    • Bellek kullanımı kontrolü
+
+5.3. Kullanılabilirlik İyileştirmeleri
+    • Klavye kısayolları (opsiyonel)
+    • Toolbar ekleme (opsiyonel)
+    • Yardım/About dialogu
+    • Uygulama ayarları ekranı
+
+═══════════════════════════════════════════════════════════════════════════
+4. Teknik Gereksinimler
+═══════════════════════════════════════════════════════════════════════════
+
+Platform:
+    • .NET Framework 4.7.2
+    • Visual Basic .NET
+    • Windows Forms
+
+Ana Bileşenler:
+    • TabControl (sekme yapısı)
+    • FlowLayoutPanel (öğe gösterimi)
+    • ContextMenuStrip (sağ tık menü)
+    • PictureBox + Label (öğe gösterimi)
+    • System.Drawing.Icon (ikon yönetimi)
+    • System.Xml.Linq (XML işlemleri)
+    • System.Diagnostics.Process (uygulama başlatma)
+    • System.IO (dosya işlemleri)
+
+═══════════════════════════════════════════════════════════════════════════
+5. Kapsam Dışı Özellikler (Yapılmayacak)
+═══════════════════════════════════════════════════════════════════════════
+
+✗ Sistem Çekmecesi (System Tray) - Şu aşamada yapılmayacak (gelecekte eklenebilir)
+✗ Tema Desteği - Standart Windows tema yeterli
+✗ Başlangıçta Çalıştırma - Manuel olarak taskbar'a sabitleme tercih edildi
+✗ Kullanım Sıklığı Takibi - Gereksiz karmaşıklık
+✗ Portable versiyon - Şu aşamada öncelik değil
+✗ Mouse Hot Corner Activation - FSL Launcher'da var ama şimdilik eklenmeyecek
+
+═══════════════════════════════════════════════════════════════════════════
+6. Riskler ve Çözümler
+═══════════════════════════════════════════════════════════════════════════
+
+Risk 1: Bazı sistem uygulamalarının ikonlarının çekilememesi
+Çözüm: 
+    • İkon bulunamazsa Resources/Icons/ klasöründen varsayılan ikon
+    • Kullanıcı manuel olarak icon kütüphanesinden seçebilir
+    • Generic ikonlar hazır bulundurulur
+
+Risk 2: Yönetici izni gerektiren uygulamaların açılmaması
+Çözüm: 
+    • ProcessStartInfo.Verb = "runas" parametresi ekleme
+    • Kullanıcıya UAC uyarısı gösterme
+    • İsteğe bağlı "Yönetici olarak çalıştır" seçeneği
+
+Risk 3: XML dosyasının bozulması veya silinmesi
+Çözüm:
+    • Otomatik yedekleme mekanizması
+    • Bozuk XML tespitinde varsayılan yapı oluşturma
+    • Kullanıcıya yedekten geri yükleme seçeneği
+
+Risk 4: Dosya yollarının değişmesi (uygulama güncelleme, taşıma vb.)
+Çözüm:
+    • Her başlangıçta yol doğrulaması
+    • Bulunamayan öğeler için kullanıcıya bildirim
+    • Yol güncelleme veya silme seçeneği sunma
+
+Risk 5: Shortcut (.lnk) dosyalarının yönetimi
+Çözüm:
+    • Windows Shell API ile shortcut çözümleme
+    • Orijinal dosya yolunu tespit etme
+    • Target path'i XML'de saklama
+
+═══════════════════════════════════════════════════════════════════════════
+7. Proje Dosya Yapısı
+═══════════════════════════════════════════════════════════════════════════
+
+winLuncher/
+│
+├── winLuncher.vbproj
+├── Form1.vb (Ana launcher formu)
+├── Form1.Designer.vb
+│
+├── Resources/
+│   └── Icons/
+│       ├── GenericApp.png (48x48)
+│       ├── GenericFolder.png (48x48)
+│       ├── GenericFile.png (48x48)
+│       └── [Kullanıcı ikonları]
+│
+├── Data/
+│   ├── WinLauncher.xml (Ana veri dosyası)
+│   └── WinLauncher.xml.bak (Yedek)
+│
+├── My Project/
+│   ├── Application.Designer.vb
+│   ├── AssemblyInfo.vb
+│   ├── Resources.Designer.vb
+│   └── Settings.Designer.vb
+│
+├── winLuncher proje adımlari.txt (Bu dosya)
+└── FSL-Launcher-Screenshot.jpg (Referans ekran görüntüsü)
+
+═══════════════════════════════════════════════════════════════════════════
+8. Geliştirme Öncelikleri
+═══════════════════════════════════════════════════════════════════════════
+
+Öncelik 1 (Kritik - MVP): ✅ TAMAMLANDI
+    ✓ Temel form tasarımı
+    ✓ Sekme yapısı
+    ✓ Drag-drop öğe ekleme
+    ✓ Öğe gösterimi (icon + isim)
+    ✓ Çift tıklama ile çalıştırma
+    ✓ Temel XML kayıt/yükleme
+    ✓ Klasör ikonu desteği (Windows API ile)
+    ✓ Temel XML kayıt/yükleme
+
+Öncelik 2 (Önemli): 🚧 ŞU ANKİ FAZ
+    ○ Sağ tık menüsü ve düzenleme (ContextMenuStrip)
+    ○ Tek/Çift tık başlatma seçeneği
+    ○ İkon kütüphanesi ve seçici dialog
+    ○ Ayarlar dialogu (görünüm ve davranış tercihleri)
+    ○ Klavye navigasyonu (Tab, <, >, Delete tuşları)
+    ○ Always on Top özelliği
+
+Öncelik 3 (İyileştirme - FSL Launcher İlhamlı):
+    ○ Görünüm modu değiştirme (Icon+Text / Icon Only)
+    ○ Sıralama seçenekleri ve manuel sekme sıralama
+    ○ Gelişmiş XML yönetimi
+    ○ Yedekleme mekanizması
+    ○ Görsel iyileştirmeler (hover, tooltip)
+    ○ Click Outside to Close özelliği
+    ○ Klavye kısayolları (Ctrl+N, Ctrl+W, Ctrl+F)
+
+═══════════════════════════════════════════════════════════════════════════
+
+Not: Bu doküman geliştirme sürecinde güncellenebilir ve yeni özellikler 
+eklenebilir. Her faz tamamlandıkça bir sonraki faza geçilecektir.
+
+FSL Launcher referansından eklenen özellikler:
+- Tek/Çift tık başlatma tercihi
+- Görünüm modları (Icon+Text / Icon Only)
+- Always on Top özelliği
+- Click Outside to Close davranışı
+- Klavye navigasyonu (Tab, <, > tuşları)
+- Manuel sekme sıralama
+- Gelişmiş kullanıcı tercihleri sistemi
+
+Versiyon: 1.2
+Son Güncelleme: FSL Launcher özellikleri entegre edildi
+Son Güncelleme: [Tarih]

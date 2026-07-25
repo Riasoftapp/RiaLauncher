@@ -1,0 +1,344 @@
+================================================================================
+WINLAUNCHER - DİL YAPISI DOKÜMANTASYONU / LANGUAGE ARCHITECTURE DOCUMENTATION
+================================================================================
+
+Tarih / Date: 2025-01-15 (ISO 8601: YYYY-MM-DD)
+Versiyon / Version: 1.0
+Dil / Language: Türkçe / Turkish & English
+
+================================================================================
+1. DİL SISTEMI GENEL BAKIŞ / LANGUAGE SYSTEM OVERVIEW
+================================================================================
+
+WinLauncher 10 dil destekler:
+- ar (Arapça / Arabic)
+- en (İngilizce / English)
+- es (İspanyolca / Spanish)
+- fr (Fransızca / French)
+- it (İtalyanca / Italian)
+- ja (Japonca / Japanese)
+- ko (Korece / Korean)
+- la (Latinçe / Latin)
+- tr (Türkçe / Turkish)
+- zh (Çince / Chinese)
+
+Dil dosyaları: assets/lang/*.lng
+Dosya formatı: Plain text, UTF-8, Key=Value çiftleri
+Açıklamalar: ; başlığı ile başlayan satırlar
+
+================================================================================
+2. DİL YAPISI VE DOSYA HIYERARŞISI / FILE HIERARCHY
+================================================================================
+
+C:\myprojects\winLauncher_classic\
+├── assets/
+│   └── lang/
+│       ├── ar.lng      (Dil çevirileri - Arapça)
+│       ├── en.lng      (Dil çevirileri - İngilizce)
+│       ├── es.lng      (Dil çevirileri - İspanyolca)
+│       ├── fr.lng      (Dil çevirileri - Fransızca)
+│       ├── it.lng      (Dil çevirileri - İtalyanca)
+│       ├── ja.lng      (Dil çevirileri - Japonca)
+│       ├── ko.lng      (Dil çevirileri - Korece)
+│       ├── la.lng      (Dil çevirileri - Latinçe)
+│       ├── tr.lng      (Dil çevirileri - Türkçe)
+│       └── zh.lng      (Dil çevirileri - Çince)
+├── log/
+│   └── error.log       (Hata günlüğü / Error log)
+└── [diğer klasörler]
+
+================================================================================
+3. DICTIONARY YAPISI VE MANTIGI / DICTIONARY STRUCTURE & LOGIC
+================================================================================
+
+LanguageManager sınıfı, .lng dosyalarını bellek içinde dictionary yapısında
+saklayan bir sözlük sistemi kullanır.
+
+YAPISI / STRUCTURE:
+
+  translations (Dictionary)
+  │
+  ├─ "en" (anahtar / key)
+  │  └─ Dictionary(String, String)  { "MenuDosya" → "File", "LaunchMode" → "Launch Mode", ... }
+  │
+  ├─ "tr"
+  │  └─ Dictionary(String, String)  { "MenuDosya" → "Dosya", "LaunchMode" → "Başlatma Modu", ... }
+  │
+  ├─ "zh"
+  │  └─ Dictionary(String, String)  { "MenuDosya" → "文件", "LaunchMode" → "启动模式", ... }
+  │
+  └─ [diğer diller...]
+
+MANTIK / LOGIC:
+
+1. LanguageManager başlatılırken (Form1_Load):
+   - Tüm *.lng dosyaları okunur
+   - Her satır "Key=Value" formatında parse edilir
+   - Boş satırlar ve yorumlar (; başlayan satırlar) atlanır
+   - Tüm key-value çiftleri ilgili dil dictionary'sine eklenir
+
+2. Metin arama işlemi (GetText):
+   - GetText("MenuDosya", "File") çağrılırsa:
+	 a) currentLanguage (örn: "tr") bulunur
+	 b) translations["tr"].ContainsKey("MenuDosya") kontrol edilir
+	 c) EĞER KEY VAR: çeviri döndürülür ("Dosya")
+	 d) EĞER KEY YOK: default metin döndürülür ("File")
+	 e) LOG: Bulunamayan key'ler error.log dosyasına kaydedilir
+
+3. Dil değişimi (SetLanguage):
+   - currentLanguage değişkeni yeni dile ayarlanır
+   - Tüm UI kontrolleri yeniden GetText ile güncellenir
+
+================================================================================
+4. FONKSIYON ÇAĞRI SIRASI / FUNCTION CALL SEQUENCE
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ BAŞLANGIÇ / STARTUP PHASE                                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+SIRA / ORDER 1: Form1_Load()
+   ├─ sRootDir, sAssetDir, slangDir vb. path'ler hesaplanır
+   ├─ langManager = New LanguageManager(slangDir, "en")
+   │  └─ LanguageManager.Constructor()
+   │     └─ LoadLanguages()
+   │        ├─ Directory.GetFiles(langDirPath, "*.lng")
+   │        ├─ FOR EACH *.lng dosyası:
+   │        │  ├─ langCode = dosya adı (örn: "tr")
+   │        │  ├─ File.ReadAllLines(filePath, UTF8)
+   │        │  ├─ FOR EACH satır:
+   │        │  │  ├─ Eğer boş veya yorum satırı: SKIP
+   │        │  │  ├─ Eğer Key=Value: Parse ve dictionary'e ekle
+   │        │  │  │   translations["tr"]["MenuDosya"] = "Dosya"
+   │        │  ├─ availableLanguages.Add("tr")
+   │        └─ RETURN
+   │
+   ├─ LoadComboLang()
+   │  └─ ComboLang.Items.Clear()
+   │  └─ FOR EACH lang IN langManager.GetAvailableLanguages()
+   │     └─ ComboLang.Items.Add(lang)  # ar, en, es, fr, it, ja, ko, la, tr, zh
+   │     └─ ComboLang.SelectedIndex = İlk dil seçilir (örn: en)
+   │
+   ├─ LoadDataFromXml()
+   │
+   └─ RestoreLastActiveTab()
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ANA FORM DİL SEÇİMİ / MAIN FORM LANGUAGE SELECTION                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+SIRA / ORDER 2: ComboLang_SelectedIndexChanged()
+   └─ ApplyCurrentLang()
+	  ├─ selectedLang = ComboLang.SelectedItem.ToString().ToLower()  # "tr"
+	  ├─ currentLanguage = selectedLang
+	  ├─ langManager.SetLanguage("tr")
+	  │  └─ currentLanguage = "tr"  (langManager içinde değişir)
+	  ├─ RTL kontrol (Arapça için)
+	  │  ├─ IF langManager.IsRTLLanguage("tr") THEN
+	  │  │  └─ Me.RightToLeft = RightToLeft.Yes
+	  │  └─ ELSE
+	  │     └─ Me.RightToLeft = RightToLeft.No
+	  ├─ ApplyLanguage()
+	  │  └─ FOR EACH UI kontrol (MenuDosya, MenuSekmeler, vb.):
+	  │     └─ Control.Text = langManager.GetText("MenuDosya", "File")
+	  │        └─ GetText("MenuDosya", "File"):
+	  │           ├─ IF translations["tr"].ContainsKey("MenuDosya"):
+	  │           │  └─ RETURN translations["tr"]["MenuDosya"]  # "Dosya"
+	  │           ├─ ELSE:
+	  │           │  ├─ error.log'a yaz: "it dilinde MenuDosya anahtarı bulunamadı"
+	  │           │  └─ RETURN "File"  (default)
+	  │
+	  └─ SaveSettingsToIni()
+		 └─ Language=tr (settings.ini'ye kaydedilir)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SETTINGS FORM AÇILIŞI / SETTINGS FORM OPENING                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+SIRA / ORDER 3: btnSettings_Click()
+   ├─ wasTopMost = Me.TopMost
+   ├─ Me.TopMost = False
+   ├─ Using settingsForm As New SettingsForm()
+   │  ├─ settingsForm.CurrentLanguage = currentLanguage  # örn: "tr"
+   │  ├─ settingsForm.ShowDialog(Me)
+   │  │  └─ SettingsForm_Load()
+   │  │     ├─ PopulateLanguages()
+   │  │     │  ├─ CmbLanguage.Items.Clear()
+   │  │     │  ├─ FOR EACH lang IN langManager.GetAvailableLanguages():
+   │  │     │  │  └─ CmbLanguage.Items.Add(lang)
+   │  │     │  └─ Seçili dili bul: CmbLanguage.SelectedIndex = CurrentLanguage index
+   │  │     │
+   │  │     ├─ PopulateTabs()
+   │  │     │  └─ Son aktif tab'ı com Box'a ekle
+   │  │     │
+   │  │     ├─ LoadSettings()
+   │  │     │  └─ Radio button'ları ve checkbox'ları yükle
+   │  │     │
+   │  │     ├─ Form1.langManager.SetLanguage(CurrentLanguage)  # "tr" ayarla
+   │  │     │
+   │  │     └─ ApplyLanguage()
+   │  │        └─ FOR EACH kontrol (GrpLaunchMode, BtnOK, vb.):
+   │  │           └─ Control.Text = Form1.langManager.GetText("LaunchMode", "Launch Mode")
+   │  │
+   │  ├─ IF ShowDialog = OK THEN:
+   │  │  ├─ newLanguage = settingsForm.CurrentLanguage
+   │  │  ├─ IF newLanguage ≠ currentLanguage THEN:
+   │  │  │  ├─ currentLanguage = newLanguage
+   │  │  │  ├─ langManager.SetLanguage(newLanguage)
+   │  │  │  ├─ ApplyLanguage()
+   │  │  │  └─ SaveSettingsToIni()
+   │  │  └─ Me.Close()
+   │
+   └─ Me.TopMost = wasTopMost
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SETTINGS FORMUNDA DİL DEĞİŞTİRME / LANGUAGE CHANGE IN SETTINGS              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+SIRA / ORDER 4: CmbLanguage_SelectedIndexChanged() [SettingsForm'da]
+   └─ selectedLang = CmbLanguage.SelectedItem.ToString().ToLower()
+   └─ Form1.langManager.SetLanguage(selectedLang)
+   └─ ApplyLanguage()
+	  └─ Tüm SettingsForm kontrolleri yeni dilde güncellenir
+
+================================================================================
+5. TEMEL FONKSIYONLAR / KEY FUNCTIONS
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LanguageManager.vb                                                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Sub New(langDirPath As String, defaultLanguage As String)
+  • LanguageManager örneği oluşturur
+  • LoadLanguages() otomatik çalışır
+  • Parametre: dil klasörü yolu ve varsayılan dil
+
+Sub LoadLanguages()
+  • assets/lang/*.lng dosyaların tümünü tarar
+  • Her dosyayı Key=Value çiftleri olarak parse eder
+  • dictionary yapısı hazırlanır
+
+Sub SetLanguage(langCode As String)
+  • currentLanguage = langCode olarak ayarlar
+  • Sonraki GetText() çağrıları bu dili kullanır
+
+Function GetText(key As String, defaultValue As String) As String
+  • Geçerli dile göre anahtarın çevirisini döndürür
+  • Bulunamazsa default değeri döndürür
+  • HATA DURUMUNDA: error.log'a kayıt atılır
+
+Function GetAvailableLanguages() As List(Of String)
+  • Mevcut dillerin listesini döndürür
+
+Function IsRTLLanguage(langCode As String) As Boolean
+  • Dil sağdan sola yazılı mı (Arapça gibi) kontrol eder
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Form1.vb                                                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Sub LoadComboLang()
+  • ComboLang (dil seçim kutusu) doldurur
+
+Sub ApplyCurrentLang()
+  • Seçili dili langManager'a ayarlar
+  • ApplyLanguage() çağırır
+  • settings.ini'ye kaydeder
+
+Sub ApplyLanguage()
+  • Tüm UI kontrollerin textlerini dil dosyasından yükler
+  • lagManager.GetText() kullanarak çevirileri alır
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SettingsForm.vb                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Sub PopulateLanguages()
+  • ComboLang'ı mevcut dillerle doldurur
+
+Sub CmbLanguage_SelectedIndexChanged()
+  • Dil değiştiğinde ApplyLanguage() çağırır
+
+Sub ApplyLanguage()
+  • Form kontrollerin textlerini dil dosyasından yükler
+
+================================================================================
+6. HATA AYIKLAMA / LOGGING
+================================================================================
+
+Log Dosyası: log/error.log
+Yapısı / Format:
+  [YYYY-MM-DD HH:MM:SS] [PROGRAM/FUNCTION] Line: XXX | HATA AÇIKLAMASI
+
+Örnek Log Girişleri / Example Log Entries:
+  [2025-01-15 14:23:45] [LanguageManager.GetText] Line: 451 | Translation key not found: it:MenuDosya
+  [2025-01-15 14:24:12] [Form1.ApplyLanguage] Line: 1075 | Error loading language for controls
+  [2025-01-15 14:25:33] [SettingsForm.ApplyLanguage] Line: 145 | Could not apply language: fr
+
+LOG TÜRLERI / LOG TYPES:
+  • Translation key not found (bulunamayan çeviri anahtarları)
+  • Language initialization errors (dil başlatma hataları)
+  • Settings save errors (ayar kaydetme hataları)
+
+================================================================================
+7. DİL DOSYASI FORMATI / LANGUAGE FILE FORMAT
+================================================================================
+
+Örnek: tr.lng (Türkçe)
+
+; WinLauncher Turkish Language File
+; Format: Key=Value
+
+; Menu - Dosya
+MenuDosya=Dosya
+MenuDosyaCikis=Çıkış
+
+; Settings Form
+Settings=Ayarlar
+LaunchMode=Başlatma Modu
+ViewMode=Görünüm Modu
+Language=Dil
+LastActiveTab=Son Aktif Sekme
+
+[Tüm anahtarlar küçük harfle başlamalıdır]
+
+================================================================================
+8. DİL EKLEME / ADDING NEW LANGUAGE
+================================================================================
+
+Yeni dil eklemek için:
+
+1. assets/lang/ klasörüne yeni .lng dosyası oluştur (örn: de.lng)
+2. Tüm key=value çiftlerini İngilizce örneğinden kopyala
+3. Value'leri yeni dile çevir
+4. Dosya UTF-8 olarak kaydet
+5. Uygulamayı yeniden başlat
+
+LanguageManager otomatik olarak yeni dili bulacak ve
+ComboLang'ın listesine ekleyecektir.
+
+================================================================================
+9. TAMAMLANMIŞ İŞLER / COMPLETED TASKS
+================================================================================
+
+✓ 10 dil dosyasına Settings Form anahtarları eklendi
+✓ CmbLanguage_SelectedIndexChanged event'i SettingsForm'a eklendi
+✓ SettingsForm.ApplyLanguage() kullanılmaya başlandı
+✓ Form1.langManager.SetLanguage() SettingsForm_Load'da çağrılıyor
+✓ Tüm *.lng dosyaları son Settings anahtarları ile güncellendi
+
+================================================================================
+10. KAYNAKLAR / REFERENCES
+================================================================================
+
+Dosyalar:
+  - LanguageManager.vb
+  - Form1.vb (ComboLang, ApplyCurrentLang, ApplyLanguage)
+  - SettingsForm.vb (PopulateLanguages, ApplyLanguage, CmbLanguage_SelectedIndexChanged)
+  - assets/lang/*.lng (10 dil dosyası)
+  - log/error.log (hata günlüğü)
+
+================================================================================
+[END OF DOCUMENT]
+================================================================================
