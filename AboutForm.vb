@@ -68,7 +68,7 @@ Public Class AboutForm
 
     Private Sub lblWebSite_Click(sender As Object, e As EventArgs) Handles lblWebSite.Click
         Try
-            Process.Start("https://github.com/hikmetalemdaroglu/999Projects/tree/winluncher-v1.2-release")
+            Process.Start("https://github.com/hikmetalemdaroglu/RiaLauncher")
         Catch ex As Exception
             Dim msg As String = String.Format(Form1.langManager.GetText("MsgWebSiteError", "Website could not be opened: {0}"), ex.Message)
             MessageBox.Show(msg, Form1.langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -77,7 +77,7 @@ Public Class AboutForm
 
     Private Sub lblEmail_Click(sender As Object, e As EventArgs) Handles lblEmail.Click
         Try
-            Process.Start("mailto:paylas24@gmail.com")
+            Process.Start("mailto:riasoft.official@gmail.com")
         Catch ex As Exception
             Dim msg As String = String.Format(Form1.langManager.GetText("MsgEmailError", "Email application could not be opened: {0}"), ex.Message)
             MessageBox.Show(msg, Form1.langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)

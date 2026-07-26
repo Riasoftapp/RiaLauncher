@@ -54,7 +54,7 @@ Partial Class AboutForm
         Me.lblAppName.Name = "lblAppName"
         Me.lblAppName.Size = New System.Drawing.Size(340, 25)
         Me.lblAppName.TabIndex = 0
-        Me.lblAppName.Text = "WinLauncher - Windows Launcher"
+        Me.lblAppName.Text = "RiaLauncher - Windows Launcher"
         Me.lblAppName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblVersion
@@ -64,7 +64,7 @@ Partial Class AboutForm
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(340, 18)
         Me.lblVersion.TabIndex = 1
-        Me.lblVersion.Text = "Version 2.0"
+        Me.lblVersion.Text = "Version 1.0"
         Me.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblLicenseStatus
@@ -75,7 +75,6 @@ Partial Class AboutForm
         Me.lblLicenseStatus.Name = "lblLicenseStatus"
         Me.lblLicenseStatus.Size = New System.Drawing.Size(340, 18)
         Me.lblLicenseStatus.TabIndex = 2
-        Me.lblLicenseStatus.Text = "Not yet licensed for commercial use"
         Me.lblLicenseStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblFreeUse
@@ -116,9 +115,9 @@ Partial Class AboutForm
         Me.lblWebSite.ForeColor = System.Drawing.Color.Blue
         Me.lblWebSite.Location = New System.Drawing.Point(142, 188)
         Me.lblWebSite.Name = "lblWebSite"
-        Me.lblWebSite.Size = New System.Drawing.Size(129, 13)
+        Me.lblWebSite.Size = New System.Drawing.Size(174, 13)
         Me.lblWebSite.TabIndex = 3
-        Me.lblWebSite.Text = "999Projects/winLuncher"
+        Me.lblWebSite.Text = "hikmetalemdaroglu/RiaLauncher"
         '
         'lblEmailLabel
         '
@@ -126,7 +125,7 @@ Partial Class AboutForm
         Me.lblEmailLabel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(162, Byte))
         Me.lblEmailLabel.Location = New System.Drawing.Point(50, 208)
         Me.lblEmailLabel.Name = "lblEmailLabel"
-        Me.lblEmailLabel.Size = New System.Drawing.Size(87, 13)
+        Me.lblEmailLabel.Size = New System.Drawing.Size(82, 13)
         Me.lblEmailLabel.TabIndex = 4
         Me.lblEmailLabel.Text = "Support Email:"
         '
@@ -138,9 +137,9 @@ Partial Class AboutForm
         Me.lblEmail.ForeColor = System.Drawing.Color.Blue
         Me.lblEmail.Location = New System.Drawing.Point(142, 208)
         Me.lblEmail.Name = "lblEmail"
-        Me.lblEmail.Size = New System.Drawing.Size(114, 13)
+        Me.lblEmail.Size = New System.Drawing.Size(141, 13)
         Me.lblEmail.TabIndex = 5
-        Me.lblEmail.Text = "paylas24@gmail.com"
+        Me.lblEmail.Text = "riasoft.official@gmail.com"
         '
         'btnAnaSayfa
         '
@@ -148,9 +147,9 @@ Partial Class AboutForm
         Me.btnAnaSayfa.ForeColor = System.Drawing.Color.FromArgb(CType(CType(12, Byte), Integer), CType(CType(103, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.btnAnaSayfa.Image = CType(resources.GetObject("btnAnaSayfa.Image"), System.Drawing.Image)
         Me.btnAnaSayfa.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAnaSayfa.Location = New System.Drawing.Point(20, 240)
+        Me.btnAnaSayfa.Location = New System.Drawing.Point(12, 240)
         Me.btnAnaSayfa.Name = "btnAnaSayfa"
-        Me.btnAnaSayfa.Size = New System.Drawing.Size(95, 30)
+        Me.btnAnaSayfa.Size = New System.Drawing.Size(103, 34)
         Me.btnAnaSayfa.TabIndex = 6
         Me.btnAnaSayfa.Text = "Home Page"
         Me.btnAnaSayfa.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -164,7 +163,7 @@ Partial Class AboutForm
         Me.btnLisans.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnLisans.Location = New System.Drawing.Point(117, 240)
         Me.btnLisans.Name = "btnLisans"
-        Me.btnLisans.Size = New System.Drawing.Size(116, 30)
+        Me.btnLisans.Size = New System.Drawing.Size(116, 34)
         Me.btnLisans.TabIndex = 7
         Me.btnLisans.Text = "License Terms"
         Me.btnLisans.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -178,7 +177,7 @@ Partial Class AboutForm
         Me.btnKapat.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnKapat.Location = New System.Drawing.Point(306, 240)
         Me.btnKapat.Name = "btnKapat"
-        Me.btnKapat.Size = New System.Drawing.Size(69, 30)
+        Me.btnKapat.Size = New System.Drawing.Size(69, 34)
         Me.btnKapat.TabIndex = 8
         Me.btnKapat.Text = "Close"
         Me.btnKapat.TextAlign = System.Drawing.ContentAlignment.MiddleRight

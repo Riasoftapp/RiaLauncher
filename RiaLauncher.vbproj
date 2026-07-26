@@ -121,12 +121,6 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MyMessageForm.Designer.vb">
-      <DependentUpon>MyMessageForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="MyMessageForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="LanguageManager.vb" />
     <Compile Include="ManualSortForm.Designer.vb">
       <DependentUpon>ManualSortForm.vb</DependentUpon>
@@ -178,12 +172,11 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MyMessageForm.resx">
-      <DependentUpon>MyMessageForm.vb</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\documentation\capture_screenshots.ps1" />
     <None Include="assets\documentation\KullanımKlavuzu.md" />
+    <None Include="assets\documentation\RiaLauncherHep\README.md" />
     <None Include="assets\documentation\UserManual.md" />
     <None Include="assets\lang\ar.lng" />
     <None Include="assets\lang\en.lng" />
@@ -221,6 +214,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\documentation\RiaLauncherHep\en\index.html" />
+    <Content Include="assets\documentation\RiaLauncherHep\en\manual.html" />
+    <Content Include="assets\documentation\RiaLauncherHep\index.html" />
+    <Content Include="assets\documentation\RiaLauncherHep\md-renderer.js" />
+    <Content Include="assets\documentation\RiaLauncherHep\style.css" />
+    <Content Include="assets\documentation\RiaLauncherHep\tr\index.html" />
+    <Content Include="assets\documentation\RiaLauncherHep\tr\manual.html" />
     <Content Include="_ProjeNotlari\DilYapisi_LanguageArchitecture.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

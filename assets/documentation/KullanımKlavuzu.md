@@ -1,4 +1,4 @@
-# WinLauncher v2.0 - Kullanım Kılavuzu
+# RiaLauncher v1.0 - Kullanım Kılavuzu
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## Giriş
 
-**WinLauncher**, Windows için geliştirilmiş modern ve kullanıcı dostu bir **uygulama başlatıcı**dır.
+**RiaLauncher**, Windows için geliştirilmiş modern ve kullanıcı dostu bir **uygulama başlatıcı**dır.
 Masaüstünüzü düzenli tutmanıza ve sık kullandığınız programlara, dosyalara ve klasörlere hızlıca erişmenize yardımcı olur.
 
 ### Özellikler
@@ -56,19 +56,19 @@ Masaüstünüzü düzenli tutmanıza ve sık kullandığınız programlara, dosy
 
 ### Kurulum Adımları (Portable)
 
-1. WinLauncher_v2.0_Portable.zip dosyasını indirin
+1. RiaLauncher_v2.0_Portable.zip dosyasını indirin
 2. ZIP dosyasını istediğiniz bir klasöre çıkarın
-3. winLuncher.exe dosyasını çalıştırın
+3. RiaLauncher.exe dosyasını çalıştırın
 
 > Kurulum gerekmez. Program ilk çalışmada tüm gerekli dosyaları otomatik oluşturur.
 
 ### İlk Çalıştırmada Oluşturulan Dosyalar
 
 ```
-winLuncher/
-  winLuncher.exe
+RiaLauncher/
+  RiaLauncher.exe
   Data/
-    WinLauncher.xml       <- Öğe ve sekme verileri
+    RiaLauncher.xml       <- Öğe ve sekme verileri
   settings.ini            <- Uygulama ayarları
   assets/
     lang.ini              <- Dil dosyası
@@ -80,20 +80,20 @@ winLuncher/
 
 ## Ana Ekran
 
-Ana ekran, WinLauncher'ın merkezi yönetim alanıdır.
+Ana ekran, RiaLauncher'ın merkezi yönetim alanıdır.
 
-![Ana Ekran](screenshots/ana_ekran.png)
+![Ana Ekran](./screenshots/ana_ekran.png)
 
 ### Başlık Çubuğu
 
-![Başlık Çubuğu](screenshots/baslik_cubugu.png)
+![Başlık Çubuğu](./screenshots/baslik_cubugu.png)
 
 Başlık çubuğu en üstte yer alır:
 
 | Öğe | Açıklama |
 |---|---|
-| WinLauncher Logosu | Sol üstteki uygulama ikonu |
-| Uygulama Başlığı | "WinLauncher - Custom Windows Launcher" |
+| RiaLauncher Logosu | Sol üstteki uygulama ikonu |
+| Uygulama Başlığı | "RiaLauncher - Custom Windows Launcher" |
 | Dil Menüsü (TR / EN) | Anlık dil değiştirme |
 | Minimize (-) | Pencereyi küçültür |
 | Maximize (kare) | Pencereyi büyütür |
@@ -103,7 +103,7 @@ Başlık çubuğu en üstte yer alır:
 
 ### Menü Çubuğu
 
-![Menü Çubuğu](screenshots/menu_cubugu.png)
+![Menü Çubuğu](./screenshots/menu_cubugu.png)
 
 ```
 Dosya | Sekmeler | Sıralama | Araçlar | Ayarlar | Yardım
@@ -111,7 +111,7 @@ Dosya | Sekmeler | Sıralama | Araçlar | Ayarlar | Yardım
 
 ### Araç Paneli
 
-![Araç Paneli](screenshots/arac_paneli.png)
+![Araç Paneli](./screenshots/arac_paneli.png)
 
 | Öğe | Açıklama |
 |---|---|
@@ -122,13 +122,13 @@ Dosya | Sekmeler | Sıralama | Araçlar | Ayarlar | Yardım
 
 ### Sekme Alanı
 
-![Sekme Alanı](screenshots/sekme_alani.png)
+![Sekme Alanı](./screenshots/sekme_alani.png)
 
 Her sekme bir kategoriyi temsil eder (örneğin: Geliştirme, Oyunlar, İş).
 
 ### Öğe Alanı (İkon Paneli)
 
-![Öğe Alanı](screenshots/oge_alani.png)
+![Öğe Alanı](./screenshots/oge_alani.png)
 
 Her öğe şunlardan oluşur:
 - İkon (üstte, 48x48 px)
@@ -152,14 +152,14 @@ Yöntem 2 - Araç Panelinden:
 Yöntem 3 - Sağ Tik:
 1. Sekme çubuğuna sağ tıklayın -> Yeni Sekme
 
-![Yeni Sekme Dialog](screenshots/yeni_sekme_dialog.png)
+![Yeni Sekme Dialog](./screenshots/yeni_sekme_dialog.png)
 
 ### Sekme Adını Değiştirme
 
 1. Sekmeye sağ tıklayın -> Sekme Adını Değiştir
 2. Yeni adı yazın -> Tamam
 
-![Sekme Sağ Tik](screenshots/sekme_sag_tik.png)
+![Sekme Sağ Tik](./screenshots/sekme_sag_tik.png)
 
 ### Sekme Silme
 
@@ -190,13 +190,13 @@ Sekme içeriğini XML dosyasından yeniden yükler:
 
 ### Öğe Ekleme (Sürükle-Bırak)
 
-![Sürükle Bırak](screenshots/surukle_birak.png)
+![Sürükle Bırak](./screenshots/surukle_birak.png)
 
 1. Dosya Gezgini veya Masaüstünden bir dosya / klasör / kısayol seçin
-2. WinLauncher'daki ilgili sekmeye sürükleyip bırakın
+2. RiaLauncher'daki ilgili sekmeye sürükleyip bırakın
 3. Öğe otomatik eklenir, ikon otomatik algılanır
 
-> İpucu: .lnk (kısayol) dosyaları sürüklendiğinde WinLauncher hedef uygulamayı otomatik algılar.
+> İpucu: .lnk (kısayol) dosyaları sürüklendiğinde RiaLauncher hedef uygulamayı otomatik algılar.
 
 ### Öğe Başlatma
 
@@ -207,7 +207,7 @@ Sekme içeriğini XML dosyasından yeniden yükler:
 
 ### Öğe Sağ Tik Menüsü
 
-![Öğe Sağ Tik Menu](screenshots/oge_sag_tik_menu.png)
+![Öğe Sağ Tik Menu](./screenshots/oge_sag_tik_menu.png)
 
 Herhangi bir öğeye sağ tıkladığınızdaki menü:
 
@@ -234,14 +234,14 @@ Seçili uygulamayı / dosyayı / klasörü başlatır veya açar.
 
 #### Yeniden Adlandır
 
-![Yeniden Adlandır](screenshots/yeniden_adlandir.png)
+![Yeniden Adlandır](./screenshots/yeniden_adlandir.png)
 
 1. Yeniden Adlandır'a tıklayın
 2. Yeni adı girin -> Tamam
 
 #### İkonunu Değiştir
 
-![İkon Değiştir](screenshots/ikon_degistir.png)
+![İkon Değiştir](./screenshots/ikon_degistir.png)
 
 1. İkonunu Değiştir'e tıklayın
 2. Desteklenen formatlarda dosya seçin: .ico, .png, .jpg, .bmp
@@ -259,12 +259,12 @@ Uygulama taşındıysa dosya yolunu güncelleyin:
 Öğünün bulunduğu klasörü Windows Gezgini'nde açar ve dosyayı seçili gösterir.
 
 #### Sil
-Öğeyi WinLauncher listesinden kaldırır (diskten silinmez):
+Öğeyi RiaLauncher listesinden kaldırır (diskten silinmez):
 1. Sil'e tıklayın -> Onay penceresinde Evet
 
 #### Özellikleri
 
-![Özellikleri](screenshots/ozellikler.png)
+![Özellikleri](./screenshots/ozellikler.png)
 
 ```
 İsim     : Visual Studio Code
@@ -275,7 +275,7 @@ Mevcut   : Evet (Dosya)
 
 ### Arama
 
-![Arama](screenshots/arama.png)
+![Arama](./screenshots/arama.png)
 
 1. Araç panelindeki Ara kutusuna yazmayı başlayın
 2. Ara butonuna tıklayın veya Enter'a basın
@@ -290,11 +290,11 @@ Sekmedeki öğelerin sırasını elle belirleyin.
 
 Açmak için: Menü -> Sıralama -> Manuel Sıralama...
 
-![Manuel Sıralama 1](screenshots/manuel_siralama1.png)
+![Manuel Sıralama 1](./screenshots/manuel_siralama1.png)
 
 ### Ekran Bileşenleri
 
-![Manuel Sıralama 2](screenshots/manuel_siralama2.png)
+![Manuel Sıralama 2](./screenshots/manuel_siralama2.png)
 
 | Bileşen | Açıklama |
 |---|---|
@@ -321,7 +321,7 @@ Açmak için: Menü -> Sıralama -> Manuel Sıralama...
 3. Yukarı veya Aşağı ile istediğiniz konuma taşıyın
 4. Kaydet ve Çık'a tıklayın
 
-![Manuel Sıralama Seçili](screenshots/manuel_siralama_secili.png)
+![Manuel Sıralama Seçili](./screenshots/manuel_siralama_secili.png)
 
 > NOT: İptal'e basarsanız yaptığınız değişiklikler kaydedilmez.
 
@@ -333,7 +333,7 @@ Açmak için: Menü -> Sıralama -> Manuel Sıralama...
 
 Açmak için: Öğeye sağ tıklayın -> Kopyala/Taşı...
 
-![Kopyala Taşı](screenshots/kopyala_tasi.png)
+![Kopyala Taşı](./screenshots/kopyala_tasi.png)
 
 ### Ekran Bileşenleri
 
@@ -366,11 +366,11 @@ Açmak için: Öğeye sağ tıklayın -> Kopyala/Taşı...
 
 Açmak için: Menü -> Ayarlar
 
-![Ayarlar](screenshots/ayarlar.png)
+![Ayarlar](./screenshots/ayarlar.png)
 
 ### Başlatma Modu
 
-![Ayarlar Başlama Modu](screenshots/ayarlar_baslama_modu.png)
+![Ayarlar Başlama Modu](./screenshots/ayarlar_baslama_modu.png)
 
 ```
 Başlatma Modu:
@@ -402,13 +402,13 @@ Görünüm Modu:
 [x] Her Zaman Üstte
 ```
 
-İşaretlendiğinde WinLauncher diğer tüm pencerelerin üzerinde görünür.
+İşaretlendiğinde RiaLauncher diğer tüm pencerelerin üzerinde görünür.
 
 ### Kaydetme
 
 Kaydet'e tıklayın. Ayarlar settings.ini dosyasına kaydedilir.
 
-![Ayarlar Kaydedildi](screenshots/ayarlar_kaydedildi.png)
+![Ayarlar Kaydedildi](./screenshots/ayarlar_kaydedildi.png)
 
 ---
 
@@ -416,7 +416,7 @@ Kaydet'e tıklayın. Ayarlar settings.ini dosyasına kaydedilir.
 
 Açmak için: Menü -> Araçlar
 
-![Araçlar Menu](screenshots/araclar_menu.png)
+![Araçlar Menu](./screenshots/araclar_menu.png)
 
 ### Sistem Araçları
 
@@ -444,7 +444,7 @@ Açmak için: Menü -> Araçlar
 | Bilgisayar Adını Göster | PC adını gösterir, panoya kopyalar |
 | IP Adreslerini Göster | Yerel ve uzak IP adreslerini gösterir, panoya kopyalar |
 
-![IP Adresi](screenshots/ip_adresi.png)
+![IP Adresi](./screenshots/ip_adresi.png)
 
 ---
 
@@ -452,7 +452,7 @@ Açmak için: Menü -> Araçlar
 
 Açmak için: Menü -> Yardım
 
-![Yardım Menu](screenshots/yardim_menu.png)
+![Yardım Menu](./screenshots/yardim_menu.png)
 
 | Alt Menü | Açıklama |
 |---|---|
@@ -469,11 +469,11 @@ Açmak için: Menü -> Yardım
 
 Açmak için: Menü -> Yardım -> Hakkında...
 
-![Hakkında](screenshots/hakkinda.png)
+![Hakkında](./screenshots/hakkinda.png)
 
 | Alan | İçerik |
 |---|---|
-| Uygulama Adı | WinLauncher - Windows Launcher |
+| Uygulama Adı | RiaLauncher - Windows Launcher |
 | Sürüm | Version 2.0 |
 | Lisans Durumu | Ticari Kullanım İçin Henüz Lisanslanmamıştır |
 | Kullanım | Kişisel Kullanım İçin Ücretsizdir |
@@ -497,7 +497,7 @@ Açmak için:
 - Menü -> Yardım -> Lisans Koşulları
 - Hakkında ekranı -> Lisans Koşulları butonu
 
-![Lisans](screenshots/lisans.png)
+![Lisans](./screenshots/lisans.png)
 
 - Aktif dile göre otomatik yüklenir (TR -> license_tr.txt, EN -> license_en.txt)
 - Salt okunur - düzenlenemez
@@ -510,7 +510,7 @@ Açmak için:
 
 ### Dil Değiştirme
 
-![Dil Seçici](screenshots/dil_secici.png)
+![Dil Seçici](./screenshots/dil_secici.png)
 
 1. Başlık çubuğundaki dil açılır menüsünden (TR / EN) dili seçin
 2. Tüm menüler, butonlar ve mesajlar anında değişir
@@ -548,8 +548,8 @@ Multimedya   - VLC, Spotify, fotoğraf görüntüleyici
 ### Önemli Dosyaları Yedekleyin
 
 ```
-winLuncher/
-  Data/WinLauncher.xml    <- TÜM VERİLERİNİZ
+RiaLauncher/
+  Data/RiaLauncher.xml    <- TÜM VERİLERİNİZ
   settings.ini            <- TÜM AYARLARINIZ
   assets/icon/            <- ÖZEL İKONLARINIZ
 ```
@@ -558,8 +558,8 @@ winLuncher/
 
 ### Taşınabilir Kullanım (USB)
 
-1. Tüm winLuncher/ klasörünü USB belleğe kopyalayın
-2. winLuncher.exe'yi doğrudan USB'den çalıştırın
+1. Tüm RiaLauncher/ klasörünü USB belleğe kopyalayın
+2. RiaLauncher.exe'yi doğrudan USB'den çalıştırın
 3. Tüm ayarlar ve veriler USB'de saklanır
 4. Farklı bilgisayarlarda aynı deneyim
 
@@ -574,13 +574,13 @@ winLuncher/
 assets/icon/ klasörünün var olduğunu kontrol edin. Öğeye sağ tıklayıp İkonunu Değiştir ile manuel ikon atayabilirsiniz.
 
 **S: XML yükleme hatası alıyorum?**
-Data/WinLauncher.xml dosyasını silin; program bir sonraki açılışta yeni bir tane oluşturur. NOT: Mevcut verileriniz kaybolur, önce yedekleyin.
+Data/RiaLauncher.xml dosyasını silin; program bir sonraki açılışta yeni bir tane oluşturur. NOT: Mevcut verileriniz kaybolur, önce yedekleyin.
 
 **S: Dil değiştirdim ama bazı öğeler eski dilde?**
 Programı kapatıp yeniden açın.
 
 **S: Yanlışlıkla öğe sildim, geri alabilirim mi?**
-Hayır. Bu yüzden WinLauncher.xml dosyasını düzenli yedekleyin.
+Hayır. Bu yüzden RiaLauncher.xml dosyasını düzenli yedekleyin.
 
 **S: Aynı uygulamayı birden fazla sekmeye ekleyebilir miyim?**
 Evet. Öğeye sağ tıklayın -> Kopyala/Taşı -> Kopyala.
