@@ -114,6 +114,20 @@
         <OrderIndex>14</OrderIndex>
         <IconSource>Auto</IconSource>
       </Item>
+      <Item>
+        <Name>RiaLauncher.xml</Name>
+        <Path>C:\Users\user\Desktop\RiaLauncher.xml.bak</Path>
+        <IconPath></IconPath>
+        <OrderIndex>15</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
+      <Item>
+        <Name>Python_GUI_Framework'leri_Karşılaştırması_-_Google_Gemini</Name>
+        <Path>C:\Users\user\Desktop\Python_GUI_Framework'leri_Karşılaştırması_-_Google_Gemini.pdf</Path>
+        <IconPath></IconPath>
+        <OrderIndex>16</OrderIndex>
+        <IconSource>Auto</IconSource>
+      </Item>
     </Category>
     <Category Name="Dizinler">
       <Item>

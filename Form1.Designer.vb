@@ -112,6 +112,7 @@ Partial Class Form1
         Me.TabControl1.Size = New System.Drawing.Size(823, 366)
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
         Me.TabControl1.TabIndex = 1
+        Me.TabControl1.AllowDrop = False
         '
         'TabPage1
         '

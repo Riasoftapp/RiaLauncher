@@ -24,6 +24,8 @@ Public Class Form1
     Public Shared sDataDir As String = ""
     Public Shared slangDir As String = ""
     Public Shared sLogDir As String = ""
+    Public Shared sDocDir As String = "" ' documentation dir 
+    Public Shared sHelpDir As String = "" ' helpdir 
 
     ' variable for settings.ini
     Private launchMode As String = ""
@@ -39,9 +41,14 @@ Public Class Form1
         sIconDir = sRootDir & "\assets\icon\"
         sDataDir = sRootDir & "\data\"
         slangDir = sRootDir & "\assets\lang\"
-        slogDir = sRootDir & "\log\"
+        sLogDir = sRootDir & "\log\"
+        sDocDir = sRootDir & "\assets\documentation\"
+        sHelpDir = sRootDir & "\assets\documentation\RiaLauncherHelp"
 
-        If Not isSettingsIniExist() Then CreateDefaultIni() ' 1. Settings.ini dosyasının varlığını kontrol et
+        ' TabControl drag bloğu - AllowDrop = False yap
+        TabControl1.AllowDrop = False
+
+        If Not isSettingsIniExist() Then CreateDefaultIni()
 
         LoadIni() ' 2. Settings.ini dosyasını oku ve değerleri yükle
 
@@ -57,6 +64,9 @@ Public Class Form1
 
         ' Son açılan tab'ı geri yükle
         RestoreLastActiveTab()
+
+        ' Runtime'da oluşturulan tab'lar için AllowDrop'u etkinleştir
+        FlowLayoutPanel1.AllowDrop = True
 
         ' Bilgilendirme mesajı
         ' MsgBox("Startup işlemleri tamamlandı:" & vbCrLf &
@@ -459,23 +469,19 @@ Public Class Form1
         defaultTab.Controls.Add(flowPanel)
         TabControl1.TabPages.Add(defaultTab)
     End Sub
-    Private Sub FlowPanel_DragEnter(sender As Object, e As DragEventArgs)
-        ' Debug: hangi format'lar mevcut
-        Dim formats As String() = e.Data.GetFormats()
-        Debug.WriteLine("DragEnter - Mevcut Format'lar: " & String.Join(", ", formats))
 
+    Private Sub FlowPanel_DragEnter(sender As Object, e As DragEventArgs)
         ' FileDrop (dosya), Text (metin), Shell IDList Array (Denetim Masası, vb.) ve diğer format'ları accept et
         If e.Data.GetDataPresent(DataFormats.FileDrop) OrElse
-           e.Data.GetDataPresent(DataFormats.Text) OrElse
-           e.Data.GetDataPresent("Shell IDList Array") OrElse
-           e.Data.GetDataPresent("FileGroupDescriptorW") Then
+            e.Data.GetDataPresent(DataFormats.Text) OrElse
+            e.Data.GetDataPresent("Shell IDList Array") OrElse
+            e.Data.GetDataPresent("FileGroupDescriptorW") Then
             e.Effect = DragDropEffects.Copy
-            Debug.WriteLine("DragEnter - Kabul: Copy effect")
         Else
             e.Effect = DragDropEffects.None
-            Debug.WriteLine("DragEnter - Red: None effect")
         End If
     End Sub
+
     Private Sub FlowPanel_DragDrop(sender As Object, e As DragEventArgs)
         Dim flowPanel As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
 
@@ -1453,7 +1459,22 @@ Public Class Form1
     ' ============================================
 
     Private Sub MenuYardimDokumanlar_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanlar.Click
-        MessageBox.Show(langManager.GetText("MsgHelpComingSoon", "Help documentation will be added soon."), langManager.GetText("MsgHelpTitle", "Help"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Try
+            ' ComboLang'dan seçili dili al
+            Dim selectedLang As String = ComboLang.SelectedValue?.ToString()
+
+            ' Eğer seçili dil Türkçe ise Türkçe help dosyasını aç
+            Dim helpFileName As String = If(selectedLang = "tr", "RiaLauncherHelp-tr.html", "RiaLauncherHelp-tr.html")
+            Dim helpPath As String = IO.Path.Combine(sHelpDir, helpFileName)
+
+            If IO.File.Exists(helpPath) Then
+                System.Diagnostics.Process.Start(helpPath)
+            Else
+                MessageBox.Show("Help dosyası bulunamadı: " & helpPath, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Help dosyası açılırken hata oluştu: " & ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub MenuYardimDokumanIndir_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanIndir.Click
