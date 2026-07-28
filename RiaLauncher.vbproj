@@ -74,6 +74,9 @@
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
@@ -174,11 +177,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\documentation\capture_screenshots.ps1" />
-    <None Include="assets\documentation\KullanımKlavuzu.md" />
-    <None Include="assets\documentation\RiaLauncherHep\README.md" />
-    <None Include="assets\documentation\UserManual.md" />
     <None Include="assets\lang\ar.lng" />
+    <None Include="assets\lang\de.lng" />
     <None Include="assets\lang\en.lng" />
     <None Include="assets\lang\es.lng" />
     <None Include="assets\lang\fr.lng" />
@@ -189,6 +189,7 @@
     <None Include="assets\lang\tr.lng" />
     <None Include="assets\lang\zh.lng" />
     <None Include="log\error.log" />
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -214,14 +215,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\documentation\RiaLauncherHep\en\index.html" />
-    <Content Include="assets\documentation\RiaLauncherHep\en\manual.html" />
-    <Content Include="assets\documentation\RiaLauncherHep\index.html" />
-    <Content Include="assets\documentation\RiaLauncherHep\md-renderer.js" />
-    <Content Include="assets\documentation\RiaLauncherHep\style.css" />
-    <Content Include="assets\documentation\RiaLauncherHep\tr\index.html" />
-    <Content Include="assets\documentation\RiaLauncherHep\tr\manual.html" />
     <Content Include="_ProjeNotlari\DilYapisi_LanguageArchitecture.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\documentation\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /E /I /Y "$(ProjectDir)assets" "$(TargetDir)assets"
+if not exist "$(TargetDir)data" mkdir "$(TargetDir)data"
+if not exist "$(TargetDir)log" mkdir "$(TargetDir)log"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
