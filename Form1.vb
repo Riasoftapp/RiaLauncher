@@ -57,7 +57,7 @@ Public Class Form1
         ApplyCurrentLang()          ' Seçili dili uygula
 
 
-        If Not isWinLauncherXmlExist() Then CreateXml() ' 3. WinLauncher.xml dosyasının varlığını kontrol et yoksa olustur
+        If Not isRiaLauncherXmlExist() Then CreateXml() ' 3. RiaLauncher.xml dosyasının varlığını kontrol et yoksa olustur
 
 
         LoadDataFromXml()
@@ -108,8 +108,8 @@ Public Class Form1
         Dim iniPath As String = Path.Combine(sAssetDir, "settings.ini")
         Return File.Exists(iniPath)
     End Function
-    Public Function isWinLauncherXmlExist() As Boolean
-        Dim xmlPath As String = Path.Combine(sDataDir, "WinLauncher.xml")
+    Public Function isRiaLauncherXmlExist() As Boolean
+        Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
         Return File.Exists(xmlPath)
     End Function
     Public Function CreateDefaultIni() As Boolean
@@ -142,7 +142,7 @@ Public Class Form1
     End Function
     Public Function CreateXml() As Boolean
         Try
-            Dim xmlPath As String = Path.Combine(sDataDir, "WinLauncher.xml")
+            Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
 
             If Not System.IO.Directory.Exists(sDataDir) Then
                 System.IO.Directory.CreateDirectory(sDataDir)
@@ -150,7 +150,7 @@ Public Class Form1
 
             Dim xmlContent As String =
                 "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf &
-                "<WinLauncher>" & vbCrLf &
+                "<RiaLauncher>" & vbCrLf &
                 "  <Settings>" & vbCrLf &
                 "    <IconSize>48</IconSize>" & vbCrLf &
                 "    <DefaultSort>XML</DefaultSort>" & vbCrLf &
@@ -160,13 +160,13 @@ Public Class Form1
                 "  </Settings>" & vbCrLf &
                 "  <Categories>" & vbCrLf &
                 "  </Categories>" & vbCrLf &
-                "</WinLauncher>"
+                "</RiaLauncher>"
 
             File.WriteAllText(xmlPath, xmlContent, System.Text.Encoding.UTF8)
             Return True
 
         Catch ex As Exception
-            MsgBox("WinLauncher.xml oluşturulamadı: " & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Hata")
+            MsgBox("RiaLauncher.xml oluşturulamadı: " & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Hata")
             Return False
         End Try
     End Function
@@ -380,9 +380,9 @@ Public Class Form1
         End If
     End Sub
     Private Sub CreateDefaultXmlIfNotExists()
-        If Not File.Exists(Path.Combine(sDataDir, "WinLauncher.xml")) Then
+        If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then
             Dim defaultXml As New XDocument(
-                New XElement("WinLauncher",
+                New XElement("RiaLauncher",
                     New XElement("Settings",
                         New XElement("IconSize", "48"),
                         New XElement("DefaultSort", "XML"),
@@ -398,14 +398,14 @@ Public Class Form1
                     )
                 )
             )
-            defaultXml.Save(Path.Combine(sDataDir, "WinLauncher.xml"))
+            defaultXml.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
         End If
     End Sub
     Private Sub LoadDataFromXml()
         Try
-            If Not File.Exists(Path.Combine(sDataDir, "WinLauncher.xml")) Then Return
+            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "WinLauncher.xml"))
+            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
             TabControl1.TabPages.Clear()
 
             For Each categoryElement In doc.Root.Element("Categories").Elements("Category")
@@ -743,10 +743,10 @@ Public Class Form1
 
     Private Sub SaveDataToXml()
         Try
-            File.Copy(Path.Combine(sDataDir, "WinLauncher.xml"), Path.Combine(sDataDir, "WinLauncher.xml") & ".bak", True)
+            File.Copy(Path.Combine(sDataDir, "RiaLauncher.xml"), Path.Combine(sDataDir, "RiaLauncher.xml") & ".bak", True)
 
             Dim doc As New XDocument(
-                New XElement("WinLauncher",
+                New XElement("RiaLauncher",
                     New XElement("Settings",
                         New XElement("IconSize", ICON_SIZE.ToString()),
                         New XElement("DefaultSort", "XML"),
@@ -777,7 +777,7 @@ Public Class Form1
                 )
             )
 
-            doc.Save(Path.Combine(sDataDir, "WinLauncher.xml"))
+            doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgSaveError", "Save error: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1017,9 +1017,9 @@ Public Class Form1
         ' XML'den ayar yükleme artık kullanılmıyor - INI kullanılıyor
         ' Geriye dönük uyumluluk için bırakıldı
         Try
-            If Not File.Exists(Path.Combine(sDataDir, "WinLauncher.xml")) Then Return
+            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "WinLauncher.xml"))
+            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
             Dim settings = doc.Root.Element("Settings")
 
             If settings IsNot Nothing Then
@@ -1773,8 +1773,8 @@ Public Class Form1
             End If
 
             ' XML'i yükle
-            If Not File.Exists(Path.Combine(sDataDir, "WinLauncher.xml")) Then Return False
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "WinLauncher.xml"))
+            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return False
+            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
 
             ' Source ve target category'leri bul
             Dim categories = doc.Root.Element("Categories")
@@ -1831,7 +1831,7 @@ Public Class Form1
             End If
 
             ' XML'i kaydet
-            doc.Save(Path.Combine(sDataDir, "WinLauncher.xml"))
+            doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
 
             ' UI'ı güncelle - sadece hedef tab'ı refresh et
             RefreshTab(targetTab)
@@ -1853,8 +1853,8 @@ Public Class Form1
             End If
 
             ' Sonra source tab'dan sil
-            If Not File.Exists(Path.Combine(sDataDir, "WinLauncher.xml")) Then Return False
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "WinLauncher.xml"))
+            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return False
+            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
 
             Dim categories = doc.Root.Element("Categories")
             If categories Is Nothing Then Return False
@@ -1868,7 +1868,7 @@ Public Class Form1
                 sourceItem.Remove()
 
                 ' XML'i kaydet
-                doc.Save(Path.Combine(sDataDir, "WinLauncher.xml"))
+                doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
 
                 ' Source tab'ı refresh et
                 Dim sourceTab As TabPage = Nothing
@@ -1901,9 +1901,9 @@ Public Class Form1
             flowPanel.Controls.Clear()
 
             ' XML'den bu tab'ın verilerini yükle
-            If Not File.Exists(Path.Combine(sDataDir, "WinLauncher.xml")) Then Return
+            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "WinLauncher.xml"))
+            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
             Dim categories = doc.Root.Element("Categories")
             If categories Is Nothing Then Return
 

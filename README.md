@@ -62,7 +62,7 @@ RiaLauncher/
 │   ├── icon/                    # Application icons
 │   └── logo/                    # Logo images
 ├── data/
-│   └── WinLauncher.xml          # Application data storage
+│   └── RiaLauncher.xml          # Application data storage
 └── README.md                    # This file
 ```
 
@@ -121,7 +121,7 @@ Access system utilities through **Tools** menu:
 
 ### Data Storage
 - **settings.ini**: Application preferences
-- **WinLauncher.xml**: Launcher items and organization
+- **RiaLauncher.xml**: Launcher items and organization
 - **Logs**: Application logs in the `log` directory
 
 ## 🌐 Localization
@@ -175,7 +175,7 @@ RiaLauncher supports multiple languages through the `LanguageManager` class. Lan
 - Verify your antivirus isn't blocking the operation
 
 ### XML Data Corrupted
-- Delete `WinLauncher.xml` from the `data` directory
+- Delete `RiaLauncher.xml` from the `data` directory
 - Restart the launcher to recreate the file
 
 ## 📝 License
