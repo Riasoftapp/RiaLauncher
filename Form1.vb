@@ -62,6 +62,9 @@ Public Class Form1
 
         LoadDataFromXml()
 
+        ' SQLite veritabanını başlat
+        InitDatabase()
+
         ' Son açılan tab'ı geri yükle
         RestoreLastActiveTab()
 
@@ -112,6 +115,19 @@ Public Class Form1
         Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
         Return File.Exists(xmlPath)
     End Function
+
+    Public Sub InitDatabase()
+        Try
+            DatabaseManager.SetDataDir(sDataDir)
+            DatabaseManager.InitializeDatabase()
+            Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
+            If File.Exists(sXmlPath) Then
+                DatabaseManager.ImportFromXml(sXmlPath)
+            End If
+        Catch ex As Exception
+            MsgBox("SQLite veritabanı hatası: " & ex.Message, MsgBoxStyle.Critical, "Hata")
+        End Try
+    End Sub
     Public Function CreateDefaultIni() As Boolean
         Try
             Dim iniPath As String = Path.Combine(sAssetDir, "settings.ini")
@@ -1289,7 +1305,15 @@ Public Class Form1
             Dim currentTabName As String = TabControl1.SelectedTab.Text
 
             ' XML'den veriyi yeniden yükle
-            LoadDataFromXml()
+        LoadDataFromXml()
+
+        ' SQLite veritabanını başlat ve XML'den içe aktar
+        DatabaseManager.InitializeDatabase()
+        Dim sDbPath As String = Path.Combine(sDataDir, "RiaLauncher.db")
+        Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
+            If File.Exists(sXmlPath) Then
+                DatabaseManager.ImportFromXml(sXmlPath)
+            End If
 
             ' Aynı tab'a geri dön
             If currentTabIndex < TabControl1.TabPages.Count Then
