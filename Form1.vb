@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports System.Drawing
-Imports System.Xml.Linq
 
 Public Class Form1
 
@@ -50,25 +49,21 @@ Public Class Form1
 
         If Not isSettingsIniExist() Then CreateDefaultIni()
 
-        LoadIni() ' 2. Settings.ini dosyasını oku ve değerleri yükle
+        LoadIni()
 
-        InitializeLanguageManager() ' Dil yöneticisini başlat
-        LoadComboLang()             ' ComboLang'ı dil dosyalarıyla doldur
-        ApplyCurrentLang()          ' Seçili dili uygula
+        InitializeLanguageManager()
+        LoadComboLang()
+        ApplyCurrentLang()
 
-
-        If Not isRiaLauncherXmlExist() Then CreateXml() ' 3. RiaLauncher.xml dosyasının varlığını kontrol et yoksa olustur
-
-
-        LoadDataFromXml()
-
-        ' SQLite veritabanını başlat
+        ' SQLite veritabanını başlat ve XML'den içe aktar (ilk geçiş)
         InitDatabase()
+
+        ' Veritabanından verileri yükle
+        LoadDataFromDb()
 
         ' Son açılan tab'ı geri yükle
         RestoreLastActiveTab()
 
-        ' Runtime'da oluşturulan tab'lar için AllowDrop'u etkinleştir
         FlowLayoutPanel1.AllowDrop = True
 
         ' Bilgilendirme mesajı
@@ -111,15 +106,11 @@ Public Class Form1
         Dim iniPath As String = Path.Combine(sAssetDir, "settings.ini")
         Return File.Exists(iniPath)
     End Function
-    Public Function isRiaLauncherXmlExist() As Boolean
-        Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
-        Return File.Exists(xmlPath)
-    End Function
-
     Public Sub InitDatabase()
         Try
             DatabaseManager.SetDataDir(sDataDir)
             DatabaseManager.InitializeDatabase()
+            If Not DatabaseManager.DatabaseExists() Then Return
             Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
             If File.Exists(sXmlPath) Then
                 DatabaseManager.ImportFromXml(sXmlPath)
@@ -153,36 +144,6 @@ Public Class Form1
 
         Catch ex As Exception
             MsgBox("Settings.ini oluşturulamadı: " & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Hata")
-            Return False
-        End Try
-    End Function
-    Public Function CreateXml() As Boolean
-        Try
-            Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
-
-            If Not System.IO.Directory.Exists(sDataDir) Then
-                System.IO.Directory.CreateDirectory(sDataDir)
-            End If
-
-            Dim xmlContent As String =
-                "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf &
-                "<RiaLauncher>" & vbCrLf &
-                "  <Settings>" & vbCrLf &
-                "    <IconSize>48</IconSize>" & vbCrLf &
-                "    <DefaultSort>XML</DefaultSort>" & vbCrLf &
-                "    <LaunchMode>DoubleClick</LaunchMode>" & vbCrLf &
-                "    <ViewMode>IconText</ViewMode>" & vbCrLf &
-                "    <AlwaysOnTop>false</AlwaysOnTop>" & vbCrLf &
-                "  </Settings>" & vbCrLf &
-                "  <Categories>" & vbCrLf &
-                "  </Categories>" & vbCrLf &
-                "</RiaLauncher>"
-
-            File.WriteAllText(xmlPath, xmlContent, System.Text.Encoding.UTF8)
-            Return True
-
-        Catch ex As Exception
-            MsgBox("RiaLauncher.xml oluşturulamadı: " & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Hata")
             Return False
         End Try
     End Function
@@ -395,38 +356,15 @@ Public Class Form1
             TabControl1.SelectedIndex = lastActiveTab
         End If
     End Sub
-    Private Sub CreateDefaultXmlIfNotExists()
-        If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then
-            Dim defaultXml As New XDocument(
-                New XElement("RiaLauncher",
-                    New XElement("Settings",
-                        New XElement("IconSize", "48"),
-                        New XElement("DefaultSort", "XML"),
-                        New XElement("LaunchMode", "DoubleClick"),
-                        New XElement("ViewMode", "IconText"),
-                        New XElement("AlwaysOnTop", "false"),
-                        New XElement("CloseOnClickOutside", "false")
-                    ),
-                    New XElement("Categories",
-                        New XElement("Category",
-                            New XAttribute("Name", "Development")
-                        )
-                    )
-                )
-            )
-            defaultXml.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
-        End If
-    End Sub
-    Private Sub LoadDataFromXml()
-        Try
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
+    Private Sub LoadDataFromDb()
+        Try
             TabControl1.TabPages.Clear()
 
-            For Each categoryElement In doc.Root.Element("Categories").Elements("Category")
-                Dim categoryName As String = categoryElement.Attribute("Name").Value
-                Dim newTab As New TabPage(categoryName)
+            Dim categories = DatabaseManager.GetCategories()
+
+            For Each cat In categories
+                Dim newTab As New TabPage(cat.Name)
 
                 Dim flowPanel As New FlowLayoutPanel With {
                     .Dock = DockStyle.Fill,
@@ -438,21 +376,9 @@ Public Class Form1
                 AddHandler flowPanel.DragOver, AddressOf FlowPanel_DragOver
                 AddHandler flowPanel.DragDrop, AddressOf FlowPanel_DragDrop
 
-                ' Item'ları OrderIndex'e göre sırala
-                Dim itemElements = categoryElement.Elements("Item").ToList()
-                itemElements = itemElements.OrderBy(Function(item)
-                                                        Dim orderIndex As Integer = 0
-                                                        Integer.TryParse(item.Element("OrderIndex")?.Value, orderIndex)
-                                                        Return orderIndex
-                                                    End Function).ToList()
-
-                For Each itemElement In itemElements
-                    Dim itemName As String = itemElement.Element("Name").Value
-                    Dim itemPath As String = itemElement.Element("Path").Value
-                    Dim iconPath As String = If(itemElement.Element("IconPath")?.Value, "")
-
-                    If File.Exists(itemPath) OrElse Directory.Exists(itemPath) Then
-                        AddLauncherItem(flowPanel, itemName, itemPath, iconPath)
+                For Each item In cat.Items
+                    If File.Exists(item.Path) OrElse Directory.Exists(item.Path) Then
+                        AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
                     End If
                 Next
 
@@ -465,7 +391,7 @@ Public Class Form1
             End If
 
         Catch ex As Exception
-            Dim msg As String = String.Format(langManager.GetText("MsgXMLLoadError", "XML loading error: {0}"), ex.Message)
+            Dim msg As String = String.Format(langManager.GetText("MsgXMLLoadError", "Veritabanı yükleme hatası: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
             AddDefaultTab()
         End Try
@@ -517,7 +443,7 @@ Public Class Form1
                 AddLauncherItem(flowPanel, itemName, targetPath, "")
             Next
 
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
     Private Function ResolveShortcut(shortcutPath As String) As String
@@ -757,43 +683,9 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub SaveDataToXml()
+    Private Sub SaveDataToDb()
         Try
-            File.Copy(Path.Combine(sDataDir, "RiaLauncher.xml"), Path.Combine(sDataDir, "RiaLauncher.xml") & ".bak", True)
-
-            Dim doc As New XDocument(
-                New XElement("RiaLauncher",
-                    New XElement("Settings",
-                        New XElement("IconSize", ICON_SIZE.ToString()),
-                        New XElement("DefaultSort", "XML"),
-                        New XElement("LaunchMode", launchMode),
-                        New XElement("ViewMode", viewMode),
-                        New XElement("AlwaysOnTop", alwaysOnTop.ToString().ToLower())
-                    ),
-                    New XElement("Categories",
-                        From tab As TabPage In TabControl1.TabPages
-                        Select New XElement("Category",
-                            New XAttribute("Name", tab.Text),
-                            From ctrl In tab.Controls.OfType(Of FlowLayoutPanel)()
-                            From itemPanel In ctrl.Controls.OfType(Of Panel)().Select(Function(p, index) New With {.Panel = p, .Index = index})
-                            Let itemData = TryCast(itemPanel.Panel.Tag, Object)
-                            Let itemPath = If(itemData IsNot Nothing, itemData.Path, "")
-                            Let itemIconPath = If(itemData IsNot Nothing, itemData.IconPath, "")
-                            Let itemName = itemPanel.Panel.Controls.OfType(Of Label)().FirstOrDefault()?.Text
-                            Where Not String.IsNullOrEmpty(itemPath)
-                            Select New XElement("Item",
-                                New XElement("Name", itemName),
-                                New XElement("Path", itemPath),
-                                New XElement("IconPath", If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)),
-                                New XElement("OrderIndex", itemPanel.Index),
-                                New XElement("IconSource", "Auto")
-                            )
-                        )
-                    )
-                )
-            )
-
-            doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
+            DatabaseManager.SaveAllData(TabControl1)
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgSaveError", "Save error: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -821,7 +713,7 @@ Public Class Form1
         TabControl1.TabPages.Add(newTab)
         TabControl1.SelectedTab = newTab
 
-        SaveDataToXml()
+        SaveDataToDb()
     End Sub
 
     Private Sub btnDeleteTab_Click(sender As Object, e As EventArgs)
@@ -837,7 +729,7 @@ Public Class Form1
 
         If result = DialogResult.Yes Then
             TabControl1.TabPages.Remove(TabControl1.SelectedTab)
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
 
@@ -849,7 +741,7 @@ Public Class Form1
         Dim newName As String = InputBox(prompt, title, TabControl1.SelectedTab.Text)
         If Not String.IsNullOrWhiteSpace(newName) Then
             TabControl1.SelectedTab.Text = newName
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
 
@@ -875,7 +767,7 @@ Public Class Form1
         Dim newName As String = InputBox(prompt, title, lblName.Text)
         If Not String.IsNullOrWhiteSpace(newName) Then
             lblName.Text = newName
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
 
@@ -908,7 +800,7 @@ Public Class Form1
                                 selectedItemPanel.Tag = New With {.Path = currentTag.Path, .IconPath = ofd.FileName}
                             End If
 
-                            SaveDataToXml()
+                            SaveDataToDb()
                         End If
                     End If
                 End If
@@ -952,7 +844,7 @@ Public Class Form1
                     End If
                 End If
 
-                SaveDataToXml()
+                SaveDataToDb()
                 MessageBox.Show(langManager.GetText("MsgPathUpdated", "Path updated successfully."), langManager.GetText("MsgInfo", "Information"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End Using
@@ -999,7 +891,7 @@ Public Class Form1
             If parent IsNot Nothing Then
                 parent.Controls.Remove(selectedItemPanel)
                 selectedItemPanel.Dispose()
-                SaveDataToXml()
+                SaveDataToDb()
             End If
         End If
     End Sub
@@ -1027,34 +919,6 @@ Public Class Form1
                                    $"Custom Icon: {If(String.IsNullOrEmpty(itemIconPath), "None", "Yes")}"
 
         MessageBox.Show(properties, langManager.GetText("MsgItemPropertiesTitle", "Item Properties"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-    End Sub
-
-    Private Sub LoadSettingsFromXml()
-        ' XML'den ayar yükleme artık kullanılmıyor - INI kullanılıyor
-        ' Geriye dönük uyumluluk için bırakıldı
-        Try
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
-
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
-            Dim settings = doc.Root.Element("Settings")
-
-            If settings IsNot Nothing Then
-                ' XML'de ayar varsa INI'ye kopyala ve INI'den kullan
-                Dim xmlLaunchMode = If(settings.Element("LaunchMode")?.Value, "")
-                Dim xmlViewMode = If(settings.Element("ViewMode")?.Value, "")
-                Dim xmlAlwaysOnTop As Boolean = False
-                Boolean.TryParse(settings.Element("AlwaysOnTop")?.Value, xmlAlwaysOnTop)
-
-                ' Eğer INI'de ayar yoksa XML'den aktar
-                If String.IsNullOrEmpty(ReadIniKey("LaunchMode")) AndAlso Not String.IsNullOrEmpty(xmlLaunchMode) Then
-                    launchMode = xmlLaunchMode
-                    viewMode = xmlViewMode
-                    alwaysOnTop = xmlAlwaysOnTop
-                    SaveSettingsToIni()
-                End If
-            End If
-        Catch ex As Exception
-        End Try
     End Sub
 
     Private Sub ApplySettings()
@@ -1135,12 +999,6 @@ Public Class Form1
         If btnSearch.Image Is Nothing AndAlso btnSearch.BackgroundImage Is Nothing Then
             btnSearch.Text = langManager.GetText("btnSearch", "Search")
         End If
-    End Sub
-
-    Private Sub SaveSettingsToXml()
-        ' Artık XML'e ayar kaydetmiyoruz, sadece INI kullanıyoruz
-        ' Metod geriye dönük uyumluluk için bırakıldı
-        SaveSettingsToIni()
     End Sub
 
     Private Sub btnSettings_Click(sender As Object, e As EventArgs)
@@ -1304,18 +1162,8 @@ Public Class Form1
             Dim currentTabIndex As Integer = TabControl1.SelectedIndex
             Dim currentTabName As String = TabControl1.SelectedTab.Text
 
-            ' XML'den veriyi yeniden yükle
-        LoadDataFromXml()
+            LoadDataFromDb()
 
-        ' SQLite veritabanını başlat ve XML'den içe aktar
-        DatabaseManager.InitializeDatabase()
-        Dim sDbPath As String = Path.Combine(sDataDir, "RiaLauncher.db")
-        Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
-            If File.Exists(sXmlPath) Then
-                DatabaseManager.ImportFromXml(sXmlPath)
-            End If
-
-            ' Aynı tab'a geri dön
             If currentTabIndex < TabControl1.TabPages.Count Then
                 TabControl1.SelectedIndex = currentTabIndex
             End If
@@ -1711,8 +1559,8 @@ Public Class Form1
             AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
         Next
 
-        ' XML'i kaydet
-        SaveDataToXml()
+        ' Veritabanına kaydet
+        SaveDataToDb()
 
         MessageBox.Show(langManager.GetText("MsgSortSaved", "Sıralama başarıyla kaydedildi!"), langManager.GetText("MsgInfo", "Bilgi"), MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
@@ -1783,7 +1631,6 @@ Public Class Form1
     ' Public metodlar - CopyMoveForm tarafından çağrılacak
     Public Function CopyItemToTab(sourceTabName As String, targetTabName As String, itemName As String, itemPath As String, itemIconPath As String, itemIcon As Icon) As Boolean
         Try
-            ' Hedef tab'ı bul
             Dim targetTab As TabPage = Nothing
             For Each tab As TabPage In TabControl1.TabPages
                 If tab.Text = targetTabName Then
@@ -1792,74 +1639,13 @@ Public Class Form1
                 End If
             Next
 
-            If targetTab Is Nothing Then
+            If targetTab Is Nothing Then Return False
+
+            If Not DatabaseManager.CopyItemToCategory(sourceTabName, targetTabName, itemName, itemPath, itemIconPath) Then
                 Return False
             End If
 
-            ' XML'i yükle
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return False
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
-
-            ' Source ve target category'leri bul
-            Dim categories = doc.Root.Element("Categories")
-            If categories Is Nothing Then Return False
-
-            Dim sourceCategory = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = sourceTabName)
-            Dim targetCategory = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = targetTabName)
-
-            If sourceCategory Is Nothing Then Return False
-
-            ' Hedef category yoksa oluştur
-            If targetCategory Is Nothing Then
-                targetCategory = New XElement("Category", New XAttribute("Name", targetTabName))
-                categories.Add(targetCategory)
-            End If
-
-            ' Source item'ı bul
-            Dim sourceItem = sourceCategory.Elements("Item").FirstOrDefault(Function(i) i.Element("Name").Value = itemName AndAlso i.Element("Path").Value = itemPath)
-            If sourceItem Is Nothing Then Return False
-
-            ' Target'ta aynı item var mı kontrol et (Path'e göre)
-            Dim existingItem = targetCategory.Elements("Item").FirstOrDefault(Function(i) i.Element("Path").Value = itemPath)
-
-            ' Hedef OrderIndex'i belirle
-            Dim targetOrderIndex As Integer = 0
-            Dim existingItems = targetCategory.Elements("Item").ToList()
-            If existingItems.Count > 0 Then
-                targetOrderIndex = existingItems.Select(Function(i)
-                                                            Dim orderIdx As Integer = 0
-                                                            Integer.TryParse(i.Element("OrderIndex")?.Value, orderIdx)
-                                                            Return orderIdx
-                                                        End Function).Max() + 1
-            End If
-
-            If existingItem IsNot Nothing Then
-                ' Varsa güncelle (üstüne yaz)
-                existingItem.Element("Name").Value = itemName
-                existingItem.Element("Path").Value = itemPath
-                If existingItem.Element("IconPath") IsNot Nothing Then
-                    existingItem.Element("IconPath").Value = If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)
-                Else
-                    existingItem.Add(New XElement("IconPath", If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)))
-                End If
-            Else
-                ' Yoksa yeni item oluştur
-                Dim newItem As New XElement("Item",
-                    New XElement("Name", itemName),
-                    New XElement("Path", itemPath),
-                    New XElement("IconPath", If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)),
-                    New XElement("OrderIndex", targetOrderIndex),
-                    New XElement("IconSource", "Auto")
-                )
-                targetCategory.Add(newItem)
-            End If
-
-            ' XML'i kaydet
-            doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
-
-            ' UI'ı güncelle - sadece hedef tab'ı refresh et
             RefreshTab(targetTab)
-
             Return True
 
         Catch ex As Exception
@@ -1871,41 +1657,31 @@ Public Class Form1
 
     Public Function MoveItemToTab(sourceTabName As String, targetTabName As String, itemName As String, itemPath As String, itemIconPath As String, itemIcon As Icon) As Boolean
         Try
-            ' Önce kopyala
-            If Not CopyItemToTab(sourceTabName, targetTabName, itemName, itemPath, itemIconPath, itemIcon) Then
+            Dim sourceTab As TabPage = Nothing
+            For Each tab As TabPage In TabControl1.TabPages
+                If tab.Text = sourceTabName Then
+                    sourceTab = tab
+                    Exit For
+                End If
+            Next
+
+            If Not DatabaseManager.MoveItemToCategory(sourceTabName, targetTabName, itemName, itemPath, itemIconPath) Then
                 Return False
             End If
 
-            ' Sonra source tab'dan sil
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return False
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
+            If sourceTab IsNot Nothing Then
+                RefreshTab(sourceTab)
+            End If
 
-            Dim categories = doc.Root.Element("Categories")
-            If categories Is Nothing Then Return False
-
-            Dim sourceCategory = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = sourceTabName)
-            If sourceCategory Is Nothing Then Return False
-
-            ' Source item'ı bul ve sil
-            Dim sourceItem = sourceCategory.Elements("Item").FirstOrDefault(Function(i) i.Element("Name").Value = itemName AndAlso i.Element("Path").Value = itemPath)
-            If sourceItem IsNot Nothing Then
-                sourceItem.Remove()
-
-                ' XML'i kaydet
-                doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
-
-                ' Source tab'ı refresh et
-                Dim sourceTab As TabPage = Nothing
-                For Each tab As TabPage In TabControl1.TabPages
-                    If tab.Text = sourceTabName Then
-                        sourceTab = tab
-                        Exit For
-                    End If
-                Next
-
-                If sourceTab IsNot Nothing Then
-                    RefreshTab(sourceTab)
+            Dim targetTab As TabPage = Nothing
+            For Each tab As TabPage In TabControl1.TabPages
+                If tab.Text = targetTabName Then
+                    targetTab = tab
+                    Exit For
                 End If
+            Next
+            If targetTab IsNot Nothing Then
+                RefreshTab(targetTab)
             End If
 
             Return True
@@ -1924,31 +1700,11 @@ Public Class Form1
 
             flowPanel.Controls.Clear()
 
-            ' XML'den bu tab'ın verilerini yükle
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
+            Dim items = DatabaseManager.GetItemsByCategory(tab.Text)
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
-            Dim categories = doc.Root.Element("Categories")
-            If categories Is Nothing Then Return
-
-            Dim category = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = tab.Text)
-            If category Is Nothing Then Return
-
-            ' Item'ları OrderIndex'e göre sırala
-            Dim itemElements = category.Elements("Item").ToList()
-            itemElements = itemElements.OrderBy(Function(item)
-                                                    Dim orderIndex As Integer = 0
-                                                    Integer.TryParse(item.Element("OrderIndex")?.Value, orderIndex)
-                                                    Return orderIndex
-                                                End Function).ToList()
-
-            For Each itemElement In itemElements
-                Dim itemName As String = itemElement.Element("Name").Value
-                Dim itemPath As String = itemElement.Element("Path").Value
-                Dim iconPath As String = If(itemElement.Element("IconPath")?.Value, "")
-
-                If File.Exists(itemPath) OrElse Directory.Exists(itemPath) Then
-                    AddLauncherItem(flowPanel, itemName, itemPath, iconPath)
+            For Each item In items
+                If File.Exists(item.Path) OrElse Directory.Exists(item.Path) Then
+                    AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
                 End If
             Next
 
