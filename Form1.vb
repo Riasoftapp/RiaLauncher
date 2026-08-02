@@ -863,7 +863,7 @@ Public Class Form1
         Try
             If File.Exists(itemPath) Then
                 ' Dosya ise, dosyanın bulunduğu klasörü aç ve dosyayı seç
-                Process.Start("explorer.exe", $"/select,""{itemPath}""")
+                Process.Start("explorer.exe", "/select,""" & itemPath & """")
             ElseIf Directory.Exists(itemPath) Then
                 ' Klasör ise, direkt klasörü aç
                 Process.Start("explorer.exe", itemPath)
@@ -913,10 +913,10 @@ Public Class Form1
             fileExists = "Yes (Folder)"
         End If
 
-        Dim properties As String = $"Name: {itemName}" & vbCrLf &
-                                   $"Path: {itemPath}" & vbCrLf &
-                                   $"Exists: {fileExists}" & vbCrLf &
-                                   $"Custom Icon: {If(String.IsNullOrEmpty(itemIconPath), "None", "Yes")}"
+        Dim properties As String = "Name: " & itemName & vbCrLf &
+                                   "Path: " & itemPath & vbCrLf &
+                                   "Exists: " & fileExists & vbCrLf &
+                                   "Custom Icon: " & If(String.IsNullOrEmpty(itemIconPath), "None", "Yes")
 
         MessageBox.Show(properties, langManager.GetText("MsgItemPropertiesTitle", "Item Properties"), MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
@@ -1333,7 +1333,7 @@ Public Class Form1
     Private Sub MenuYardimDokumanlar_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanlar.Click
         Try
             ' ComboLang'dan seçili dili al
-            Dim selectedLang As String = ComboLang.SelectedValue?.ToString()
+            Dim selectedLang As String = If(ComboLang.SelectedValue IsNot Nothing, ComboLang.SelectedValue.ToString(), "")
 
             ' Eğer seçili dil Türkçe ise Türkçe help dosyasını aç
             Dim helpFileName As String = If(selectedLang = "tr", "RiaLauncherHelp-tr.html", "RiaLauncherHelp-tr.html")

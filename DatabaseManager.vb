@@ -17,7 +17,7 @@ Public Class DatabaseManager
     End Property
 
     Public Shared Function GetConnectionString() As String
-        Return $"Data Source={DbPath};Version=3;"
+        Return "Data Source=" & DbPath & ";Version=3;"
     End Function
 
     Public Shared Function DatabaseExists() As Boolean
@@ -37,22 +37,8 @@ Public Class DatabaseManager
         Using conn As New SQLiteConnection(GetConnectionString())
             conn.Open()
             Using cmd As New SQLiteCommand(conn)
-                cmd.CommandText = "
-                    CREATE TABLE IF NOT EXISTS categories (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL UNIQUE
-                    );
-                    CREATE TABLE IF NOT EXISTS items (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        category_id INTEGER NOT NULL,
-                        name TEXT NOT NULL,
-                        path TEXT NOT NULL,
-                        icon_path TEXT DEFAULT '',
-                        order_index INTEGER DEFAULT 0,
-                        icon_source TEXT DEFAULT 'Auto',
-                        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
-                    );
-                "
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE);" & vbCrLf &
+                                  "CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, category_id INTEGER NOT NULL, name TEXT NOT NULL, path TEXT NOT NULL, icon_path TEXT DEFAULT '', order_index INTEGER DEFAULT 0, icon_source TEXT DEFAULT 'Auto', FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE);"
                 cmd.ExecuteNonQuery()
             End Using
         End Using
@@ -79,8 +65,9 @@ Public Class DatabaseManager
                     Dim categories = doc.Root.Element("Categories")
                     If categories IsNot Nothing Then
                         For Each cat In categories.Elements("Category")
-                            Dim catName = cat.Attribute("Name")?.Value
-                            If String.IsNullOrEmpty(catName) Then Continue For
+                            Dim catAttr = cat.Attribute("Name")
+                            If catAttr Is Nothing OrElse String.IsNullOrEmpty(catAttr.Value) Then Continue For
+                            Dim catName As String = catAttr.Value
 
                             cmd.CommandText = "INSERT OR IGNORE INTO categories (name) VALUES (@name)"
                             cmd.Parameters.Clear()
@@ -93,12 +80,18 @@ Public Class DatabaseManager
                             Dim catId = CInt(cmd.ExecuteScalar())
 
                             For Each item In cat.Elements("Item")
-                                Dim itemName = item.Element("Name")?.Value
-                                Dim itemPath = item.Element("Path")?.Value
-                                Dim iconPath = item.Element("IconPath")?.Value
+                                Dim nameEl = item.Element("Name")
+                                Dim pathEl = item.Element("Path")
+                                Dim iconPathEl = item.Element("IconPath")
+                                Dim orderIdxEl = item.Element("OrderIndex")
+                                Dim iconSrcEl = item.Element("IconSource")
+
+                                Dim itemName As String = If(nameEl IsNot Nothing, nameEl.Value, "")
+                                Dim itemPath As String = If(pathEl IsNot Nothing, pathEl.Value, "")
+                                Dim iconPath As String = If(iconPathEl IsNot Nothing, iconPathEl.Value, "")
                                 Dim orderIndex As Integer = 0
-                                Integer.TryParse(item.Element("OrderIndex")?.Value, orderIndex)
-                                Dim iconSource = If(item.Element("IconSource")?.Value, "Auto")
+                                If orderIdxEl IsNot Nothing Then Integer.TryParse(orderIdxEl.Value, orderIndex)
+                                Dim iconSource As String = If(iconSrcEl IsNot Nothing, iconSrcEl.Value, "Auto")
 
                                 cmd.CommandText = "INSERT INTO items (category_id, name, path, icon_path, order_index, icon_source) VALUES (@catId, @name, @path, @iconPath, @orderIdx, @iconSrc)"
                                 cmd.Parameters.Clear()
@@ -265,9 +258,7 @@ Public Class DatabaseManager
 
         Using conn As New SQLiteConnection(GetConnectionString())
             conn.Open()
-            Using cmd As New SQLiteCommand("
-                UPDATE items SET icon_path = @iconPath 
-                WHERE path = @path AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
+            Using cmd As New SQLiteCommand("UPDATE items SET icon_path = @iconPath WHERE path = @path AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
                 cmd.Parameters.AddWithValue("@iconPath", newIconPath)
                 cmd.Parameters.AddWithValue("@path", itemPath)
                 cmd.Parameters.AddWithValue("@catName", categoryName)
@@ -281,9 +272,7 @@ Public Class DatabaseManager
 
         Using conn As New SQLiteConnection(GetConnectionString())
             conn.Open()
-            Using cmd As New SQLiteCommand("
-                UPDATE items SET path = @newPath 
-                WHERE path = @oldPath AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
+            Using cmd As New SQLiteCommand("UPDATE items SET path = @newPath WHERE path = @oldPath AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
                 cmd.Parameters.AddWithValue("@newPath", newPath)
                 cmd.Parameters.AddWithValue("@oldPath", oldPath)
                 cmd.Parameters.AddWithValue("@catName", categoryName)
@@ -297,9 +286,7 @@ Public Class DatabaseManager
 
         Using conn As New SQLiteConnection(GetConnectionString())
             conn.Open()
-            Using cmd As New SQLiteCommand("
-                UPDATE items SET name = @newName 
-                WHERE path = @path AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
+            Using cmd As New SQLiteCommand("UPDATE items SET name = @newName WHERE path = @path AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
                 cmd.Parameters.AddWithValue("@newName", newName)
                 cmd.Parameters.AddWithValue("@path", itemPath)
                 cmd.Parameters.AddWithValue("@catName", categoryName)
@@ -313,9 +300,7 @@ Public Class DatabaseManager
 
         Using conn As New SQLiteConnection(GetConnectionString())
             conn.Open()
-            Using cmd As New SQLiteCommand("
-                DELETE FROM items 
-                WHERE path = @path AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
+            Using cmd As New SQLiteCommand("DELETE FROM items WHERE path = @path AND category_id = (SELECT id FROM categories WHERE name = @catName)", conn)
                 cmd.Parameters.AddWithValue("@path", itemPath)
                 cmd.Parameters.AddWithValue("@catName", categoryName)
                 cmd.ExecuteNonQuery()
@@ -400,6 +385,7 @@ Public Class DatabaseManager
 
                     cmd.CommandText = "DELETE FROM items"
                     cmd.ExecuteNonQuery()
+
                     cmd.CommandText = "DELETE FROM categories"
                     cmd.ExecuteNonQuery()
 

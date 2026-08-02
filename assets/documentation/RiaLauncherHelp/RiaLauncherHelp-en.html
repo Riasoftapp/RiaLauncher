@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RiaLauncher - User Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --text:#222;
+    --muted:#5a5a5a;
+    --line:#dcdcdc;
+    --accent:#2b6cb0;
+    --accent-soft:#eaf2fb;
+    --warn:#b3541e;
+    --warn-soft:#fbf1e8;
+    --code-bg:#f4f4f4;
+    --bg:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI","Calibri","Helvetica Neue",Arial,sans-serif;
+    line-height:1.55;
+    font-size:15.5px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px 80px;}
+
+  header.cover{
+    padding:56px 0 32px;
+    border-bottom:3px solid var(--text);
+    margin-bottom:36px;
+    display:flex;
+    align-items:center;
+    gap:22px;
+  }
+  header.cover img.logo{width:64px;height:64px;flex:0 0 auto;}
+  header.cover h1{font-size:30px;margin:0 0 6px;letter-spacing:.2px;}
+  header.cover p.meta{margin:0;color:var(--muted);font-size:14px;}
+
+  .topbar{
+    position:sticky;top:0;
+    background:var(--bg);
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+    display:flex;justify-content:flex-end;gap:10px;
+    z-index:10;
+  }
+  .topbar button{
+    background:var(--text);color:#fff;border:none;
+    padding:8px 16px;font-size:13.5px;border-radius:3px;cursor:pointer;
+  }
+  .topbar button:hover{opacity:.85;}
+
+  nav.toc{
+    background:var(--accent-soft);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 28px;
+    margin-bottom:44px;
+  }
+  nav.toc h2{margin-top:0;font-size:16px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);}
+  nav.toc ol{columns:2;column-gap:34px;padding-left:20px;margin:0;}
+  nav.toc li{break-inside:avoid;margin-bottom:6px;font-size:14.5px;}
+  nav.toc a{color:var(--text);text-decoration:none;}
+  nav.toc a:hover{color:var(--accent);text-decoration:underline;}
+
+  section{margin-bottom:48px;page-break-inside:avoid;}
+  section h2{
+    font-size:22px;
+    border-bottom:2px solid var(--text);
+    padding-bottom:8px;
+    margin:0 0 18px;
+  }
+  section h3{font-size:17.5px;margin:26px 0 10px;color:var(--accent);}
+  section h4{font-size:15.5px;margin:18px 0 6px;}
+  p{margin:0 0 12px;}
+
+  figure{margin:16px 0 22px;text-align:center;}
+  figure img{
+    max-width:100%;
+    border:1px solid var(--line);
+    border-radius:4px;
+    display:block;
+    margin:0 auto;
+  }
+  figure figcaption{
+    font-size:12.5px;color:var(--muted);margin-top:6px;
+  }
+
+  table{
+    border-collapse:collapse;
+    width:100%;
+    margin:14px 0 20px;
+    font-size:14px;
+  }
+  th,td{
+    border:1px solid var(--line);
+    padding:7px 10px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{background:#f6f6f6;font-weight:600;}
+
+  pre{
+    background:var(--code-bg);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:12px 14px;
+    overflow-x:auto;
+    font-family:Consolas,"Courier New",monospace;
+    font-size:13px;
+    margin:14px 0 20px;
+  }
+  code{font-family:Consolas,"Courier New",monospace;}
+
+  .tip, .note{
+    border-left:4px solid var(--accent);
+    background:var(--accent-soft);
+    padding:10px 14px;
+    margin:14px 0 20px;
+    font-size:14px;
+    border-radius:0 3px 3px 0;
+  }
+
+  ol,ul{margin:0 0 14px;padding-left:22px;}
+  li{margin-bottom:4px;}
+
+  footer{
+    border-top:2px solid var(--text);
+    margin-top:40px;padding-top:16px;
+    font-size:13px;color:var(--muted);
+    text-align:center;
+  }
+
+  a{color:var(--accent);}
+
+  @media print{
+    .no-print{display:none !important;}
+    body{font-size:12.5px;}
+    .wrap{max-width:100%;padding:0 6mm;}
+    nav.toc{break-after:page;}
+    section{page-break-inside:avoid;}
+    header.cover{padding-top:0;}
+    a{color:var(--text);text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+<div class="topbar no-print">
+  <button onclick="window.print()">Print</button>
+</div>
+
+<div class="wrap">
+
+  <header class="cover">
+    <img class="logo" src="screenshots_en/winLuncher128x128.png" alt="RiaLauncher logo">
+    <div>
+      <h1>RiaLauncher — User Guide</h1>
+      <p class="meta">Version 2.0 &nbsp;|&nbsp; Last Updated: 2025 &nbsp;|&nbsp; © 2024–2025 Hikmet Alemdaroğlu</p>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#main-screen">Main Screen</a></li>
+      <li><a href="#header">Header &amp; Title Bar</a></li>
+      <li><a href="#tabs-menu">Tabs Menu</a></li>
+      <li><a href="#sorting-menu">Sorting Menu</a></li>
+      <li><a href="#manual-sort">Manual Sort Dialog</a></li>
+      <li><a href="#tools-menu">Tools Menu</a></li>
+      <li><a href="#help-menu">Help Menu</a></li>
+      <li><a href="#settings">Settings Dialog</a></li>
+      <li><a href="#search">Search</a></li>
+    </ol>
+  </nav>
+
+  <section id="main-screen">
+    <h2>1. Main Screen</h2>
+    <p>The main screen is the central workspace of RiaLauncher. It displays all your categorized application shortcuts as icons with labels, organized into tabs for easy navigation.</p>
+    <figure>
+      <img src="screenshots_en/001.png" alt="Main Screen">
+      <figcaption>Figure 1: Main Screen — Application icons organized in the Development tab</figcaption>
+    </figure>
+    <p>The main area consists of:</p>
+    <ul>
+      <li><strong>Tab strip</strong> — Switch between categories (Development, Path, ShortCuts, Url, Notes)</li>
+      <li><strong>Icon grid</strong> — Each icon represents a shortcut to an application, file, or folder</li>
+      <li><strong>Search bar</strong> — Filter items by name</li>
+      <li><strong>Menu bar</strong> — Access File, Tabs, Sorting, Tools, and Help menus</li>
+    </ul>
+    <div class="tip">Tip: Drag and drop any file, folder, or shortcut directly onto the icon area to add it to the current tab.</div>
+  </section>
+
+  <section id="header">
+    <h2>2. Header &amp; Title Bar</h2>
+    <figure>
+      <img src="screenshots_en/002.png" alt="Header and Title Bar">
+      <figcaption>Figure 2: Header area with application title, language selector, and menu bar</figcaption>
+    </figure>
+    <p>The header section contains:</p>
+    <table>
+      <tr><th>Element</th><th>Description</th></tr>
+      <tr><td>Application Title</td><td>"RiaLAUNCHER" branding with logo</td></tr>
+      <tr><td>Language Selector</td><td>Dropdown to switch between languages (en, tr, etc.)</td></tr>
+      <tr><td>Search Field</td><td>Text input to filter items by name</td></tr>
+      <tr><td>Search Button</td><td>Magnifying glass icon to execute search</td></tr>
+      <tr><td>Settings Button</td><td>Gear icon to open Settings dialog</td></tr>
+    </table>
+  </section>
+
+  <section id="tabs-menu">
+    <h2>3. Tabs Menu</h2>
+    <p>The Tabs menu allows you to manage tab categories. Access it from the menu bar: <strong>Tabs</strong>.</p>
+    <figure>
+      <img src="screenshots_en/003.png" alt="Tabs Menu">
+      <figcaption>Figure 3: Tabs Menu — New Tab, Rename Tab, Delete Tab, Refresh Tab</figcaption>
+    </figure>
+    <table>
+      <tr><th>Menu Item</th><th>Shortcut</th><th>Description</th></tr>
+      <tr><td>New Tab</td><td>Ctrl+N</td><td>Create a new category tab</td></tr>
+      <tr><td>Rename Tab</td><td>—</td><td>Rename the currently selected tab</td></tr>
+      <tr><td>Delete Tab</td><td>Ctrl+W</td><td>Remove the currently selected tab</td></tr>
+      <tr><td>Refresh Tab</td><td>F5</td><td>Reload tab contents from the data file</td></tr>
+    </table>
+  </section>
+
+  <section id="sorting-menu">
+    <h2>4. Sorting Menu</h2>
+    <p>The Sorting menu provides options to reorder items within the active tab. Access it from the menu bar: <strong>Sorting</strong>.</p>
+    <figure>
+      <img src="screenshots_en/004.png" alt="Sorting Menu">
+      <figcaption>Figure 4: Sorting Menu — Manual Sort option</figcaption>
+    </figure>
+    <table>
+      <tr><th>Menu Item</th><th>Description</th></tr>
+      <tr><td>Manual Sort...</td><td>Open the Manual Sort dialog to reorder items with Up/Down buttons</td></tr>
+    </table>
+  </section>
+
+  <section id="manual-sort">
+    <h2>5. Manual Sort Dialog</h2>
+    <p>The Manual Sort dialog lets you rearrange the order of items within a tab by selecting them and using the Up/Down buttons.</p>
+    <figure>
+      <img src="screenshots_en/005.png" alt="Manual Sort Dialog">
+      <figcaption>Figure 5: Manual Sort Dialog — Reorder items in the Development tab</figcaption>
+    </figure>
+    <p>The dialog displays a list with the following columns:</p>
+    <table>
+      <tr><th>Column</th><th>Description</th></tr>
+      <tr><td>Checkbox</td><td>Select items to move up or down</td></tr>
+      <tr><td>Order</td><td>Current position number</td></tr>
+      <tr><td>Icon</td><td>Visual icon of the item</td></tr>
+      <tr><td>Item Name</td><td>Display name of the shortcut</td></tr>
+      <tr><td>Program / Path</td><td>Full file path of the target application</td></tr>
+    </table>
+    <p>Use the <strong>Up</strong> and <strong>Down</strong> buttons on the right to reposition selected items. Click <strong>Save and Exit</strong> to apply changes, or <strong>Cancel</strong> to discard them.</p>
+  </section>
+
+  <section id="tools-menu">
+    <h2>6. Tools Menu</h2>
+    <p>The Tools menu provides quick access to built-in Windows utilities and system tools. Access it from the menu bar: <strong>Tools</strong>.</p>
+    <figure>
+      <img src="screenshots_en/006.png" alt="Tools Menu">
+      <figcaption>Figure 6: Tools Menu — System utilities and information tools</figcaption>
+    </figure>
+    <table>
+      <tr><th>Tool</th><th>Description</th></tr>
+      <tr><td>Command Prompt</td><td>Open Windows Command Prompt (cmd.exe)</td></tr>
+      <tr><td>PowerShell</td><td>Open Windows PowerShell</td></tr>
+      <tr><td>Task Manager</td><td>Open Windows Task Manager</td></tr>
+      <tr><td>Services Manager</td><td>Open Windows Services console</td></tr>
+      <tr><td>Show Desktop</td><td>Minimize all windows to show the desktop</td></tr>
+      <tr><td>Restore Desktop</td><td>Restore previously minimized windows</td></tr>
+      <tr><td>Control Panel</td><td>Open Windows Control Panel</td></tr>
+      <tr><td>Network and Sharing Center</td><td>Open Network settings</td></tr>
+      <tr><td>Device Manager</td><td>Open Windows Device Manager</td></tr>
+      <tr><td>Show Computer Name</td><td>Display and copy the computer name</td></tr>
+      <tr><td>Show IP Addresses</td><td>Display and copy local and external IP addresses</td></tr>
+    </table>
+  </section>
+
+  <section id="help-menu">
+    <h2>7. Help Menu</h2>
+    <p>The Help menu provides access to documentation, licensing information, and project resources. Access it from the menu bar: <strong>Help</strong>.</p>
+    <figure>
+      <img src="screenshots_en/007.png" alt="Help Menu">
+      <figcaption>Figure 7: Help Menu — Documentation, license, and project links</figcaption>
+    </figure>
+    <table>
+      <tr><th>Menu Item</th><th>Description</th></tr>
+      <tr><td>Help</td><td>Open this user guide</td></tr>
+      <tr><td>Download Documentation</td><td>Download the latest version of the user guide</td></tr>
+      <tr><td>License Terms</td><td>View the software license agreement</td></tr>
+      <tr><td>Donate</td><td>Support the project with a donation</td></tr>
+      <tr><td>Home Page</td><td>Open the project's GitHub page</td></tr>
+      <tr><td>About...</td><td>View application version and copyright information</td></tr>
+    </table>
+  </section>
+
+  <section id="settings">
+    <h2>8. Settings Dialog</h2>
+    <p>The Settings dialog allows you to configure launch behavior, display preferences, language, and window behavior. Open it by clicking the gear icon in the header or via the menu.</p>
+    <figure>
+      <img src="screenshots_en/008.png" alt="Settings Dialog">
+      <figcaption>Figure 8: Settings Dialog — Launch Mode, View Mode, Language, and tab preferences</figcaption>
+    </figure>
+    <table>
+      <tr><th>Setting</th><th>Options</th><th>Description</th></tr>
+      <tr><td>Launch Mode</td><td>Double Click / Single Click</td><td>Choose how items are launched — single click for quick access or double click to prevent accidental launches</td></tr>
+      <tr><td>View Mode</td><td>Icon+Text / Icon / List / Tile</td><td>Control how items are displayed in the icon area</td></tr>
+      <tr><td>Language</td><td>Dropdown (en, tr, etc.)</td><td>Select the interface language</td></tr>
+      <tr><td>Last Active Tab</td><td>Dropdown</td><td>Choose which tab to activate on startup</td></tr>
+      <tr><td>Always On Top</td><td>Checkbox</td><td>Keep the RiaLauncher window above all other windows</td></tr>
+    </table>
+    <p>Click <strong>OK</strong> to save and apply settings, or <strong>Cancel</strong> to discard changes.</p>
+  </section>
+
+  <section id="search">
+    <h2>9. Search</h2>
+    <p>Use the search bar in the header to quickly filter items by name. Type your search query and click the magnifying glass button or press Enter.</p>
+    <figure>
+      <img src="screenshots_en/009.png" alt="Search Bar">
+      <figcaption>Figure 9: Search Bar — Type to filter items (e.g., "Lara" to find Laragon)</figcaption>
+    </figure>
+    <div class="note">Note: Clear the search field to restore the full item list.</div>
+  </section>
+
+  <footer>
+    RiaLauncher User Guide &nbsp;|&nbsp; Version 2.0 &nbsp;|&nbsp; © 2024–2025 Hikmet Alemdaroğlu
+  </footer>
+
+</div>
+</body>
+</html>

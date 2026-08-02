@@ -29,7 +29,7 @@ Public Class ManualSortForm
 
         ' Form title
         Dim titlePrefix As String = Form1.langManager.GetText("ManualSortTitle", "Manual Sort")
-        Me.Text = $"{titlePrefix} - {tabName}"
+        Me.Text = titlePrefix & " - " & tabName
 
         ' Column headers
         colSira.Text = Form1.langManager.GetText("ManualSortColOrder", "Order")
