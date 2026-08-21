@@ -375,7 +375,7 @@ Public Class LanguageManager
             "; AboutForm" & vbCrLf &
             "AboutTitle=About" & vbCrLf &
             "AboutAppName=WinLauncher - Windows Launcher" & vbCrLf &
-            "AboutVersion=Version 2.0" & vbCrLf &
+            "AboutVersion=Version {0}" & vbCrLf &
             "AboutLicenseStatus=Not Yet Licensed for Commercial Use" & vbCrLf &
             "AboutFreeUse=Free for Personal Use" & vbCrLf &
             "AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu" & vbCrLf &

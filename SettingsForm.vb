@@ -5,6 +5,7 @@ Public Class SettingsForm
     Public Property AlwaysOnTop As Boolean = False
     Public Property CurrentLanguage As String = "en"
     Public Property LastActiveTab As Integer = 0
+    Public Property AutoUpdateEnabled As Boolean = True
     Public Property AvailableTabs As String() = Nothing
     Public Property LanguageManager As LanguageManager = Nothing
 
@@ -97,6 +98,9 @@ Public Class SettingsForm
 
         ' Always On Top
         ChkAlwaysOnTop.Checked = AlwaysOnTop
+
+        ' Auto Update
+        ChkAutoUpdate.Checked = AutoUpdateEnabled
     End Sub
 
     Private Sub ApplyLanguage()
@@ -127,6 +131,7 @@ Public Class SettingsForm
 
         ' Checkbox
         ChkAlwaysOnTop.Text = Form1.langManager.GetText("AlwaysOnTop", "Always On Top")
+        ChkAutoUpdate.Text = Form1.langManager.GetText("AutoUpdate", "Enable automatic update check")
 
         ' Buttons
         BtnOK.Text = Form1.langManager.GetText("OK", "OK")
@@ -154,6 +159,9 @@ Public Class SettingsForm
 
         ' Get Always On Top
         AlwaysOnTop = ChkAlwaysOnTop.Checked
+
+        ' Get Auto Update
+        AutoUpdateEnabled = ChkAutoUpdate.Checked
 
         ' Get Language
         If CmbLanguage.SelectedItem IsNot Nothing Then

@@ -75,6 +75,7 @@ Partial Class Form1
         Me.MenuYardim = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuYardimDokumanlar = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuYardimDokumanIndir = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuYardimGuncellemeKontrol = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuYardimLisans = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuYardimBagis = New System.Windows.Forms.ToolStripMenuItem()
@@ -109,10 +110,9 @@ Partial Class Form1
         Me.TabControl1.Location = New System.Drawing.Point(4, 94)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(823, 366)
+        Me.TabControl1.Size = New System.Drawing.Size(834, 366)
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
         Me.TabControl1.TabIndex = 1
-        Me.TabControl1.AllowDrop = False
         '
         'TabPage1
         '
@@ -122,7 +122,7 @@ Partial Class Form1
         Me.TabPage1.Location = New System.Drawing.Point(4, 30)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(815, 332)
+        Me.TabPage1.Size = New System.Drawing.Size(826, 332)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Development"
         '
@@ -134,7 +134,7 @@ Partial Class Form1
         Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(3, 3)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(807, 324)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(818, 324)
         Me.FlowLayoutPanel1.TabIndex = 0
         '
         'Panel1
@@ -147,7 +147,7 @@ Partial Class Form1
         Me.Panel1.Controls.Add(Me.PictureBox1)
         Me.Panel1.Location = New System.Drawing.Point(-2, 1)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(841, 56)
+        Me.Panel1.Size = New System.Drawing.Size(852, 56)
         Me.Panel1.TabIndex = 0
         '
         'ComboLang
@@ -156,7 +156,7 @@ Partial Class Form1
         Me.ComboLang.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ComboLang.FormattingEnabled = True
         Me.ComboLang.Items.AddRange(New Object() {"En", "Tr"})
-        Me.ComboLang.Location = New System.Drawing.Point(787, 18)
+        Me.ComboLang.Location = New System.Drawing.Point(798, 18)
         Me.ComboLang.Name = "ComboLang"
         Me.ComboLang.Size = New System.Drawing.Size(42, 21)
         Me.ComboLang.TabIndex = 7
@@ -195,7 +195,7 @@ Partial Class Form1
         Me.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSearch.ForeColor = System.Drawing.SystemColors.Window
         Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
-        Me.btnSearch.Location = New System.Drawing.Point(750, 4)
+        Me.btnSearch.Location = New System.Drawing.Point(761, 4)
         Me.btnSearch.Name = "btnSearch"
         Me.btnSearch.Size = New System.Drawing.Size(30, 23)
         Me.btnSearch.TabIndex = 4
@@ -207,7 +207,7 @@ Partial Class Form1
         Me.txtSearch.BackColor = System.Drawing.SystemColors.Window
         Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearch.ForeColor = System.Drawing.Color.FromArgb(CType(CType(12, Byte), Integer), CType(CType(103, Byte), Integer), CType(CType(149, Byte), Integer))
-        Me.txtSearch.Location = New System.Drawing.Point(574, 5)
+        Me.txtSearch.Location = New System.Drawing.Point(585, 5)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(172, 20)
         Me.txtSearch.TabIndex = 3
@@ -454,7 +454,7 @@ Partial Class Form1
         '
         'MenuYardim
         '
-        Me.MenuYardim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuYardimDokumanlar, Me.MenuYardimDokumanIndir, Me.MenuYardimLisans, Me.ToolStripSeparator2, Me.MenuYardimBagis, Me.MenuYardimAnaSayfa, Me.ToolStripSeparator3, Me.MenuYardimHakkinda})
+        Me.MenuYardim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuYardimDokumanlar, Me.MenuYardimDokumanIndir, Me.MenuYardimGuncellemeKontrol, Me.MenuYardimLisans, Me.ToolStripSeparator2, Me.MenuYardimBagis, Me.MenuYardimAnaSayfa, Me.ToolStripSeparator3, Me.MenuYardimHakkinda})
         Me.MenuYardim.Name = "MenuYardim"
         Me.MenuYardim.Size = New System.Drawing.Size(44, 23)
         Me.MenuYardim.Text = "&Help"
@@ -462,47 +462,53 @@ Partial Class Form1
         'MenuYardimDokumanlar
         '
         Me.MenuYardimDokumanlar.Name = "MenuYardimDokumanlar"
-        Me.MenuYardimDokumanlar.Size = New System.Drawing.Size(157, 22)
+        Me.MenuYardimDokumanlar.Size = New System.Drawing.Size(171, 22)
         Me.MenuYardimDokumanlar.Text = "&Help"
         '
         'MenuYardimDokumanIndir
         '
         Me.MenuYardimDokumanIndir.Name = "MenuYardimDokumanIndir"
-        Me.MenuYardimDokumanIndir.Size = New System.Drawing.Size(157, 22)
+        Me.MenuYardimDokumanIndir.Size = New System.Drawing.Size(171, 22)
         Me.MenuYardimDokumanIndir.Text = "&Download Docs"
+        '
+        'MenuYardimGuncellemeKontrol
+        '
+        Me.MenuYardimGuncellemeKontrol.Name = "MenuYardimGuncellemeKontrol"
+        Me.MenuYardimGuncellemeKontrol.Size = New System.Drawing.Size(171, 22)
+        Me.MenuYardimGuncellemeKontrol.Text = "Check for &Updates"
         '
         'MenuYardimLisans
         '
         Me.MenuYardimLisans.Name = "MenuYardimLisans"
-        Me.MenuYardimLisans.Size = New System.Drawing.Size(157, 22)
+        Me.MenuYardimLisans.Size = New System.Drawing.Size(171, 22)
         Me.MenuYardimLisans.Text = "&License Terms"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(154, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(168, 6)
         '
         'MenuYardimBagis
         '
         Me.MenuYardimBagis.Name = "MenuYardimBagis"
-        Me.MenuYardimBagis.Size = New System.Drawing.Size(157, 22)
+        Me.MenuYardimBagis.Size = New System.Drawing.Size(171, 22)
         Me.MenuYardimBagis.Text = "&Donate"
         '
         'MenuYardimAnaSayfa
         '
         Me.MenuYardimAnaSayfa.Name = "MenuYardimAnaSayfa"
-        Me.MenuYardimAnaSayfa.Size = New System.Drawing.Size(157, 22)
+        Me.MenuYardimAnaSayfa.Size = New System.Drawing.Size(171, 22)
         Me.MenuYardimAnaSayfa.Text = "Home &Page"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(154, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(168, 6)
         '
         'MenuYardimHakkinda
         '
         Me.MenuYardimHakkinda.Name = "MenuYardimHakkinda"
-        Me.MenuYardimHakkinda.Size = New System.Drawing.Size(157, 22)
+        Me.MenuYardimHakkinda.Size = New System.Drawing.Size(171, 22)
         Me.MenuYardimHakkinda.Text = "&About..."
         '
         'ContextMenuStripTab
@@ -542,13 +548,14 @@ Partial Class Form1
         Me.MenuPanel.Controls.Add(Me.btnSearch)
         Me.MenuPanel.Location = New System.Drawing.Point(1, 56)
         Me.MenuPanel.Name = "MenuPanel"
-        Me.MenuPanel.Size = New System.Drawing.Size(835, 32)
+        Me.MenuPanel.Size = New System.Drawing.Size(846, 32)
         Me.MenuPanel.TabIndex = 3
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(507, 9)
+        Me.Label1.Location = New System.Drawing.Point(518, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(41, 13)
         Me.Label1.TabIndex = 6
@@ -562,7 +569,7 @@ Partial Class Form1
         Me.btn_setup.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btn_setup.ForeColor = System.Drawing.Color.FromArgb(CType(CType(72, Byte), Integer), CType(CType(173, Byte), Integer), CType(CType(219, Byte), Integer))
         Me.btn_setup.Image = CType(resources.GetObject("btn_setup.Image"), System.Drawing.Image)
-        Me.btn_setup.Location = New System.Drawing.Point(795, 4)
+        Me.btn_setup.Location = New System.Drawing.Point(806, 4)
         Me.btn_setup.Name = "btn_setup"
         Me.btn_setup.Size = New System.Drawing.Size(30, 23)
         Me.btn_setup.TabIndex = 5
@@ -574,14 +581,14 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Window
-        Me.ClientSize = New System.Drawing.Size(834, 460)
+        Me.ClientSize = New System.Drawing.Size(845, 460)
         Me.Controls.Add(Me.MenuPanel)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TabControl1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
-        Me.Text = "WinLauncher - Custom Windows Launcher"
+        Me.Text = "RiaLauncher - Custom Windows Launcher"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
@@ -643,6 +650,7 @@ Partial Class Form1
     Friend WithEvents MenuYardim As ToolStripMenuItem
     Friend WithEvents MenuYardimDokumanlar As ToolStripMenuItem
     Friend WithEvents MenuYardimDokumanIndir As ToolStripMenuItem
+    Friend WithEvents MenuYardimGuncellemeKontrol As ToolStripMenuItem
     Friend WithEvents MenuYardimLisans As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents MenuYardimBagis As ToolStripMenuItem

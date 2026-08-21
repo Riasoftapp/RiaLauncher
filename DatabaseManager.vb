@@ -20,6 +20,71 @@ Public Class DatabaseManager
         Return "Data Source=" & DbPath & ";Version=3;"
     End Function
 
+    ' Mevcut şema sürümü (yeni sürümlerde artır)
+    Public Const SchemaVersion As Integer = 1
+
+    Public Shared Function GetSchemaVersion() As Integer
+        If Not File.Exists(DbPath) Then Return 0
+
+        Using conn As New SQLiteConnection(GetConnectionString())
+            conn.Open()
+            Using cmd As New SQLiteCommand("PRAGMA user_version", conn)
+                Return CInt(cmd.ExecuteScalar())
+            End Using
+        End Using
+    End Function
+
+    ' Şema sürümünü hedef sürüme yükseltir; migration'lar başarısız olursa geri alınır
+    Public Shared Sub RunMigrations()
+        If _dataDir = "" OrElse Not File.Exists(DbPath) Then Return
+        If GetSchemaVersion() >= SchemaVersion Then Return
+
+        Using conn As New SQLiteConnection(GetConnectionString())
+            conn.Open()
+            Using transaction = conn.BeginTransaction()
+                Try
+                    Dim version As Integer = GetSchemaVersion()
+                    While version < SchemaVersion
+                        version += 1
+                        ApplyMigration(conn, version)
+
+                        Using vCmd As New SQLiteCommand("PRAGMA user_version = " & version, conn)
+                            vCmd.Transaction = transaction
+                            vCmd.ExecuteNonQuery()
+                        End Using
+                    End While
+
+                    transaction.Commit()
+                Catch ex As Exception
+                    transaction.Rollback()
+                    Try
+                        Dim logDir = Form1.sLogDir
+                        If logDir <> "" AndAlso Not Directory.Exists(logDir) Then Directory.CreateDirectory(logDir)
+                        If logDir <> "" Then
+                            File.AppendAllText(Path.Combine(logDir, "error.log"),
+                                               DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") & "  DB migration hatasi: " & ex.Message & Environment.NewLine,
+                                               System.Text.Encoding.UTF8)
+                        End If
+                    Catch
+                    End Try
+                End Try
+            End Using
+        End Using
+    End Sub
+
+    Private Shared Sub ApplyMigration(conn As SQLiteConnection, targetVersion As Integer)
+        Select Case targetVersion
+            Case 1
+                ' Sürüm 1: mevcut başlangıç şeması (categories + items)
+                ' Tablolar InitializeDatabase'de zaten oluşturuluyor; sadece sürüm damgası işlenir.
+            Case 2
+                ' Örnek: gelecekteki bir migration
+                ' Using cmd As New SQLiteCommand("ALTER TABLE items ADD COLUMN note TEXT DEFAULT ''", conn)
+                '     cmd.ExecuteNonQuery()
+                ' End Using
+        End Select
+    End Sub
+
     Public Shared Function DatabaseExists() As Boolean
         Return File.Exists(DbPath)
     End Function

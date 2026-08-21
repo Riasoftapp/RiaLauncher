@@ -115,9 +115,9 @@ Partial Class AboutForm
         Me.lblWebSite.ForeColor = System.Drawing.Color.Blue
         Me.lblWebSite.Location = New System.Drawing.Point(142, 188)
         Me.lblWebSite.Name = "lblWebSite"
-        Me.lblWebSite.Size = New System.Drawing.Size(174, 13)
+        Me.lblWebSite.Size = New System.Drawing.Size(203, 13)
         Me.lblWebSite.TabIndex = 3
-        Me.lblWebSite.Text = "hikmetalemdaroglu/RiaLauncher"
+        Me.lblWebSite.Text = "https://riasoft.net/en/rialauncher.html"
         '
         'lblEmailLabel
         '

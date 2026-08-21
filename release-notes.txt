@@ -1,0 +1,5 @@
+﻿RiaLauncher v2.0.0.7
+
+1. URL items now store the real URL instead of the .url shortcut path.
+2. Deleting the .url shortcut no longer removes the item from the database; it remains launchable.
+3. Existing .url items are upgraded to real URLs on startup.

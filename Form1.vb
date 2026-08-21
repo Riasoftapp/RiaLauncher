@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Drawing
+Imports System.Reflection
 
 Public Class Form1
 
@@ -33,6 +34,11 @@ Public Class Form1
     Private lastActiveTab As Integer = 0
     Private lastOpenDir As String = ""
     Private currentLanguage As String = ""
+    Private winX As Integer = -1
+    Private winY As Integer = -1
+    Private winWidth As Integer = 0
+    Private winHeight As Integer = 0
+    Private autoUpdateEnabled As Boolean = True
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         sRootDir = GetRootDir()
         sAssetDir = sRootDir & "\assets\"
@@ -49,7 +55,10 @@ Public Class Form1
 
         If Not isSettingsIniExist() Then CreateDefaultIni()
 
-        LoadIni()
+LoadIni()
+
+        ' Önceki pencere konumu ve boyutunu geri yükle
+        RestoreWindowBounds()
 
         InitializeLanguageManager()
         LoadComboLang()
@@ -58,6 +67,9 @@ Public Class Form1
         ' SQLite veritabanını başlat ve XML'den içe aktar (ilk geçiş)
         InitDatabase()
 
+        ' Mevcut .url ogelerini gercek URL ile guncelle (kisayol silinince kaybolmasin)
+        UpgradeUrlItems()
+
         ' Veritabanından verileri yükle
         LoadDataFromDb()
 
@@ -65,6 +77,8 @@ Public Class Form1
         RestoreLastActiveTab()
 
         FlowLayoutPanel1.AllowDrop = True
+
+        CheckForUpdates(False)
 
         ' Bilgilendirme mesajı
         ' MsgBox("Startup işlemleri tamamlandı:" & vbCrLf &
@@ -102,6 +116,98 @@ Public Class Form1
             Return exeDir
         End If
     End Function
+
+    Private Function GetCurrentVersion() As String
+        Dim asmVersion = Assembly.GetExecutingAssembly().GetName().Version
+        If asmVersion IsNot Nothing Then
+            Return asmVersion.ToString()
+        End If
+
+        Return Application.ProductVersion
+    End Function
+
+    Private Function GetConfigValue(keyName As String) As String
+        Try
+            Dim configPath As String = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile
+            If String.IsNullOrWhiteSpace(configPath) OrElse Not File.Exists(configPath) Then Return ""
+
+            Dim doc = System.Xml.Linq.XDocument.Load(configPath)
+            Dim appSettings = doc...<appSettings>.<add>
+            For Each setting In appSettings
+                Dim keyAttr = setting.Attribute("key")
+                If keyAttr IsNot Nothing AndAlso keyAttr.Value = keyName Then
+                    Dim valAttr = setting.Attribute("value")
+                    If valAttr IsNot Nothing Then Return valAttr.Value
+                End If
+            Next
+        Catch
+        End Try
+
+        Return ""
+    End Function
+
+    Private Sub CheckForUpdates(isManualCheck As Boolean)
+        If (Not isManualCheck) AndAlso (Not autoUpdateEnabled) Then
+            Return
+        End If
+
+        Try
+            Dim repo As String = GetConfigValue("UpdateRepo")
+            Dim assetName As String = GetConfigValue("UpdateAsset")
+            If String.IsNullOrWhiteSpace(repo) OrElse String.IsNullOrWhiteSpace(assetName) Then
+                If isManualCheck Then
+                    MessageBox.Show(langManager.GetText("MsgUpdateUrlMissing", "Update URL is not configured."),
+                                    langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+                Return
+            End If
+
+            Dim updaterPath As String = Path.Combine(sRootDir, "update", "Updater.exe")
+            If Not File.Exists(updaterPath) Then
+                If isManualCheck Then
+                    MessageBox.Show(langManager.GetText("MsgUpdateUpdaterNotFound", "Updater not found: {0}").Replace("{0}", updaterPath),
+                                    langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+                Return
+            End If
+
+            Dim mgr As New UpdateManager(sRootDir, repo, assetName, GetCurrentVersion())
+            Dim release As ReleaseInfo = mgr.GetLatestRelease()
+
+            If Not mgr.IsNewer(release) Then
+                If isManualCheck Then
+                    MessageBox.Show(langManager.GetText("MsgUpdateNoNewVersion", "You are using the latest version."),
+                                    langManager.GetText("MsgInfo", "Information"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+                Return
+            End If
+
+            Dim changelog As String = release.Changelog
+            If changelog = "" Then changelog = "-"
+            Dim question As String = String.Format(langManager.GetText("MsgUpdateFound", "A new version is available: v{0}{1}{1}{2}{1}{1}Download and install now?"),
+                                                   release.Version, vbCrLf, changelog)
+            Dim savedCulture As System.Globalization.CultureInfo = System.Threading.Thread.CurrentThread.CurrentUICulture
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-US")
+            Dim updateAnswer As DialogResult = MessageBox.Show(question, "RiaLauncher Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+            System.Threading.Thread.CurrentThread.CurrentUICulture = savedCulture
+            If updateAnswer <> DialogResult.Yes Then
+                Return
+            End If
+
+            Dim stagingDir As String = mgr.DownloadAndStage(release)
+            If mgr.LaunchUpdater(stagingDir) Then
+                Application.Exit()
+            Else
+                MessageBox.Show(langManager.GetText("MsgUpdateUpdaterNotFound", "Updater not found: {0}").Replace("{0}", updaterPath),
+                                langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            If isManualCheck Then
+                Dim msg As String = String.Format(langManager.GetText("MsgUpdateCheckError", "Update check failed: {0}"), ex.Message)
+                MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        End Try
+    End Sub
     Public Function isSettingsIniExist() As Boolean
         Dim iniPath As String = Path.Combine(sAssetDir, "settings.ini")
         Return File.Exists(iniPath)
@@ -110,6 +216,7 @@ Public Class Form1
         Try
             DatabaseManager.SetDataDir(sDataDir)
             DatabaseManager.InitializeDatabase()
+            DatabaseManager.RunMigrations()
             If Not DatabaseManager.DatabaseExists() Then Return
             Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
             If File.Exists(sXmlPath) Then
@@ -138,6 +245,11 @@ Public Class Form1
             lines.Add("LaunchMode=DoubleClick")
             lines.Add("ViewMode=IconText")
             lines.Add("AlwaysOnTop=false")
+            lines.Add("AutoUpdate=true")
+            lines.Add("WindowX=0")
+            lines.Add("WindowY=0")
+            lines.Add("WindowWidth=0")
+            lines.Add("WindowHeight=0")
 
             File.WriteAllLines(iniPath, lines)
             Return True
@@ -167,6 +279,16 @@ Public Class Form1
                     viewMode = line.Split("=")(1)
                 ElseIf line.StartsWith("AlwaysOnTop=") Then
                     Boolean.TryParse(line.Split("=")(1), alwaysOnTop)
+                ElseIf line.StartsWith("AutoUpdate=") Then
+                    Boolean.TryParse(line.Split("=")(1), autoUpdateEnabled)
+                ElseIf line.StartsWith("WindowX=") Then
+                    Integer.TryParse(line.Split("=")(1), winX)
+                ElseIf line.StartsWith("WindowY=") Then
+                    Integer.TryParse(line.Split("=")(1), winY)
+                ElseIf line.StartsWith("WindowWidth=") Then
+                    Integer.TryParse(line.Split("=")(1), winWidth)
+                ElseIf line.StartsWith("WindowHeight=") Then
+                    Integer.TryParse(line.Split("=")(1), winHeight)
                 End If
             Next
 
@@ -334,6 +456,11 @@ Public Class Form1
             lines.Add("LaunchMode=" & launchMode)
             lines.Add("ViewMode=" & viewMode)
             lines.Add("AlwaysOnTop=" & alwaysOnTop.ToString().ToLower())
+            lines.Add("AutoUpdate=" & autoUpdateEnabled.ToString().ToLower())
+            lines.Add("WindowX=" & winX.ToString())
+            lines.Add("WindowY=" & winY.ToString())
+            lines.Add("WindowWidth=" & winWidth.ToString())
+            lines.Add("WindowHeight=" & winHeight.ToString())
 
             File.WriteAllLines(iniPath, lines)
         Catch ex As Exception
@@ -435,7 +562,10 @@ Public Class Form1
                 Dim itemName As String = Path.GetFileNameWithoutExtension(filePath)
                 Dim targetPath As String = filePath
 
-                If Path.GetExtension(filePath).ToLower() = ".lnk" Then
+                If Path.GetExtension(filePath).ToLower() = ".url" Then
+                    Dim url As String = ReadUrlFromShortcut(filePath)
+                    If Not String.IsNullOrEmpty(url) Then targetPath = url
+                ElseIf Path.GetExtension(filePath).ToLower() = ".lnk" Then
                     targetPath = ResolveShortcut(filePath)
                     If String.IsNullOrEmpty(targetPath) Then targetPath = filePath
                 End If
@@ -454,6 +584,25 @@ Public Class Form1
         Catch ex As Exception
             Return ""
         End Try
+    End Function
+
+    Private Function IsUrl(path As String) As Boolean
+        If String.IsNullOrEmpty(path) Then Return False
+        Return path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) OrElse
+               path.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Function ReadUrlFromShortcut(shortcutPath As String) As String
+        Try
+            For Each line In IO.File.ReadAllLines(shortcutPath)
+                Dim t = line.Trim()
+                If t.StartsWith("URL=", StringComparison.OrdinalIgnoreCase) Then
+                    Return t.Substring(4).Trim()
+                End If
+            Next
+        Catch
+        End Try
+        Return ""
     End Function
     Private Sub AddLauncherItem(flowPanel As FlowLayoutPanel, name As String, path As String, iconPath As String)
         Dim itemPanel As New Panel With {
@@ -476,7 +625,16 @@ Public Class Form1
         Dim imageExtensions() As String = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"}
         Dim extension As String = IO.Path.GetExtension(path).ToLower()
 
-        If extension = ".svg" Then
+        If IsUrl(path) Then
+            ' URL ogeleri icin web ikonu (home24.png)
+            Dim webIconPath As String = IO.Path.Combine(sIconDir, "home24.png")
+            If IO.File.Exists(webIconPath) Then
+                Try
+                    picBox.Image = New Bitmap(webIconPath)
+                Catch
+                End Try
+            End If
+        ElseIf extension = ".svg" Then
             ' SVG dosyası ise özel SVG iconu kullan
             Dim svgIconPath As String = IO.Path.Combine(sIconDir, "system", "svg64.png")
             If File.Exists(svgIconPath) Then
@@ -667,7 +825,10 @@ Public Class Form1
 
     Private Sub LaunchItem(path As String)
         Try
-            If File.Exists(path) Then
+            If IsUrl(path) Then
+                ' URL dogrudan tarayicida acilir (.url kisayolu silinmis olsa bile calisir)
+                Process.Start(path)
+            ElseIf File.Exists(path) Then
                 ' Tüm dosyalar sistemin default viewer/uygulaması ile açılır
                 Process.Start(path)
             ElseIf Directory.Exists(path) Then
@@ -906,19 +1067,9 @@ Public Class Form1
         Dim itemPath As String = If(itemData IsNot Nothing, itemData.Path, "Unknown")
         Dim itemIconPath As String = If(itemData IsNot Nothing, itemData.IconPath, "")
 
-        Dim fileExists As String = "No"
-        If File.Exists(itemPath) Then
-            fileExists = "Yes (File)"
-        ElseIf Directory.Exists(itemPath) Then
-            fileExists = "Yes (Folder)"
-        End If
-
-        Dim properties As String = "Name: " & itemName & vbCrLf &
-                                   "Path: " & itemPath & vbCrLf &
-                                   "Exists: " & fileExists & vbCrLf &
-                                   "Custom Icon: " & If(String.IsNullOrEmpty(itemIconPath), "None", "Yes")
-
-        MessageBox.Show(properties, langManager.GetText("MsgItemPropertiesTitle", "Item Properties"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Dim propsForm As New PropertiesForm(itemName, itemPath, itemIconPath)
+        propsForm.ShowDialog(Me)
+        propsForm.Dispose()
     End Sub
 
     Private Sub ApplySettings()
@@ -972,6 +1123,7 @@ Public Class Form1
         MenuYardim.Text = langManager.GetText("MenuYardim", "&Help")
         MenuYardimDokumanlar.Text = langManager.GetText("MenuYardimDokumanlar", "&Help")
         MenuYardimDokumanIndir.Text = langManager.GetText("MenuYardimDokumanIndir", "&Download Docs")
+        MenuYardimGuncellemeKontrol.Text = langManager.GetText("MenuYardimGuncellemeKontrol", "Check for &Updates")
         MenuYardimLisans.Text = langManager.GetText("MenuYardimLisans", "&License Terms")
         MenuYardimBagis.Text = langManager.GetText("MenuYardimBagis", "&Donate")
         MenuYardimAnaSayfa.Text = langManager.GetText("MenuYardimAnaSayfa", "Home &Page")
@@ -1010,6 +1162,7 @@ Public Class Form1
             settingsForm.LaunchMode = launchMode
             settingsForm.ViewMode = viewMode
             settingsForm.AlwaysOnTop = alwaysOnTop
+            settingsForm.AutoUpdateEnabled = autoUpdateEnabled
             settingsForm.CurrentLanguage = currentLanguage
             settingsForm.LastActiveTab = TabControl1.SelectedIndex
 
@@ -1024,6 +1177,7 @@ Public Class Form1
                 launchMode = settingsForm.LaunchMode
                 viewMode = settingsForm.ViewMode
                 alwaysOnTop = settingsForm.AlwaysOnTop
+                autoUpdateEnabled = settingsForm.AutoUpdateEnabled
                 Dim newLanguage = settingsForm.CurrentLanguage
                 Dim newTab = settingsForm.LastActiveTab
 
@@ -1126,9 +1280,34 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Son aktif tab'ı kaydet (opsiyonel, Settings'te zaten kaydedilmiş olabilir)
-        ' Tüm ayarları yeniden yazmıyoruz, sadece lastActiveTab güncelleniyor
-        ' iniManager.WriteInteger("General", "LastActiveTab", TabControl1.SelectedIndex)
+        ' Pencere konumu ve boyutunu kaydet (maximize ise normal boyutlar kaydedilir)
+        If Me.WindowState = FormWindowState.Normal Then
+            winX = Me.Location.X
+            winY = Me.Location.Y
+            winWidth = Me.Width
+            winHeight = Me.Height
+        Else
+            Dim rb = Me.RestoreBounds
+            winX = rb.X
+            winY = rb.Y
+            winWidth = rb.Width
+            winHeight = rb.Height
+        End If
+        SaveSettingsToIni()
+    End Sub
+
+    Private Sub RestoreWindowBounds()
+        If winWidth <= 0 OrElse winHeight <= 0 OrElse winX < 0 OrElse winY < 0 Then Return
+
+        Dim rect As New Rectangle(winX, winY, winWidth, winHeight)
+        For Each scr In Screen.AllScreens
+            If scr.WorkingArea.IntersectsWith(rect) Then
+                Me.StartPosition = FormStartPosition.Manual
+                Me.Location = New Point(winX, winY)
+                Me.Size = New Size(winWidth, winHeight)
+                Exit For
+            End If
+        Next
     End Sub
 
     ' ============================================
@@ -1367,6 +1546,10 @@ Public Class Form1
             Dim msg As String = String.Format(langManager.GetText("MsgHelpDocError", "The document page could not be opened: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+    Private Sub MenuYardimGuncellemeKontrol_Click(sender As Object, e As EventArgs) Handles MenuYardimGuncellemeKontrol.Click
+        CheckForUpdates(True)
     End Sub
 
     Private Sub MenuYardimLisans_Click(sender As Object, e As EventArgs) Handles MenuYardimLisans.Click
@@ -1703,7 +1886,7 @@ Public Class Form1
             Dim items = DatabaseManager.GetItemsByCategory(tab.Text)
 
             For Each item In items
-                If File.Exists(item.Path) OrElse Directory.Exists(item.Path) Then
+                If File.Exists(item.Path) OrElse Directory.Exists(item.Path) OrElse IsUrl(item.Path) Then
                     AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
                 End If
             Next
@@ -1711,6 +1894,25 @@ Public Class Form1
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgTabRefreshError", "Tab yenileme hatası: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Hata"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    ' Mevcut .url ogelerini gercek URL ile gunceller; boylece kisayol dosyasi
+    ' silinse bile ogeler veritabaninda kalir ve calistirilabilir durumda olur.
+    Private Sub UpgradeUrlItems()
+        Try
+            Dim cats = DatabaseManager.GetCategories()
+            For Each cat In cats
+                For Each it In cat.Items
+                    If it.Path IsNot Nothing AndAlso it.Path.ToLower().EndsWith(".url") AndAlso IO.File.Exists(it.Path) Then
+                        Dim u = ReadUrlFromShortcut(it.Path)
+                        If Not String.IsNullOrEmpty(u) Then
+                            DatabaseManager.UpdateItemPath(cat.Name, it.Path, u)
+                        End If
+                    End If
+                Next
+            Next
+        Catch
         End Try
     End Sub
 
