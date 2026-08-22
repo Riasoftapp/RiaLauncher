@@ -197,7 +197,7 @@ For support, questions, or feedback:
 
 ## 👨‍💻 Author
 
-Created and maintained by Hikmet Alemdaçioğlu
+Created and maintained by Riasoft
 
 ## 🎉 Acknowledgments
 
