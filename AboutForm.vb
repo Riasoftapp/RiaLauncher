@@ -64,7 +64,7 @@ Public Class AboutForm
 
     Private Sub btnAnaSayfa_Click(sender As Object, e As EventArgs) Handles btnAnaSayfa.Click
         Try
-            Process.Start("https://github.com/hikmetalemdaroglu/999Projects/tree/winluncher-v1.2-release/ProjectVs/ProjectVb.net/winLuncher")
+            Process.Start("https://riasoft.net/en/rialauncher.html")
         Catch ex As Exception
             Dim msg As String = String.Format(Form1.langManager.GetText("MsgHomePageError", "Home page could not be opened: {0}"), ex.Message)
             MessageBox.Show(msg, Form1.langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -72,17 +72,9 @@ Public Class AboutForm
     End Sub
 
     Private Sub btnLisans_Click(sender As Object, e As EventArgs) Handles btnLisans.Click
-        Dim lisansBaslik As String = Form1.langManager.GetText("LicenseTitle", "RiaLauncher - License Terms")
-        Dim lisansFree As String = Form1.langManager.GetText("LicenseFree", "This software is free for personal and commercial use.")
-        Dim lisansRights As String = Form1.langManager.GetText("LicenseRights", "All rights reserved.")
-        Dim lisansAsIs As String = Form1.langManager.GetText("LicenseAsIs", "This software is provided ""AS IS"".")
-
-        Dim lisansMetni As String = lisansBaslik & vbCrLf & vbCrLf &
-                                    lisansFree & vbCrLf & vbCrLf &
-                                    lisansRights & vbCrLf & vbCrLf &
-                                    lisansAsIs
-
-        MessageBox.Show(lisansMetni, Form1.langManager.GetText("MenuYardimLisans", "License Terms"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Using f As New LicenseForm()
+            f.ShowDialog(Me)
+        End Using
     End Sub
 
     Private Sub btnKapat_Click(sender As Object, e As EventArgs) Handles btnKapat.Click

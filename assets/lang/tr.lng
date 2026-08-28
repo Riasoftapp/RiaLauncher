@@ -35,13 +35,16 @@ MenuAyarlar=Ayarlar
 
 ; Menu - Yardım
 MenuYardim=Yardım
-MenuYardimDokumanlar=Yardım
-MenuYardimDokumanIndir=Döküman İndir
-MenuYardimGuncellemeKontrol=Güncellemeleri Kontrol Et
+MenuYardimDokumanlar=Yardım Sayfası
+MenuYardimWeb=Web Sitesi
+MenuYardimWebSite=Rialauncher Web Sitesi
+MenuYardimGithub=Github Deposu
 MenuYardimLisans=Lisans Koşulları
-MenuYardimBagis=Bağış Yap
-MenuYardimAnaSayfa=Ana Sayfa
 MenuYardimHakkinda=Hakkında...
+MenuSystem=Sistem
+MenuSystemKlasor=RiaLauncher Klasörünü Aç
+MenuUpdate=Güncelleme
+MenuUpdateKontrol=Güncellemeleri Kontrol Et
 
 ; Context Menu - Item
 MenuItemLaunch=Başlat
@@ -177,10 +180,7 @@ AboutBtnLisans=Lisans Koşulları
 AboutBtnKapat=Kapat
 
 ; License Text
-LicenseTitle=RiaLauncher - Lisans Koşulları
 LicenseFree=Bu yazılım kişisel ve ticari kullanım için ücretsizdir.
-LicenseRights=Tüm hakları saklıdır.
-LicenseAsIs=Bu yazılım ""OLDUĞU GİBİ"" sağlanmaktadır.
 
 ; Settings Form
 SettingsTitle=Ayarlar

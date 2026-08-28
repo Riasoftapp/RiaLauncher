@@ -1,5 +1,3 @@
-﻿RiaLauncher v2.0.0.7
+﻿RiaLauncher v2.0.0.18
 
-1. URL items now store the real URL instead of the .url shortcut path.
-2. Deleting the .url shortcut no longer removes the item from the database; it remains launchable.
-3. Existing .url items are upgraded to real URLs on startup.
+1. Fixed drag & drop of a web browser URL into RiaLauncher. The drop was rejected because only ANSI "Text" was accepted, while browsers provide the URL as UnicodeText / text/uri-list / HTML Format. Now all these formats are recognized and the URL is added as a shortcut.

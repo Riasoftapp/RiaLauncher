@@ -117,6 +117,12 @@
     <Compile Include="AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LicenseForm.Designer.vb">
+      <DependentUpon>LicenseForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LicenseForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CopyMoveForm.Designer.vb">
       <DependentUpon>CopyMoveForm.vb</DependentUpon>
     </Compile>

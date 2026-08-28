@@ -484,11 +484,27 @@ LoadIni()
         End If
     End Sub
 
+    ' Veritabanındaki bir öğeyi ekrana ekler.
+    ' - http(s) ile başlayanlar (URL) her zaman gösterilir.
+    ' - Dosya/klasör diskte varsa normal gösterilir.
+    ' - Bunların dışında kalanlar (diskte olmayan programlar) "unavailable"
+    '   ikonuyla ve adına " (missing)" eklenerek gösterilir.
+    Private Sub AddDbItem(flowPanel As FlowLayoutPanel, item As DatabaseManager.DbItem, unavailableIcon As String)
+        If IsUrl(item.Path) Then
+            AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
+        ElseIf File.Exists(item.Path) OrElse Directory.Exists(item.Path) Then
+            AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
+        Else
+            AddLauncherItem(flowPanel, item.Name & " (missing)", item.Path, item.IconPath, unavailableIcon)
+        End If
+    End Sub
+
     Private Sub LoadDataFromDb()
         Try
             TabControl1.TabPages.Clear()
 
             Dim categories = DatabaseManager.GetCategories()
+            Dim unavailableIcon As String = IO.Path.Combine(sIconDir, "unavailable24.png")
 
             For Each cat In categories
                 Dim newTab As New TabPage(cat.Name)
@@ -504,9 +520,7 @@ LoadIni()
                 AddHandler flowPanel.DragDrop, AddressOf FlowPanel_DragDrop
 
                 For Each item In cat.Items
-                    If File.Exists(item.Path) OrElse Directory.Exists(item.Path) Then
-                        AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
-                    End If
+                    AddDbItem(flowPanel, item, unavailableIcon)
                 Next
 
                 newTab.Controls.Add(flowPanel)
@@ -540,11 +554,7 @@ LoadIni()
     End Sub
 
     Private Sub FlowPanel_DragEnter(sender As Object, e As DragEventArgs)
-        ' FileDrop (dosya), Text (metin), Shell IDList Array (Denetim Masası, vb.) ve diğer format'ları accept et
-        If e.Data.GetDataPresent(DataFormats.FileDrop) OrElse
-            e.Data.GetDataPresent(DataFormats.Text) OrElse
-            e.Data.GetDataPresent("Shell IDList Array") OrElse
-            e.Data.GetDataPresent("FileGroupDescriptorW") Then
+        If HasUrlDragData(e) Then
             e.Effect = DragDropEffects.Copy
         Else
             e.Effect = DragDropEffects.None
@@ -552,9 +562,10 @@ LoadIni()
     End Sub
 
     Private Sub FlowPanel_DragDrop(sender As Object, e As DragEventArgs)
-        Dim flowPanel As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
+        Dim flowPanel As FlowLayoutPanel = GetFlowPanel(sender)
+        If flowPanel Is Nothing Then Return
 
-        ' Dosya sürükle-bırak (Windows Explorer'dan)
+        ' 1) Dosya sürükle-bırak (Windows Explorer / masaüstü .url, .lnk, uygulama, klasör)
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
 
@@ -564,18 +575,138 @@ LoadIni()
 
                 If Path.GetExtension(filePath).ToLower() = ".url" Then
                     Dim url As String = ReadUrlFromShortcut(filePath)
-                    If Not String.IsNullOrEmpty(url) Then targetPath = url
+                    If IsUrl(url) Then targetPath = url
                 ElseIf Path.GetExtension(filePath).ToLower() = ".lnk" Then
-                    targetPath = ResolveShortcut(filePath)
-                    If String.IsNullOrEmpty(targetPath) Then targetPath = filePath
+                    Dim t As String = ResolveShortcut(filePath)
+                    If Not String.IsNullOrEmpty(t) Then targetPath = t
                 End If
 
                 AddLauncherItem(flowPanel, itemName, targetPath, "")
             Next
 
             SaveDataToDb()
+        Else
+            ' 2) Doğrudan URL bırakıldı (tarayıcı adres çubuğu, bağlantı sürükleme,
+            '    masaüstü .url sanal dosyası, vb.). Mevcut tüm format'lardan ilk geçerli
+            '    http(s) adresini bulur.
+            Dim url As String = ExtractUrlFromDragData(e)
+            If IsUrl(url) Then AddUrlItem(flowPanel, url)
         End If
     End Sub
+
+    ' Metin içinden ilk geçerli http/https adresini bulur.
+    ' (düz URL, "URL=...", ya da <a href="..."> içeren HTML olabilir)
+    Private Function ExtractUrlFromText(text As String) As String
+        If String.IsNullOrEmpty(text) Then Return ""
+        Dim idx As Integer = text.IndexOf("https://", StringComparison.OrdinalIgnoreCase)
+        If idx < 0 Then idx = text.IndexOf("http://", StringComparison.OrdinalIgnoreCase)
+        If idx < 0 Then Return ""
+        Dim rest As String = text.Substring(idx)
+        Dim endIdx As Integer = rest.IndexOfAny(New Char() {ControlChars.Cr, ControlChars.Lf, " "c, vbTab, """"c, ">"c, "<"c, ")"c, "}"c, ";"c})
+        If endIdx >= 0 Then rest = rest.Substring(0, endIdx)
+        Return rest.Trim()
+    End Function
+
+    ' Sürükleme verisinde kabul edilebilir bir URL/dosya formatı var mı?
+    Private Function HasUrlDragData(e As DragEventArgs) As Boolean
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then Return True
+
+        For Each fmt In e.Data.GetFormats()
+            If fmt = "HTML Format" OrElse
+               fmt = "UniformResourceLocator" OrElse
+               fmt = "UniformResourceLocatorW" OrElse
+               fmt = "text/uri-list" OrElse
+               fmt = DataFormats.UnicodeText OrElse
+               fmt = DataFormats.Text OrElse
+               fmt = DataFormats.StringFormat OrElse
+               fmt = "FileGroupDescriptorW" OrElse
+               fmt = "Shell IDList Array" Then
+                Return True
+            End If
+        Next
+
+        Return False
+    End Function
+
+    ' Sürükleme verisindeki tüm olası format'lardan ilk geçerli http(s) adresini çıkarır.
+    ' Tarayıcılar URL'yi genellikle UnicodeText, text/uri-list veya HTML Format olarak verir;
+    ' bunların hiçbiri eski kodda denenmiyordu (sadece ANSI Text), bu yüzden bırakma reddediliyordu.
+    Private Function ExtractUrlFromDragData(e As DragEventArgs) As String
+        ' Öncelik sırasıyla denenecek bilinen metin tabanlı formatlar
+        Dim tryFormats As New List(Of String) From {
+            DataFormats.Text,
+            DataFormats.UnicodeText,
+            DataFormats.StringFormat,
+            "text/uri-list",
+            "HTML Format",
+            "UniformResourceLocator",
+            "UniformResourceLocatorW",
+            "FileContents"
+        }
+
+        For Each fmt In tryFormats
+            If e.Data.GetDataPresent(fmt) Then
+                Dim s As String = TryCast(e.Data.GetData(fmt), String)
+                If s Is Nothing Then
+                    Dim stream = TryCast(e.Data.GetData(fmt), IO.Stream)
+                    If stream IsNot Nothing Then
+                        Try
+                            Using r = New IO.StreamReader(stream)
+                                s = r.ReadToEnd()
+                            End Using
+                        Catch
+                        End Try
+                    End If
+                End If
+                If s IsNot Nothing Then
+                    Dim candidate As String = ExtractUrlFromText(s)
+                    If IsUrl(candidate) Then Return candidate
+                End If
+            End If
+        Next
+
+        ' Fallback: mevcut tüm formatları tara (bilinmeyen tarayıcı formatları için)
+        For Each fmt In e.Data.GetFormats()
+            Try
+                Dim obj = e.Data.GetData(fmt)
+                Dim s As String = TryCast(obj, String)
+                If s Is Nothing Then
+                    Dim stream = TryCast(obj, IO.Stream)
+                    If stream IsNot Nothing Then
+                        Using r = New IO.StreamReader(stream)
+                            s = r.ReadToEnd()
+                        End Using
+                    End If
+                End If
+                If s IsNot Nothing AndAlso s.Length > 0 Then
+                    Dim candidate As String = ExtractUrlFromText(s)
+                    If IsUrl(candidate) Then Return candidate
+                End If
+            Catch
+            End Try
+        Next
+
+        Return ""
+    End Function
+
+    Private Sub AddUrlItem(flowPanel As FlowLayoutPanel, url As String)
+        If String.IsNullOrEmpty(url) Then Return
+        AddLauncherItem(flowPanel, UrlToName(url), url.Trim(), "")
+        SaveDataToDb()
+    End Sub
+
+    Private Function UrlToName(url As String) As String
+        Try
+            Dim u As New Uri(url)
+            For i As Integer = u.Segments.Length - 1 To 0 Step -1
+                Dim seg = u.Segments(i).TrimEnd("/"c)
+                If seg.Length > 0 Then Return Uri.UnescapeDataString(seg)
+            Next
+            Return u.Host
+        Catch
+            Return url
+        End Try
+    End Function
     Private Function ResolveShortcut(shortcutPath As String) As String
         Try
             Dim shell = CreateObject("WScript.Shell")
@@ -592,19 +723,45 @@ LoadIni()
                path.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
     End Function
 
+    ' Sürükle-bırak olayını tetikleyen kontrolden (öğe paneli, ikon, etiket) en yakın
+    ' FlowLayoutPanel'e ulaşır. Böylece bırakma boş alanda da, mevcut bir öğenin
+    ' üzerinde de olsa aynı akış çalışır.
+    Private Function GetFlowPanel(sender As Object) As FlowLayoutPanel
+        Dim c = TryCast(sender, Control)
+        While c IsNot Nothing
+            If TypeOf c Is FlowLayoutPanel Then Return DirectCast(c, FlowLayoutPanel)
+            c = c.Parent
+        End While
+        Return Nothing
+    End Function
+
     Private Function ReadUrlFromShortcut(shortcutPath As String) As String
         Try
-            For Each line In IO.File.ReadAllLines(shortcutPath)
-                Dim t = line.Trim()
-                If t.StartsWith("URL=", StringComparison.OrdinalIgnoreCase) Then
-                    Return t.Substring(4).Trim()
-                End If
+            Dim bytes = IO.File.ReadAllBytes(shortcutPath)
+            ' .url dosyaları bazen UTF-16 (Unicode) veya ANSI ile kaydedilir;
+            ' birkaç kodlamayla deneyip ilk bulunan http(s) adresini döndürelim.
+            Dim candidates As New List(Of String) From {
+                System.Text.Encoding.UTF8.GetString(bytes),
+                System.Text.Encoding.Unicode.GetString(bytes),
+                System.Text.Encoding.Default.GetString(bytes)
+            }
+            For Each content In candidates
+                For Each line In content.Split(New Char() {ControlChars.Cr, ControlChars.Lf}, StringSplitOptions.RemoveEmptyEntries)
+                    Dim t = line.Trim()
+                    If t.StartsWith("URL", StringComparison.OrdinalIgnoreCase) Then
+                        Dim eq = t.IndexOf("="c)
+                        If eq >= 0 Then
+                            Dim u = t.Substring(eq + 1).Trim()
+                            If IsUrl(u) Then Return u
+                        End If
+                    End If
+                Next
             Next
         Catch
         End Try
         Return ""
     End Function
-    Private Sub AddLauncherItem(flowPanel As FlowLayoutPanel, name As String, path As String, iconPath As String)
+    Private Sub AddLauncherItem(flowPanel As FlowLayoutPanel, name As String, path As String, iconPath As String, Optional forcedIconPath As String = "")
         Dim itemPanel As New Panel With {
             .Width = 80,
             .Height = 100,
@@ -625,9 +782,15 @@ LoadIni()
         Dim imageExtensions() As String = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"}
         Dim extension As String = IO.Path.GetExtension(path).ToLower()
 
-        If IsUrl(path) Then
-            ' URL ogeleri icin web ikonu (home24.png)
-            Dim webIconPath As String = IO.Path.Combine(sIconDir, "home24.png")
+        If Not String.IsNullOrEmpty(forcedIconPath) AndAlso IO.File.Exists(forcedIconPath) Then
+            ' Zorunlu ikon (ör. diskte olmayan öğeler için "unavailable" ikonu)
+            Try
+                picBox.Image = New Bitmap(forcedIconPath)
+            Catch
+            End Try
+        ElseIf IsUrl(path) Then
+            ' URL ogeleri icin web ikonu (web48.png)
+            Dim webIconPath As String = IO.Path.Combine(sIconDir, "web48.png")
             If IO.File.Exists(webIconPath) Then
                 Try
                     picBox.Image = New Bitmap(webIconPath)
@@ -745,6 +908,19 @@ LoadIni()
         itemPanel.Controls.Add(picBox)
         itemPanel.Controls.Add(lblName)
         flowPanel.Controls.Add(itemPanel)
+
+        ' Öğe paneli ve alt kontrolleri de sürükle-bırak hedefi olsun; böylece
+        ' bir öğenin / ikonun üzerine bırakıldığında "yasak" imleci çıkmaz.
+        ' Olaylar üst FlowLayoutPanel'e yönlendirilir.
+        itemPanel.AllowDrop = True
+        picBox.AllowDrop = True
+        lblName.AllowDrop = True
+        AddHandler itemPanel.DragEnter, AddressOf FlowPanel_DragEnter
+        AddHandler itemPanel.DragDrop, AddressOf FlowPanel_DragDrop
+        AddHandler picBox.DragEnter, AddressOf FlowPanel_DragEnter
+        AddHandler picBox.DragDrop, AddressOf FlowPanel_DragDrop
+        AddHandler lblName.DragEnter, AddressOf FlowPanel_DragEnter
+        AddHandler lblName.DragDrop, AddressOf FlowPanel_DragDrop
     End Sub
     Private Function ExtractIcon(filePath As String, customIconPath As String) As Icon
         Try
@@ -1022,15 +1198,24 @@ LoadIni()
         Dim itemPath As String = itemData.Path
 
         Try
-            If File.Exists(itemPath) Then
+            If IsUrl(itemPath) Then
+                ' URL öğeleri için Explorer'da Aç anlamsız; işlem yapma
+                Return
+            ElseIf File.Exists(itemPath) Then
                 ' Dosya ise, dosyanın bulunduğu klasörü aç ve dosyayı seç
                 Process.Start("explorer.exe", "/select,""" & itemPath & """")
             ElseIf Directory.Exists(itemPath) Then
                 ' Klasör ise, direkt klasörü aç
                 Process.Start("explorer.exe", itemPath)
             Else
-                Dim msg As String = String.Format(langManager.GetText("MsgFileOrFolderNotFound", "File or folder not found: {0}"), itemPath)
-                MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ' Dosya/klasör silinmiş olabilir: üst klasörü yine de aç
+                Dim parentDir As String = IO.Path.GetDirectoryName(itemPath)
+                If Not String.IsNullOrEmpty(parentDir) AndAlso Directory.Exists(parentDir) Then
+                    Process.Start("explorer.exe", parentDir)
+                Else
+                    Dim msg As String = String.Format(langManager.GetText("MsgFileOrFolderNotFound", "File or folder not found: {0}"), itemPath)
+                    MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
             End If
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgOpenFolderError", "An error occurred while opening the folder: {0}"), ex.Message)
@@ -1120,13 +1305,16 @@ LoadIni()
 
         REM MenuAyarlar.Text = langManager.GetText("MenuAyarlar", "&Settings")
 
+        MenuSystem.Text = langManager.GetText("MenuSystem", "&System")
+        MenuSystemKlasor.Text = langManager.GetText("MenuSystemKlasor", "Open RiaLauncher &Folder")
+        MenuUpdate.Text = langManager.GetText("MenuUpdate", "&Update")
+        MenuUpdateKontrol.Text = langManager.GetText("MenuUpdateKontrol", "Check for &Updates")
         MenuYardim.Text = langManager.GetText("MenuYardim", "&Help")
-        MenuYardimDokumanlar.Text = langManager.GetText("MenuYardimDokumanlar", "&Help")
-        MenuYardimDokumanIndir.Text = langManager.GetText("MenuYardimDokumanIndir", "&Download Docs")
-        MenuYardimGuncellemeKontrol.Text = langManager.GetText("MenuYardimGuncellemeKontrol", "Check for &Updates")
+        MenuYardimDokumanlar.Text = langManager.GetText("MenuYardimDokumanlar", "&Help Page")
+        MenuYardimWeb.Text = langManager.GetText("MenuYardimWeb", "&Web Site")
+        MenuYardimWebSite.Text = langManager.GetText("MenuYardimWebSite", "Rialauncher &Web Site")
+        MenuYardimGithub.Text = langManager.GetText("MenuYardimGithub", "&Github Repo")
         MenuYardimLisans.Text = langManager.GetText("MenuYardimLisans", "&License Terms")
-        MenuYardimBagis.Text = langManager.GetText("MenuYardimBagis", "&Donate")
-        MenuYardimAnaSayfa.Text = langManager.GetText("MenuYardimAnaSayfa", "Home &Page")
         MenuYardimHakkinda.Text = langManager.GetText("MenuYardimHakkinda", "&About...")
 
         ' Context Menu - Item
@@ -1346,9 +1534,6 @@ LoadIni()
             If currentTabIndex < TabControl1.TabPages.Count Then
                 TabControl1.SelectedIndex = currentTabIndex
             End If
-
-            Dim msg As String = String.Format(langManager.GetText("MsgTabRefreshed", "'{0}' tab refreshed."), currentTabName)
-            MessageBox.Show(msg, langManager.GetText("MsgInfo", "Information"), MessageBoxButtons.OK, MessageBoxIcon.Information)
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgTabRefreshError", "Tab refresh error: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1506,92 +1691,55 @@ LoadIni()
     End Function
 
     ' ============================================
-    ' Yardım Menu Event Handlers
+    ' System / Update / Help Menu Event Handlers
     ' ============================================
 
-    Private Sub MenuYardimDokumanlar_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanlar.Click
+    Private Sub MenuSystemKlasor_Click(sender As Object, e As EventArgs) Handles MenuSystemKlasor.Click
         Try
-            ' ComboLang'dan seçili dili al
-            Dim selectedLang As String = If(ComboLang.SelectedValue IsNot Nothing, ComboLang.SelectedValue.ToString(), "")
-
-            ' Eğer seçili dil Türkçe ise Türkçe help dosyasını aç
-            Dim helpFileName As String = If(selectedLang = "tr", "RiaLauncherHelp-tr.html", "RiaLauncherHelp-tr.html")
-            Dim helpPath As String = IO.Path.Combine(sHelpDir, helpFileName)
-
-            If IO.File.Exists(helpPath) Then
-                System.Diagnostics.Process.Start(helpPath)
-            Else
-                MessageBox.Show("Help dosyası bulunamadı: " & helpPath, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            If Not String.IsNullOrEmpty(sRootDir) AndAlso Directory.Exists(sRootDir) Then
+                Process.Start("explorer.exe", sRootDir)
             End If
         Catch ex As Exception
-            MessageBox.Show("Help dosyası açılırken hata oluştu: " & ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Dim msg As String = String.Format(langManager.GetText("MsgOpenFolderError", "An error occurred while opening the folder: {0}"), ex.Message)
+            MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub MenuYardimDokumanIndir_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanIndir.Click
-        Try
-            ' Aktif dile göre doğru dökümanı aç
-            Dim currentLang As String = langManager.GetCurrentLanguage()
-            Dim docFileName As String = If(currentLang = "tr", "KullanımKlavuzu.md", "UserManual.md")
-            Dim docPath As String = IO.Path.Combine(sAssetDir, "documentation", docFileName)
+    Private Sub MenuUpdateKontrol_Click(sender As Object, e As EventArgs) Handles MenuUpdateKontrol.Click
+        CheckForUpdates(True)
+    End Sub
 
-            If IO.File.Exists(docPath) Then
-                ' MD dosyasını varsayılan editör ile aç
-                Process.Start(docPath)
-            Else
-                ' Dosya yoksa GitHub sayfasını aç
-                Process.Start("https://github.com/hikmetalemdaroglu/999Projects/wiki")
-            End If
+    Private Sub MenuYardimDokumanlar_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanlar.Click
+        Try
+            Process.Start("https://riasoft.net/assets/docs/rialauncher/RiaLauncherHelp-en.html?lang=en")
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgHelpDocError", "The document page could not be opened: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub MenuYardimGuncellemeKontrol_Click(sender As Object, e As EventArgs) Handles MenuYardimGuncellemeKontrol.Click
-        CheckForUpdates(True)
+    Private Sub MenuYardimWebSite_Click(sender As Object, e As EventArgs) Handles MenuYardimWebSite.Click
+        Try
+            Process.Start("https://riasoft.net/en/rialauncher.html")
+        Catch ex As Exception
+            Dim msg As String = String.Format(langManager.GetText("MsgWebSiteError", "Website could not be opened: {0}"), ex.Message)
+            MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub MenuYardimGithub_Click(sender As Object, e As EventArgs) Handles MenuYardimGithub.Click
+        Try
+            Process.Start("https://github.com/Riasoftapp/RiaLauncher")
+        Catch ex As Exception
+            Dim msg As String = String.Format(langManager.GetText("MsgWebSiteError", "Website could not be opened: {0}"), ex.Message)
+            MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub MenuYardimLisans_Click(sender As Object, e As EventArgs) Handles MenuYardimLisans.Click
-        Dim lisansBaslik As String = langManager.GetText("LicenseTitle", "WinLauncher - Personal Use License")
-        Dim lisansFree As String = langManager.GetText("LicenseFree", "This software is free for personal use.")
-        Dim lisansCopyright As String = langManager.GetText("AboutCopyright", "© 2024-2025 Hikmet Alp Alemdaroğlu")
-        Dim lisansRights As String = langManager.GetText("LicenseRights", "All rights reserved.")
-        Dim lisansAsIs As String = langManager.GetText("LicenseAsIs", "This software is provided ""AS IS"".")
-
-        Dim lisansMetni As String = lisansBaslik & vbCrLf & vbCrLf &
-                                    lisansFree & vbCrLf & vbCrLf &
-                                    lisansCopyright & vbCrLf & vbCrLf &
-                                    lisansRights & vbCrLf & vbCrLf &
-                                    lisansAsIs
-
-        MessageBox.Show(lisansMetni, langManager.GetText("MenuYardimLisans", "License Terms"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-    End Sub
-
-    Private Sub MenuYardimBagis_Click(sender As Object, e As EventArgs) Handles MenuYardimBagis.Click
-        Dim bagisMsg As String = langManager.GetText("MsgDonateMessage", "If you like the WinLauncher project," & vbCrLf &
-                                 "you can donate to support its development." & vbCrLf & vbCrLf &
-                                 "GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu" & vbCrLf & vbCrLf &
-                                 "Thank you! ??")
-
-        Dim result = MessageBox.Show(bagisMsg, langManager.GetText("MsgDonateTitle", "Donate"), MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-        If result = DialogResult.OK Then
-            Try
-                Process.Start("https://github.com/sponsors/hikmetalemdaroglu")
-            Catch ex As Exception
-                Dim errMsg As String = String.Format(langManager.GetText("MsgDonateError", "The donation page could not be opened: {0}"), ex.Message)
-                MessageBox.Show(errMsg, langManager.GetText("MsgError", "Hata"), MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-        End If
-    End Sub
-
-    Private Sub MenuYardimAnaSayfa_Click(sender As Object, e As EventArgs) Handles MenuYardimAnaSayfa.Click
-        Try
-            Process.Start("https://github.com/hikmetalemdaroglu/999Projects/tree/winluncher-v1.2-release/ProjectVs/ProjectVb.net/winLuncher")
-        Catch ex As Exception
-            Dim msg As String = String.Format(langManager.GetText("MsgHomePageError", "Ana sayfa açılamadı: {0}"), ex.Message)
-            MessageBox.Show(msg, langManager.GetText("MsgError", "Hata"), MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+        Using f As New LicenseForm()
+            f.ShowDialog(Me)
+        End Using
     End Sub
 
     Private Sub MenuYardimHakkinda_Click(sender As Object, e As EventArgs) Handles MenuYardimHakkinda.Click
@@ -1681,7 +1829,7 @@ LoadIni()
     ' ============================================
 
     Private Sub FlowPanel_DragOver(sender As Object, e As DragEventArgs)
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+        If HasUrlDragData(e) Then
             e.Effect = DragDropEffects.Copy
         Else
             e.Effect = DragDropEffects.None
@@ -1884,11 +2032,10 @@ LoadIni()
             flowPanel.Controls.Clear()
 
             Dim items = DatabaseManager.GetItemsByCategory(tab.Text)
+            Dim unavailableIcon As String = IO.Path.Combine(sIconDir, "unavailable24.png")
 
             For Each item In items
-                If File.Exists(item.Path) OrElse Directory.Exists(item.Path) OrElse IsUrl(item.Path) Then
-                    AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
-                End If
+                AddDbItem(flowPanel, item, unavailableIcon)
             Next
 
         Catch ex As Exception

@@ -72,15 +72,16 @@ Partial Class Form1
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuToolsComputerName = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuToolsIPAddress = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuSystem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuSystemKlasor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuUpdate = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuUpdateKontrol = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuYardim = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuYardimDokumanlar = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuYardimDokumanIndir = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuYardimGuncellemeKontrol = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuYardimWeb = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuYardimWebSite = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuYardimGithub = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuYardimLisans = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.MenuYardimBagis = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuYardimAnaSayfa = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuYardimHakkinda = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContextMenuStripTab = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MenuTabYeni = New System.Windows.Forms.ToolStripMenuItem()
@@ -291,7 +292,7 @@ Partial Class Form1
         Me.MenuStrip1.AutoSize = False
         Me.MenuStrip1.BackColor = System.Drawing.Color.Transparent
         Me.MenuStrip1.Dock = System.Windows.Forms.DockStyle.None
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuDosya, Me.MenuSekmeler, Me.MenuSiralama, Me.MenuTools, Me.MenuYardim})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuDosya, Me.MenuSekmeler, Me.MenuSiralama, Me.MenuTools, Me.MenuSystem, Me.MenuUpdate, Me.MenuYardim})
         Me.MenuStrip1.Location = New System.Drawing.Point(1, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(478, 27)
@@ -452,63 +453,74 @@ Partial Class Form1
         Me.MenuToolsIPAddress.Size = New System.Drawing.Size(223, 22)
         Me.MenuToolsIPAddress.Text = "Show IP Addresses"
         '
+        'MenuSystem
+        '
+        Me.MenuSystem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuSystemKlasor})
+        Me.MenuSystem.Name = "MenuSystem"
+        Me.MenuSystem.Size = New System.Drawing.Size(53, 23)
+        Me.MenuSystem.Text = "&System"
+        '
+        'MenuSystemKlasor
+        '
+        Me.MenuSystemKlasor.Name = "MenuSystemKlasor"
+        Me.MenuSystemKlasor.Size = New System.Drawing.Size(200, 22)
+        Me.MenuSystemKlasor.Text = "Open RiaLauncher &Folder"
+        '
+        'MenuUpdate
+        '
+        Me.MenuUpdate.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuUpdateKontrol})
+        Me.MenuUpdate.Name = "MenuUpdate"
+        Me.MenuUpdate.Size = New System.Drawing.Size(53, 23)
+        Me.MenuUpdate.Text = "&Update"
+        '
+        'MenuUpdateKontrol
+        '
+        Me.MenuUpdateKontrol.Name = "MenuUpdateKontrol"
+        Me.MenuUpdateKontrol.Size = New System.Drawing.Size(200, 22)
+        Me.MenuUpdateKontrol.Text = "Check for &Updates"
+        '
         'MenuYardim
         '
-        Me.MenuYardim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuYardimDokumanlar, Me.MenuYardimDokumanIndir, Me.MenuYardimGuncellemeKontrol, Me.MenuYardimLisans, Me.ToolStripSeparator2, Me.MenuYardimBagis, Me.MenuYardimAnaSayfa, Me.ToolStripSeparator3, Me.MenuYardimHakkinda})
+        Me.MenuYardim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuYardimDokumanlar, Me.MenuYardimWeb, Me.MenuYardimLisans, Me.MenuYardimHakkinda})
         Me.MenuYardim.Name = "MenuYardim"
         Me.MenuYardim.Size = New System.Drawing.Size(44, 23)
         Me.MenuYardim.Text = "&Help"
         '
-        'MenuYardimDokumanlar
+        'MenuYardimDokumanlar (Help Page)
         '
         Me.MenuYardimDokumanlar.Name = "MenuYardimDokumanlar"
-        Me.MenuYardimDokumanlar.Size = New System.Drawing.Size(171, 22)
-        Me.MenuYardimDokumanlar.Text = "&Help"
+        Me.MenuYardimDokumanlar.Size = New System.Drawing.Size(180, 22)
+        Me.MenuYardimDokumanlar.Text = "&Help Page"
         '
-        'MenuYardimDokumanIndir
+        'MenuYardimWeb (Web Site)
         '
-        Me.MenuYardimDokumanIndir.Name = "MenuYardimDokumanIndir"
-        Me.MenuYardimDokumanIndir.Size = New System.Drawing.Size(171, 22)
-        Me.MenuYardimDokumanIndir.Text = "&Download Docs"
+        Me.MenuYardimWeb.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuYardimWebSite, Me.MenuYardimGithub})
+        Me.MenuYardimWeb.Name = "MenuYardimWeb"
+        Me.MenuYardimWeb.Size = New System.Drawing.Size(180, 22)
+        Me.MenuYardimWeb.Text = "&Web Site"
         '
-        'MenuYardimGuncellemeKontrol
+        'MenuYardimWebSite
         '
-        Me.MenuYardimGuncellemeKontrol.Name = "MenuYardimGuncellemeKontrol"
-        Me.MenuYardimGuncellemeKontrol.Size = New System.Drawing.Size(171, 22)
-        Me.MenuYardimGuncellemeKontrol.Text = "Check for &Updates"
+        Me.MenuYardimWebSite.Name = "MenuYardimWebSite"
+        Me.MenuYardimWebSite.Size = New System.Drawing.Size(200, 22)
+        Me.MenuYardimWebSite.Text = "Rialauncher &Web Site"
+        '
+        'MenuYardimGithub
+        '
+        Me.MenuYardimGithub.Name = "MenuYardimGithub"
+        Me.MenuYardimGithub.Size = New System.Drawing.Size(200, 22)
+        Me.MenuYardimGithub.Text = "&Github Repo"
         '
         'MenuYardimLisans
         '
         Me.MenuYardimLisans.Name = "MenuYardimLisans"
-        Me.MenuYardimLisans.Size = New System.Drawing.Size(171, 22)
+        Me.MenuYardimLisans.Size = New System.Drawing.Size(180, 22)
         Me.MenuYardimLisans.Text = "&License Terms"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(168, 6)
-        '
-        'MenuYardimBagis
-        '
-        Me.MenuYardimBagis.Name = "MenuYardimBagis"
-        Me.MenuYardimBagis.Size = New System.Drawing.Size(171, 22)
-        Me.MenuYardimBagis.Text = "&Donate"
-        '
-        'MenuYardimAnaSayfa
-        '
-        Me.MenuYardimAnaSayfa.Name = "MenuYardimAnaSayfa"
-        Me.MenuYardimAnaSayfa.Size = New System.Drawing.Size(171, 22)
-        Me.MenuYardimAnaSayfa.Text = "Home &Page"
-        '
-        'ToolStripSeparator3
-        '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(168, 6)
         '
         'MenuYardimHakkinda
         '
         Me.MenuYardimHakkinda.Name = "MenuYardimHakkinda"
-        Me.MenuYardimHakkinda.Size = New System.Drawing.Size(171, 22)
+        Me.MenuYardimHakkinda.Size = New System.Drawing.Size(180, 22)
         Me.MenuYardimHakkinda.Text = "&About..."
         '
         'ContextMenuStripTab
@@ -647,15 +659,16 @@ Partial Class Form1
     Friend WithEvents ToolStripSeparator6 As ToolStripSeparator
     Friend WithEvents MenuToolsComputerName As ToolStripMenuItem
     Friend WithEvents MenuToolsIPAddress As ToolStripMenuItem
+    Friend WithEvents MenuSystem As ToolStripMenuItem
+    Friend WithEvents MenuSystemKlasor As ToolStripMenuItem
+    Friend WithEvents MenuUpdate As ToolStripMenuItem
+    Friend WithEvents MenuUpdateKontrol As ToolStripMenuItem
     Friend WithEvents MenuYardim As ToolStripMenuItem
     Friend WithEvents MenuYardimDokumanlar As ToolStripMenuItem
-    Friend WithEvents MenuYardimDokumanIndir As ToolStripMenuItem
-    Friend WithEvents MenuYardimGuncellemeKontrol As ToolStripMenuItem
+    Friend WithEvents MenuYardimWeb As ToolStripMenuItem
+    Friend WithEvents MenuYardimWebSite As ToolStripMenuItem
+    Friend WithEvents MenuYardimGithub As ToolStripMenuItem
     Friend WithEvents MenuYardimLisans As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
-    Friend WithEvents MenuYardimBagis As ToolStripMenuItem
-    Friend WithEvents MenuYardimAnaSayfa As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     Friend WithEvents MenuYardimHakkinda As ToolStripMenuItem
     Friend WithEvents ContextMenuStripTab As ContextMenuStrip
     Friend WithEvents MenuTabYeni As ToolStripMenuItem

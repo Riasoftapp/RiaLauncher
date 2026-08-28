@@ -69,10 +69,20 @@ Public Class PropertiesForm
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
         Try
-            If File.Exists(itemPath) Then
+            If itemPath.StartsWith("http://", StringComparison.OrdinalIgnoreCase) OrElse
+               itemPath.StartsWith("https://", StringComparison.OrdinalIgnoreCase) Then
+                ' URL öğeleri için Explorer'da Aç anlamsız; işlem yapma
+                Return
+            ElseIf File.Exists(itemPath) Then
                 Process.Start("explorer.exe", "/select,""" & itemPath & """")
             ElseIf Directory.Exists(itemPath) Then
                 Process.Start("explorer.exe", itemPath)
+            Else
+                ' Dosya/klasör silinmiş olabilir: üst klasörü yine de aç
+                Dim parentDir As String = Path.GetDirectoryName(itemPath)
+                If Not String.IsNullOrEmpty(parentDir) AndAlso Directory.Exists(parentDir) Then
+                    Process.Start("explorer.exe", parentDir)
+                End If
             End If
         Catch ex As Exception
         End Try

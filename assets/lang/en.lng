@@ -35,13 +35,16 @@ MenuAyarlar=Settings
 
 ; Menu - Help
 MenuYardim=Help
-MenuYardimDokumanlar=Help
-MenuYardimDokumanIndir=Download Documentation
-MenuYardimGuncellemeKontrol=Check for Updates
+MenuYardimDokumanlar=Help Page
+MenuYardimWeb=Web Site
+MenuYardimWebSite=Rialauncher Web Site
+MenuYardimGithub=Github Repo
 MenuYardimLisans=License Terms
-MenuYardimBagis=Donate
-MenuYardimAnaSayfa=Home Page
 MenuYardimHakkinda=About...
+MenuSystem=System
+MenuSystemKlasor=Open RiaLauncher Folder
+MenuUpdate=Update
+MenuUpdateKontrol=Check for Updates
 
 ; Context Menu - Item
 MenuItemLaunch=Launch
@@ -177,10 +180,7 @@ AboutBtnLisans=License Terms
 AboutBtnKapat=Close
 
 ; License Text
-LicenseTitle=RiaLauncher - License Terms
 LicenseFree=This software is free for personal and commercial use.
-LicenseRights=All rights reserved.
-LicenseAsIs=This software is provided ""AS IS"".
 
 ; Settings Form
 SettingsTitle=Settings
