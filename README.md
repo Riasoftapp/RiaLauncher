@@ -29,9 +29,38 @@ A modern, feature-rich application launcher for Windows built with VB.NET and Wi
 - .NET Framework 4.7.2 or higher
 
 ### Installation
-1. Download the latest release from the [Releases](https://github.com/hikmetalemdaroglu/RiaLauncher/releases) page
-2. Extract the files to your desired location
+
+Installer (recommended):
+1. Download `RiaLauncher-<version>-Setup.exe` from the [Releases](https://github.com/Riasoftapp/RiaLauncher/releases) page
+2. Run it and pick the folder you want. The installer needs no administrator rights,
+   can create desktop and Start Menu shortcuts, and can be removed from Windows
+   "Apps & features".
+
+Portable:
+1. Download `RiaLauncher.zip` from the same release page
+2. Extract the files to the location of your choice
 3. Run `RiaLauncher.exe`
+
+Every release lists the SHA-256 checksum of the installer. Because the installer is
+not digitally signed yet, Windows SmartScreen may show a "Windows protected your PC"
+prompt: choose **More info** and then **Run anyway**.
+
+### Building from source
+
+- Visual Studio 2019/2022 with the .NET Framework 4.7.2 SDK, or on the command line:
+  ```
+  nuget restore RiaLauncher.vbproj -PackagesDirectory ..\packages
+  msbuild RiaLauncher.vbproj /p:Configuration=Release /p:Platform=AnyCPU
+  iscc setup\RiaLauncher.iss
+  ```
+- The GitHub Actions workflow in `.github/workflows/build.yml` builds the application,
+  creates the installer and the portable zip, and attaches both to tagged releases.
+
+### Code signing policy
+
+See [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md).
+
+Free code signing provided by SignPath.io, certificate by SignPath Foundation.
 
 ### First Use
 1. Create a new tab by right-clicking on the tab area
@@ -192,8 +221,8 @@ Contributions are welcome! Feel free to:
 ## 📫 Support
 
 For support, questions, or feedback:
-- Open an [Issue](https://github.com/hikmetalemdaroglu/RiaLauncher/issues) on GitHub
-- Check the [Discussions](https://github.com/hikmetalemdaroglu/RiaLauncher/discussions) section
+- Open an [Issue](https://github.com/Riasoftapp/RiaLauncher/issues) on GitHub
+- Check the [Discussions](https://github.com/Riasoftapp/RiaLauncher/discussions) section
 
 ## 👨‍💻 Author
 

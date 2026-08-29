@@ -1,0 +1,93 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        shell: cmd
+        run: nuget restore RiaLauncher.vbproj -PackagesDirectory "..\packages"
+
+      - name: Build RiaLauncher (Release)
+        shell: cmd
+        run: msbuild RiaLauncher.vbproj /p:Configuration=Release /p:Platform=AnyCPU /verbosity:minimal
+
+      - name: Install Inno Setup
+        shell: cmd
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer
+        shell: cmd
+        run: iscc "setup\RiaLauncher.iss"
+
+      - name: Create portable zip
+        shell: pwsh
+        run: Compress-Archive -Path "bin\Release\*" -DestinationPath "RiaLauncher.zip"
+
+      - name: Upload installer artifact
+        id: upload-setup
+        uses: actions/upload-artifact@v4
+        with:
+          name: RiaLauncher-Setup
+          path: setup\Output\RiaLauncher-*-Setup.exe
+          if-no-files-found: error
+
+      - name: Upload portable zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RiaLauncher-Portable
+          path: RiaLauncher.zip
+
+      # ------------------------------------------------------------------
+      # Code signing with SignPath.io / SignPath Foundation
+      # Enable this step once the SignPath Foundation application is
+      # approved and the project is configured there.
+      #
+      # Repository secrets needed:
+      #   SIGNPATH_API_TOKEN
+      #
+      # Values to copy from the SignPath project:
+      #   organization-id, project-slug, signing-policy-slug,
+      #   artifact-configuration-slug
+      #
+      # - name: Submit installer to SignPath
+      #   uses: signpath/github-action-submit-signing-request@v1
+      #   with:
+      #     api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+      #     organization-id: ""
+      #     project-slug: "RiaLauncher"
+      #     signing-policy-slug: "release-signing"
+      #     artifact-configuration-slug: ""
+      #     github-artifact-id: ${{ steps.upload-setup.outputs.artifact-id }}
+      #     wait-for-completion: true
+      #     output-artifact-directory: signed
+      # ------------------------------------------------------------------
+
+      - name: Attach files to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            setup\Output\RiaLauncher-*-Setup.exe
+            RiaLauncher.zip
