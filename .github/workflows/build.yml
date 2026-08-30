@@ -43,7 +43,7 @@ jobs:
 
       - name: Create portable zip
         shell: pwsh
-        run: Compress-Archive -Path "bin\Release\*" -DestinationPath "RiaLauncher.zip"
+        run: Compress-Archive -Path "bin\Release\*" -DestinationPath "RiaLauncher.zip" -Force
 
       - name: Upload installer artifact
         id: upload-setup
