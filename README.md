@@ -56,6 +56,11 @@ prompt: choose **More info** and then **Run anyway**.
 - The GitHub Actions workflow in `.github/workflows/build.yml` builds the application,
   creates the installer and the portable zip, and attaches both to tagged releases.
 
+### Privacy policy
+
+See [PRIVACY.md](PRIVACY.md). RiaLauncher stores all data locally and sends no
+telemetry; the only network request is the update check against this repository.
+
 ### Code signing policy
 
 See [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md).
