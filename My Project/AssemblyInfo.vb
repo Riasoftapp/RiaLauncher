@@ -1,4 +1,5 @@
-﻿Imports System
+﻿Imports System.Resources
+Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,7 +9,7 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("winLuncher")>
+<Assembly: AssemblyTitle("RiaLauncher")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("ReviOS 10 23.08")>
 <Assembly: AssemblyProduct("RiaLauncher")>
@@ -28,5 +29,6 @@ Imports System.Runtime.InteropServices
 '      Revision
 '
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("2.0.0.18")>
+<Assembly: AssemblyFileVersion("2.0.0.18")>
+<Assembly: NeutralResourcesLanguage("")>

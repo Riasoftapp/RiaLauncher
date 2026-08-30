@@ -1,213 +1,185 @@
-; WinLauncher Italian Language File
-; Format: Key=Value
-
-; Menu - File
-MenuDosya=File
-MenuDosyaCikis=Esci
-
-; Menu - Tabs
-MenuSekmeler=Schede
-MenuSekmelerYeni=Nuova Scheda
-MenuSekmelerAdDegistir=Rinomina Scheda
-MenuSekmelerSil=Elimina Scheda
-MenuSekmelerYenile=Aggiorna Scheda
-
-; Menu - Sorting
-MenuSiralama=Ordinamento
-MenuManuelSiralama=Ordinamento Manuale...
-
-; Menu - Tools
-MenuAraclar=Strumenti
-MenuToolsCmd=Prompt dei Comandi
-MenuToolsPowershell=PowerShell
-MenuToolsTaskMgr=Gestione Attività
-MenuToolsServices=Gestione Servizi
-MenuToolsShowDesktop=Mostra Desktop
-MenuToolsRestoreDesktop=Ripristina Desktop
-MenuToolsControlPanel=Pannello di Controllo
-MenuToolsNetworkCenter=Centro Reti e Condivisione
-MenuToolsDeviceManager=Gestione Dispositivi
-MenuToolsComputerName=Mostra Nome Computer
-MenuToolsIPAddress=Mostra Indirizzi IP
-
-; Menu - Settings
-MenuAyarlar=Impostazioni
-
-; Menu - Help
-MenuYardim=Aiuto
-MenuYardimDokumanlar=Aiuto
-MenuYardimDokumanIndir=Scarica Documentazione
-MenuYardimLisans=Condizioni di Licenza
-MenuYardimBagis=Dona
-MenuYardimAnaSayfa=Home Page
-MenuYardimHakkinda=Informazioni...
-
-; Context Menu - Item
-MenuItemLaunch=Avvia
-MenuItemCopyMove=Copia/Sposta...
-MenuItemRename=Rinomina
-MenuItemChangeIcon=Cambia Icona
-MenuItemUpdatePath=Aggiorna Percorso
-MenuItemOpenFolder=Mostra in Cartella
-MenuItemDelete=Elimina
-MenuItemProperties=Proprietà
-
-; Context Menu - Tab
-MenuTabYeni=Nuova Scheda
-MenuTabAdDegistir=Rinomina Scheda
-MenuTabSil=Elimina Scheda
-
-; Search Panel
-lblSearch=Cerca:
-btnSearch=Cerca
-
-; Messages - General
-MsgError=Errore
-MsgWarning=Avviso
-MsgInfo=Informazioni
-MsgConfirm=Conferma
-MsgSuccess=Successo
-MsgCopiedToClipboard=(Copiato negli Appunti)
-
-; Messages - Tools Menu
-MsgToolsCmdError=Impossibile aprire Prompt dei Comandi: {0}
-MsgToolsPowershellError=Impossibile aprire PowerShell: {0}
-MsgToolsTaskMgrError=Impossibile aprire Gestione Attività: {0}
-MsgToolsServicesError=Impossibile aprire Gestione Servizi: {0}
-MsgToolsShowDesktopError=Impossibile mostrare il desktop: {0}
-MsgToolsDesktopRestored=Desktop ripristinato.
-MsgToolsRestoreDesktopError=Impossibile ripristinare il desktop: {0}
-MsgToolsControlPanelError=Impossibile aprire Pannello di Controllo: {0}
-MsgToolsNetworkCenterError=Impossibile aprire Centro Reti e Condivisione: {0}
-MsgToolsDeviceManagerError=Impossibile aprire Gestione Dispositivi: {0}
-MsgToolsComputerName=Nome Computer: {0}
-MsgToolsComputerNameTitle=Nome Computer
-MsgToolsComputerNameError=Impossibile ottenere il nome del computer: {0}
-MsgToolsLocalIP=IP Locale: {0}
-MsgToolsRemoteIP=IP Remoto: {0}
-MsgToolsIPTitle=Indirizzi IP
-MsgToolsIPError=Impossibile ottenere gli indirizzi IP: {0}
 MsgToolsIPNotFound=Non trovato
-
-; Messages - Help Menu
-MsgHelpComingSoon=La documentazione di aiuto sarà aggiunta presto.
-MsgHelpTitle=Aiuto
-MsgHelpDocError=Impossibile aprire la pagina di documentazione: {0}
-MsgDonateTitle=Dona
-MsgDonateMessage=Se ami il progetto WinLauncher, puoi donare per supportare il suo sviluppo. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Grazie! 🙏
-MsgDonateError=Impossibile aprire la pagina di donazione: {0}
-MsgHomePageError=Impossibile aprire la home page: {0}
-
-; Messages - AboutForm
-MsgWebSiteError=Impossibile aprire il sito web: {0}
-MsgEmailError=Impossibile aprire l'applicazione di posta: {0}
-
-; Messages - Manual Sort
-MsgSortSaved=Ordinamento salvato con successo!
-MsgSortNoTabSelected=Seleziona prima una scheda.
-MsgSortNoItems=Nessun elemento da ordinare in questa scheda.
-
-; Messages - Copy/Move
-MsgCopyError=Errore di copia: {0}
-MsgMoveError=Errore di spostamento: {0}
-MsgCopyFailed=L'operazione di copia non è riuscita.
-MsgMoveFailed=L'operazione di spostamento non è riuscita.
-MsgCannotMoveSameTab=Impossibile spostare l'elemento all'interno della stessa scheda.
-
-; Messages - Tab Operations
-MsgTabRefreshError=Errore di aggiornamento scheda: {0}
-MsgTabRefreshed=La scheda '{0}' è stata aggiornata.
-MsgAtLeastOneTab=Deve rimanere almeno una scheda.
-MsgDeleteTabConfirm=Vuoi davvero eliminare la scheda '{0}'?
-MsgDeleteTabTitle=Elimina Scheda
-
-; Messages - General Operations
-MsgXMLLoadError=Errore di caricamento XML: {0}
-MsgFileNotFound=File non trovato: {0}
-MsgLaunchError=Errore di avvio: {0}
-MsgSaveError=Errore di salvataggio: {0}
-MsgIconLoadError=Errore di caricamento icona: {0}
-MsgPathUpdated=Percorso aggiornato con successo.
-MsgFileOrFolderNotFound=File o cartella non trovato: {0}
-MsgOpenFolderError=Errore durante l'apertura della cartella: {0}
-MsgDeleteItemConfirm=Vuoi davvero eliminare '{0}'?
-MsgDeleteItemTitle=Elimina Elemento
-MsgItemPropertiesTitle=Proprietà Elemento
-MsgSettingsSaved=Impostazioni salvate. Esci dall'applicazione per applicare completamente le modifiche.
-
-; Common Buttons
-BtnOK=OK
-BtnCancel=Annulla
-BtnYes=Sì
-BtnNo=No
-BtnClose=Chiudi
-
-; AboutForm
-AboutTitle=Informazioni
-AboutAppName=WinLauncher - Launcher di Windows
-AboutVersion=Versione 2.0
-AboutLicenseStatus=Non Ancora Concesso in Licenza per Uso Commerciale
-AboutFreeUse=Gratuito per Uso Personale
-AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
-AboutWebSiteLabel=Sito Web:
-AboutEmailLabel=Email di Supporto:
-AboutBtnAnaSayfa=Home Page
-AboutBtnLisans=Condizioni di Licenza
-AboutBtnKapat=Chiudi
-
-; License Text
-LicenseTitle=WinLauncher - Licenza di Uso Personale
-LicenseFree=Questo software è gratuito per uso personale.
-LicenseRights=Tutti i diritti riservati.
-LicenseAsIs=Questo software è fornito "COSÌ COM'È".
-
-; Settings Form
-SettingsTitle=Impostazioni
-SettingsLaunchMode=Modalità di Avvio:
-SettingsSingleClick=Un Clic
-SettingsDoubleClick=Doppio Clic
-SettingsViewMode=Modalità di Visualizzazione:
-SettingsIconText=Icona + Testo
-SettingsIconOnly=Solo Icona
-SettingsAlwaysOnTop=Sempre in Primo Piano
-SettingsBtnSave=Salva
-SettingsBtnCancel=Annulla
-
-; Manual Sort Form
-ManualSortTitle=Ordinamento Manuale
-ManualSortColOrder=Ordine
-ManualSortColIcon=Icona
-ManualSortColName=Nome Elemento
-ManualSortColPath=Programma / Percorso
-ManualSortBtnUp=▲ Su
-ManualSortBtnDown=▼ Giù
-ManualSortBtnSave=Salva e Esci
-ManualSortBtnCancel=✗ Annulla
-ManualSortLabel1=Seleziona gli elementi (spunta la casella di controllo) e ordinali usando i pulsanti Su/Giù:
-
-; Copy/Move Form
-CopyMoveTitle=Copia/Sposta
-CopyMoveSourceTab=Scheda di Origine:
-CopyMoveTargetTab=Scheda di Destinazione:
-CopyMoveItemName=Nome Elemento:
-CopyMoveBtnCopy=Copia
-CopyMoveBtnMove=Sposta
-CopyMoveBtnCancel=Annulla
-
-; Settings Form
-Settings=Impostazioni
-LaunchMode=Modalità di Avvio
-ViewMode=Modalità Visualizzazione
-Language=Lingua
-LastActiveTab=Ultima Scheda Attiva
-SelectLanguage=Seleziona Lingua:
-SelectTab=Seleziona Scheda:
-LaunchDoubleClick=Doppio Clic
-LaunchSingleClick=Clic Singolo
-ViewIconText=Icona+Testo
-ViewIcon=Icona
-ViewList=Elenco
+PropertiesExistsFolder=Yes (Folder)
+MsgToolsShowDesktopError=Impossibile mostrare il desktop: {0}
 ViewTile=Riquadro
-AlwaysOnTop=Sempre in Primo Piano
+MenuToolsDeviceManager=Gestione Dispositivi
+MsgToolsTaskMgrError=Impossibile aprire Gestione Attività: {0}
+PropertiesIconYes=Yes
+AboutLicenseStatus=Non Ancora Concesso in Licenza per Uso Commerciale
+AboutBtnAnaSayfa=Home Page
+ManualSortColName=Nome Elemento
+MsgDeleteItemConfirm=Vuoi davvero eliminare '{0}'?
+ViewIconText=Icona+Testo
+MenuToolsServices=Gestione Servizi
+CopyMoveSourceTab=Scheda di Origine:
+MenuToolsControlPanel=Pannello di Controllo
+MsgToolsPowershellError=Impossibile aprire PowerShell: {0}
+PropertiesBtnCopyFullPath=Copy Full Path
 OK=OK
+PropertiesExistsFile=Yes (File)
+MsgHelpTitle=Aiuto
+MenuItemRename=Rinomina
+MenuYardimWeb=Web Site
+AutoUpdate=Abilita controllo aggiornamenti automatico
+MsgToolsServicesError=Impossibile aprire Gestione Servizi: {0}
+SelectTab=Seleziona Scheda:
+LicenseFree=Questo software è gratuito per uso personale.
+ManualSortColOrder=Ordine
+PropertiesBtnOpenFolder=Open in Explorer
+MenuToolsRestoreDesktop=Ripristina Desktop
+MenuSiralama=Ordinamento
+AboutAppName=WinLauncher - Launcher di Windows
+MsgDonateTitle=Dona
+MsgUpdateNoNewVersion=You are using the latest version.
+btnSearch=Cerca
+MsgTabRefreshed=La scheda '{0}' è stata aggiornata.
+PropertiesInfoGroup=Item Info
+MsgFileOrFolderNotFound=File o cartella non trovato: {0}
+MsgToolsComputerNameError=Impossibile ottenere il nome del computer: {0}
+MenuSekmelerYenile=Aggiorna Scheda
+MsgToolsIPError=Impossibile ottenere gli indirizzi IP: {0}
+MsgUpdateUrlMissing=L'URL di aggiornamento non è configurato.
+SettingsViewMode=Modalità di Visualizzazione:
+MsgToolsDesktopRestored=Desktop ripristinato.
+ManualSortBtnCancel=�o- Annulla
+MsgDonateMessage=Se ami il progetto WinLauncher, puoi donare per supportare il suo sviluppo. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Grazie! gYT�
+CopyMoveItemName=Nome Elemento:
+AboutEmailLabel=Email di Supporto:
+AboutTitle=Informazioni
+MsgToolsControlPanelError=Impossibile aprire Pannello di Controllo: {0}
+MsgLaunchError=Errore di avvio: {0}
+MenuItemLaunch=Avvia
+MsgOpenFolderError=Errore durante l'apertura della cartella: {0}
+MsgToolsRemoteIP=IP Remoto: {0}
+MenuSekmelerAdDegistir=Rinomina Scheda
+MenuItemOpenFolder=Mostra in Cartella
+SettingsTitle=Impostazioni
+MenuYardimGithub=Github Repo
+CopyMoveTargetTab=Scheda di Destinazione:
+MsgHomePageError=Impossibile aprire la home page: {0}
+MenuYardimDokumanlar=Aiuto
+AlwaysOnTop=Sempre in Primo Piano
+CopyMoveBtnMove=Sposta
+MsgSortNoTabSelected=Seleziona prima una scheda.
+MenuTabYeni=Nuova Scheda
+MenuYardimLisans=Condizioni di Licenza
+ManualSortColIcon=Icona
+ManualSortLabel1=Seleziona gli elementi (spunta la casella di controllo) e ordinali usando i pulsanti Su/Giù:
+ManualSortBtnDown=�-� Giù
+MsgDeleteTabConfirm=Vuoi davvero eliminare la scheda '{0}'?
+AboutFreeUse=Gratuito per Uso Personale
+BtnNo=No
+MsgToolsComputerName=Nome Computer: {0}
+MenuYardimHakkinda=Informazioni...
+MsgWarning=Avviso
+MsgToolsLocalIP=IP Locale: {0}
+MsgIconLoadError=Errore di caricamento icona: {0}
+MsgSettingsSaved=Impostazioni salvate. Esci dall'applicazione per applicare completamente le modifiche.
+CopyMoveBtnCopy=Copia
+MenuTabAdDegistir=Rinomina Scheda
+lblSearch=Cerca:
+PropertiesLblIcon=Custom icon:
+PropertiesLblPath=Full path:
+BtnYes=Sì
+AboutWebSiteLabel=Sito Web:
+MsgToolsNetworkCenterError=Impossibile aprire Centro Reti e Condivisione: {0}
+MenuToolsNetworkCenter=Centro Reti e Condivisione
+MenuToolsComputerName=Mostra Nome Computer
+MsgCopyFailed=L'operazione di copia non è riuscita.
+MenuItemUpdatePath=Aggiorna Percorso
+MenuToolsCmd=Prompt dei Comandi
+LaunchSingleClick=Clic Singolo
+MsgToolsCmdError=Impossibile aprire Prompt dei Comandi: {0}
+MenuToolsShowDesktop=Mostra Desktop
+MsgCopiedToClipboard=(Copiato negli Appunti)
+SettingsLaunchMode=Modalità di Avvio:
+LaunchDoubleClick=Doppio Clic
+MsgUpdateCheckError=Controllo aggiornamenti non riuscito: {0}
+MsgItemPropertiesTitle=Proprietà Elemento
+BtnCancel=Annulla
+MenuSekmelerSil=Elimina Scheda
+MenuItemChangeIcon=Cambia Icona
+SettingsAlwaysOnTop=Sempre in Primo Piano
+MsgUpdateUpdaterNotFound=Updater non trovato: {0}
+ViewIcon=Icona
+MsgConfirm=Conferma
+MenuItemDelete=Elimina
+SettingsIconOnly=Solo Icona
+MenuToolsTaskMgr=Gestione Attività
+MsgToolsRestoreDesktopError=Impossibile ripristinare il desktop: {0}
+PropertiesIconNone=None
+SettingsIconText=Icona + Testo
+ManualSortBtnUp=�-� Su
+AboutVersion=Version {0}
+MsgXMLLoadError=Errore di caricamento XML: {0}
+ManualSortTitle=Ordinamento Manuale
+MenuToolsIPAddress=Mostra Indirizzi IP
+MsgEmailError=Impossibile aprire l'applicazione di posta: {0}
+LaunchMode=Modalità di Avvio
+BtnOK=OK
+MsgDeleteTabTitle=Elimina Scheda
+MenuSekmeler=Schede
+MsgCopyError=Errore di copia: {0}
+PropertiesBtnCopyPath=Copy Path
+ManualSortColPath=Programma / Percorso
+MenuTabSil=Elimina Scheda
+ViewMode=Modalità Visualizzazione
+SettingsBtnSave=Salva
+PropertiesBtnClose=Close
+MenuYardimWebSite=Rialauncher Web Site
 Cancel=Annulla
+MenuUpdateKontrol=Check for Updates
+MsgSaveError=Errore di salvataggio: {0}
+AboutBtnKapat=Chiudi
+PropertiesLblName=Name:
+MsgMoveError=Errore di spostamento: {0}
+MenuSystem=System
+Settings=Impostazioni
+MsgDeleteItemTitle=Elimina Elemento
+SettingsDoubleClick=Doppio Clic
+PropertiesBtnCopyName=Copy Name
+MsgPathUpdated=Percorso aggiornato con successo.
+Language=Lingua
+CopyMoveBtnCancel=Annulla
+SelectLanguage=Seleziona Lingua:
+MsgToolsDeviceManagerError=Impossibile aprire Gestione Dispositivi: {0}
+MsgSuccess=Successo
+MsgTabRefreshError=Errore di aggiornamento scheda: {0}
+SettingsBtnCancel=Annulla
+MsgHelpComingSoon=La documentazione di aiuto sarà aggiunta presto.
+AboutBtnLisans=Condizioni di Licenza
+MsgSortSaved=Ordinamento salvato con successo!
+MenuItemProperties=Proprietà
+ManualSortBtnSave=Salva e Esci
+MenuSystemKlasor=Open RiaLauncher Folder
+PropertiesLblExists=Exists:
+MenuManuelSiralama=Ordinamento Manuale...
+MsgCannotMoveSameTab=Impossibile spostare l'elemento all'interno della stessa scheda.
+LastActiveTab=Ultima Scheda Attiva
+ViewList=Elenco
+MenuAraclar=Strumenti
+MenuYardim=Aiuto
+MsgWebSiteError=Impossibile aprire il sito web: {0}
+MsgToolsComputerNameTitle=Nome Computer
+MsgFileNotFound=File non trovato: {0}
+MenuToolsPowershell=PowerShell
+MsgMoveFailed=L'operazione di spostamento non è riuscita.
+AboutCopyright=© 2024-2025 Hikmet Alp Alemdaro�Ylu
+MenuDosya=File
+MsgAtLeastOneTab=Deve rimanere almeno una scheda.
+MenuDosyaCikis=Esci
+BtnClose=Chiudi
+PropertiesExistsNo=No
+MsgDonateError=Impossibile aprire la pagina di donazione: {0}
+MenuSekmelerYeni=Nuova Scheda
+MenuUpdate=Update
+MsgHelpDocError=Impossibile aprire la pagina di documentazione: {0}
+CopyMoveTitle=Copia/Sposta
+MsgError=Errore
+SettingsSingleClick=Un Clic
+MenuAyarlar=Impostazioni
+MsgToolsIPTitle=Indirizzi IP
+MsgInfo=Informazioni
+MsgUpdateFound=A new version is available: v{0}{1}{1}{2}{1}{1}Download and install now?
+MsgSortNoItems=Nessun elemento da ordinare in questa scheda.
+MenuItemCopyMove=Copia/Sposta...

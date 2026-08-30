@@ -35,12 +35,16 @@ MenuAyarlar=Ayarlar
 
 ; Menu - Yardım
 MenuYardim=Yardım
-MenuYardimDokumanlar=Yardım
-MenuYardimDokumanIndir=Döküman İndir
+MenuYardimDokumanlar=Yardım Sayfası
+MenuYardimWeb=Web Sitesi
+MenuYardimWebSite=Rialauncher Web Sitesi
+MenuYardimGithub=Github Deposu
 MenuYardimLisans=Lisans Koşulları
-MenuYardimBagis=Bağış Yap
-MenuYardimAnaSayfa=Ana Sayfa
 MenuYardimHakkinda=Hakkında...
+MenuSystem=Sistem
+MenuSystemKlasor=RiaLauncher Klasörünü Aç
+MenuUpdate=Güncelleme
+MenuUpdateKontrol=Güncellemeleri Kontrol Et
 
 ; Context Menu - Item
 MenuItemLaunch=Başlat
@@ -97,8 +101,14 @@ MsgDonateTitle=Bağış Yap
 MsgDonateMessage=WinLauncher projesini beğendiyseniz, geliştirilmesine destek olmak için bağış yapabilirsiniz. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Teşekkür ederiz! 🙏
 MsgDonateError=Bağış sayfası açılamadı: {0}
 MsgHomePageError=Ana sayfa açılamadı: {0}
+MsgUpdateUrlMissing=Güncelleme adresi yapılandırılmamış.
+MsgUpdateUpdaterNotFound=Güncelleyici bulunamadı: {0}
+MsgUpdateCheckError=Güncelleme kontrolü başarısız: {0}
+MsgUpdateNoNewVersion=En son sürümü kullanıyorsunuz.
+MsgUpdateFound=Yeni bir sürüm mevcut: v{0}{1}{1}{2}{1}{1}Şimdi indir ve kur?
 
 ; Messages - AboutForm
+AboutVersion=Versiyon {0}
 MsgWebSiteError=Web sitesi açılamadı: {0}
 MsgEmailError=E-posta uygulaması açılamadı: {0}
 
@@ -133,6 +143,21 @@ MsgOpenFolderError=Klasör açılırken hata oluştu: {0}
 MsgDeleteItemConfirm='{0}' öğesini silmek istediğinizden emin misiniz?
 MsgDeleteItemTitle=Öğe Sil
 MsgItemPropertiesTitle=Öğe Özellikleri
+PropertiesInfoGroup=Öğe Bilgileri
+PropertiesLblName=Ad:
+PropertiesLblPath=Tam yol:
+PropertiesLblExists=Var mı:
+PropertiesLblIcon=Özel simge:
+PropertiesBtnCopyName=İsmini Kopyala
+PropertiesBtnCopyPath=Yolunu Kopyala
+PropertiesBtnCopyFullPath=Tam Yolunu Kopyala
+PropertiesBtnOpenFolder=Explorer'da Aç
+PropertiesBtnClose=Kapat
+PropertiesExistsFile=Evet (Dosya)
+PropertiesExistsFolder=Evet (Klasör)
+PropertiesExistsNo=Hayır
+PropertiesIconNone=Yok
+PropertiesIconYes=Var
 MsgSettingsSaved=Ayarlar kaydedildi. Değişikliklerin tam olarak uygulanması için uygulamadan çıkınız.
 
 ; Common Buttons
@@ -144,9 +169,8 @@ BtnClose=Kapat
 
 ; AboutForm
 AboutTitle=Hakkında
-AboutAppName=WinLauncher - Windows Launcher
-AboutVersion=Versiyon 2.0
-AboutLicenseStatus=Ticari Kullanım İçin Henüz Lisanslanmamıştır
+AboutAppName=RiaLauncher
+AboutLicenseStatus=Kişisel ve Ticari Kullanım Ücretsizdir
 AboutFreeUse=Kişisel Kullanım İçin Ücretsizdir
 AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
 AboutWebSiteLabel=Web Site:
@@ -156,10 +180,7 @@ AboutBtnLisans=Lisans Koşulları
 AboutBtnKapat=Kapat
 
 ; License Text
-LicenseTitle=WinLauncher - Kişisel Kullanım Lisansı
-LicenseFree=Bu yazılım kişisel kullanım için ücretsizdir.
-LicenseRights=Tüm hakları saklıdır.
-LicenseAsIs=Bu yazılım ""OLDUĞU GİBİ"" sağlanmaktadır.
+LicenseFree=Bu yazılım kişisel ve ticari kullanım için ücretsizdir.
 
 ; Settings Form
 SettingsTitle=Ayarlar
@@ -209,5 +230,6 @@ ViewIcon=İkon
 ViewList=Liste
 ViewTile=Karo
 AlwaysOnTop=Her Zaman Üstte
+AutoUpdate=Otomatik güncelleme kontrolünü etkinleştir
 OK=Tamam
 Cancel=İptal

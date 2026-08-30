@@ -211,10 +211,7 @@ Public Class LanguageManager
             "AboutBtnLisans=Lisans Koşulları" & vbCrLf &
             "AboutBtnKapat=Kapat" & vbCrLf & vbCrLf &
             "; License Text" & vbCrLf &
-            "LicenseTitle=WinLauncher - Kişisel Kullanım Lisansı" & vbCrLf &
-            "LicenseFree=Bu yazılım kişisel kullanım için ücretsizdir." & vbCrLf &
-            "LicenseRights=Tüm hakları saklıdır." & vbCrLf &
-            "LicenseAsIs=Bu yazılım ""OLDUĞU GİBİ"" sağlanmaktadır." & vbCrLf & vbCrLf &
+            "LicenseFree=Bu yazılım kişisel kullanım için ücretsizdir." & vbCrLf & vbCrLf &
             "; Settings Form" & vbCrLf &
             "SettingsTitle=Ayarlar" & vbCrLf &
             "SettingsLaunchMode=Başlatma Modu:" & vbCrLf &
@@ -375,7 +372,7 @@ Public Class LanguageManager
             "; AboutForm" & vbCrLf &
             "AboutTitle=About" & vbCrLf &
             "AboutAppName=WinLauncher - Windows Launcher" & vbCrLf &
-            "AboutVersion=Version 2.0" & vbCrLf &
+            "AboutVersion=Version {0}" & vbCrLf &
             "AboutLicenseStatus=Not Yet Licensed for Commercial Use" & vbCrLf &
             "AboutFreeUse=Free for Personal Use" & vbCrLf &
             "AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu" & vbCrLf &
@@ -385,10 +382,7 @@ Public Class LanguageManager
             "AboutBtnLisans=License Terms" & vbCrLf &
             "AboutBtnKapat=Close" & vbCrLf & vbCrLf &
             "; License Text" & vbCrLf &
-            "LicenseTitle=WinLauncher - Personal Use License" & vbCrLf &
-            "LicenseFree=This software is free for personal use." & vbCrLf &
-            "LicenseRights=All rights reserved." & vbCrLf &
-            "LicenseAsIs=This software is provided ""AS IS""." & vbCrLf & vbCrLf &
+            "LicenseFree=This software is free for personal and commercial use." & vbCrLf & vbCrLf &
             "; Settings Form" & vbCrLf &
             "SettingsTitle=Settings" & vbCrLf &
             "SettingsLaunchMode=Launch Mode:" & vbCrLf &

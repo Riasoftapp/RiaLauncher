@@ -1,22 +1,12 @@
-; WinLauncher Simplified Chinese Language File
-; Format: Key=Value
-
-; Menu - File
 MenuDosya=文件
 MenuDosyaCikis=退出
-
-; Menu - Tabs
-MenuSekmeler=标签页
-MenuSekmelerYeni=新标签页
-MenuSekmelerAdDegistir=重命名标签页
-MenuSekmelerSil=删除标签页
-MenuSekmelerYenile=刷新标签页
-
-; Menu - Sorting
+MenuSekmeler=选项卡
+MenuSekmelerYeni=新建选项卡
+MenuSekmelerAdDegistir=重命名选项卡
+MenuSekmelerSil=删除选项卡
+MenuSekmelerYenile=刷新选项卡
 MenuSiralama=排序
 MenuManuelSiralama=手动排序...
-
-; Menu - Tools
 MenuAraclar=工具
 MenuToolsCmd=命令提示符
 MenuToolsPowershell=PowerShell
@@ -29,20 +19,18 @@ MenuToolsNetworkCenter=网络和共享中心
 MenuToolsDeviceManager=设备管理器
 MenuToolsComputerName=显示计算机名称
 MenuToolsIPAddress=显示IP地址
-
-; Menu - Settings
 MenuAyarlar=设置
-
-; Menu - Help
 MenuYardim=帮助
-MenuYardimDokumanlar=帮助
-MenuYardimDokumanIndir=下载文档
+MenuYardimDokumanlar=帮助页面
+MenuYardimWeb=网站
+MenuYardimWebSite=Rialauncher 网站
+MenuYardimGithub=GitHub 仓库
 MenuYardimLisans=许可条款
-MenuYardimBagis=捐赠
-MenuYardimAnaSayfa=主页
 MenuYardimHakkinda=关于...
-
-; Context Menu - Item
+MenuSystem=系统
+MenuSystemKlasor=打开 RiaLauncher 文件夹
+MenuUpdate=更新
+MenuUpdateKontrol=检查更新
 MenuItemLaunch=启动
 MenuItemCopyMove=复制/移动...
 MenuItemRename=重命名
@@ -51,163 +39,147 @@ MenuItemUpdatePath=更新路径
 MenuItemOpenFolder=在文件夹中显示
 MenuItemDelete=删除
 MenuItemProperties=属性
-
-; Context Menu - Tab
-MenuTabYeni=新标签页
-MenuTabAdDegistir=重命名标签页
-MenuTabSil=删除标签页
-
-; Search Panel
-lblSearch=搜索:
+MenuTabYeni=新建选项卡
+MenuTabAdDegistir=重命名选项卡
+MenuTabSil=删除选项卡
+lblSearch=搜索：
 btnSearch=搜索
-
-; Messages - General
 MsgError=错误
 MsgWarning=警告
 MsgInfo=信息
 MsgConfirm=确认
 MsgSuccess=成功
-MsgCopiedToClipboard=(已复制到剪贴板)
-
-; Messages - Tools Menu
-MsgToolsCmdError=无法打开命令提示符: {0}
-MsgToolsPowershellError=无法打开PowerShell: {0}
-MsgToolsTaskMgrError=无法打开任务管理器: {0}
-MsgToolsServicesError=无法打开服务管理器: {0}
-MsgToolsShowDesktopError=无法显示桌面: {0}
+MsgCopiedToClipboard=（已复制到剪贴板）
+MsgToolsCmdError=无法打开命令提示符：{0}
+MsgToolsPowershellError=无法打开 PowerShell：{0}
+MsgToolsTaskMgrError=无法打开任务管理器：{0}
+MsgToolsServicesError=无法打开服务管理器：{0}
+MsgToolsShowDesktopError=无法显示桌面：{0}
 MsgToolsDesktopRestored=桌面已恢复。
-MsgToolsRestoreDesktopError=无法恢复桌面: {0}
-MsgToolsControlPanelError=无法打开控制面板: {0}
-MsgToolsNetworkCenterError=无法打开网络和共享中心: {0}
-MsgToolsDeviceManagerError=无法打开设备管理器: {0}
-MsgToolsComputerName=计算机名称: {0}
+MsgToolsRestoreDesktopError=无法恢复桌面：{0}
+MsgToolsControlPanelError=无法打开控制面板：{0}
+MsgToolsNetworkCenterError=无法打开网络和共享中心：{0}
+MsgToolsDeviceManagerError=无法打开设备管理器：{0}
+MsgToolsComputerName=计算机名称：{0}
 MsgToolsComputerNameTitle=计算机名称
-MsgToolsComputerNameError=无法获取计算机名称: {0}
-MsgToolsLocalIP=本地IP: {0}
-MsgToolsRemoteIP=远程IP: {0}
+MsgToolsComputerNameError=无法获取计算机名称：{0}
+MsgToolsLocalIP=本地IP：{0}
+MsgToolsRemoteIP=远程IP：{0}
 MsgToolsIPTitle=IP地址
-MsgToolsIPError=无法获取IP地址: {0}
+MsgToolsIPError=无法获取IP地址：{0}
 MsgToolsIPNotFound=未找到
-
-; Messages - Help Menu
-MsgHelpComingSoon=帮助文档将很快添加。
+MsgHelpComingSoon=帮助文档即将添加。
 MsgHelpTitle=帮助
-MsgHelpDocError=无法打开文档页面: {0}
+MsgHelpDocError=无法打开文档页面：{0}
 MsgDonateTitle=捐赠
-MsgDonateMessage=如果您喜欢WinLauncher项目，可以捐赠以支持其开发。GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu 谢谢! 🙏
-MsgDonateError=无法打开捐赠页面: {0}
-MsgHomePageError=无法打开主页: {0}
-
-; Messages - AboutForm
-MsgWebSiteError=无法打开网站: {0}
-MsgEmailError=无法打开电子邮件应用程序: {0}
-
-; Messages - Manual Sort
-MsgSortSaved=排序成功保存!
-MsgSortNoTabSelected=请先选择一个标签页。
-MsgSortNoItems=此标签页中没有要排序的项目。
-
-; Messages - Copy/Move
-MsgCopyError=复制错误: {0}
-MsgMoveError=移动错误: {0}
+MsgDonateMessage=如果您喜欢 WinLauncher 项目，可以捐赠以支持其开发。GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu 谢谢！
+MsgDonateError=无法打开捐赠页面：{0}
+MsgHomePageError=无法打开主页：{0}
+MsgUpdateUrlMissing=未配置更新URL。
+MsgUpdateUpdaterNotFound=找不到更新程序：{0}
+MsgUpdateCheckError=更新检查失败：{0}
+MsgUpdateNoNewVersion=您使用的是最新版本。
+MsgUpdateFound=有新版本可用：v{0}{1}{1}{2}{1}{1}立即下载并安装？
+AboutVersion=版本 {0}
+MsgWebSiteError=无法打开网站：{0}
+MsgEmailError=无法打开电子邮件应用：{0}
+MsgSortSaved=排序已成功保存！
+MsgSortNoTabSelected=请先选择一个选项卡。
+MsgSortNoItems=此选项卡中没有可排序的项目。
+MsgCopyError=复制错误：{0}
+MsgMoveError=移动错误：{0}
 MsgCopyFailed=复制操作失败。
 MsgMoveFailed=移动操作失败。
-MsgCannotMoveSameTab=无法在同一标签页内移动项目。
-
-; Messages - Tab Operations
-MsgTabRefreshError=标签页刷新错误: {0}
-MsgTabRefreshed=标签页'{0}'已刷新。
-MsgAtLeastOneTab=必须至少保留一个标签页。
-MsgDeleteTabConfirm=确定要删除标签页'{0}'吗?
-MsgDeleteTabTitle=删除标签页
-
-; Messages - General Operations
-MsgXMLLoadError=XML加载错误: {0}
-MsgFileNotFound=找不到文件: {0}
-MsgLaunchError=启动错误: {0}
-MsgSaveError=保存错误: {0}
-MsgIconLoadError=图标加载错误: {0}
+MsgCannotMoveSameTab=无法在同一选项卡内移动项目。
+MsgTabRefreshError=选项卡刷新错误：{0}
+MsgTabRefreshed=选项卡“{0}”已刷新。
+MsgAtLeastOneTab=必须至少保留一个选项卡。
+MsgDeleteTabConfirm=确定要删除选项卡“{0}”吗？
+MsgDeleteTabTitle=删除选项卡
+MsgXMLLoadError=XML 加载错误：{0}
+MsgFileNotFound=找不到文件：{0}
+MsgLaunchError=启动错误：{0}
+MsgSaveError=保存错误：{0}
+MsgIconLoadError=图标加载错误：{0}
 MsgPathUpdated=路径已成功更新。
-MsgFileOrFolderNotFound=找不到文件或文件夹: {0}
-MsgOpenFolderError=打开文件夹时出错: {0}
-MsgDeleteItemConfirm=确定要删除'{0}'吗?
+MsgFileOrFolderNotFound=找不到文件或文件夹：{0}
+MsgOpenFolderError=打开文件夹时出错：{0}
+MsgDeleteItemConfirm=确定要删除“{0}”吗？
 MsgDeleteItemTitle=删除项目
 MsgItemPropertiesTitle=项目属性
+PropertiesInfoGroup=项目信息
+PropertiesLblName=名称：
+PropertiesLblPath=完整路径：
+PropertiesLblExists=存在：
+PropertiesLblIcon=自定义图标：
+PropertiesBtnCopyName=复制名称
+PropertiesBtnCopyPath=复制路径
+PropertiesBtnCopyFullPath=复制完整路径
+PropertiesBtnOpenFolder=在资源管理器中打开
+PropertiesBtnClose=关闭
+PropertiesExistsFile=是（文件）
+PropertiesExistsFolder=是（文件夹）
+PropertiesExistsNo=否
+PropertiesIconNone=无
+PropertiesIconYes=是
 MsgSettingsSaved=设置已保存。请退出应用程序以使更改完全生效。
-
-; Common Buttons
 BtnOK=确定
 BtnCancel=取消
 BtnYes=是
 BtnNo=否
 BtnClose=关闭
-
-; AboutForm
 AboutTitle=关于
-AboutAppName=WinLauncher - Windows启动器
-AboutVersion=版本 2.0
-AboutLicenseStatus=尚未获得商业使用许可
-AboutFreeUse=个人使用免费
+AboutAppName=RiaLauncher
+AboutLicenseStatus=个人和商业免费
+AboutFreeUse=个人免费使用
 AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
-AboutWebSiteLabel=网站:
-AboutEmailLabel=支持电子邮件:
+AboutWebSiteLabel=网站：
+AboutEmailLabel=支持邮箱：
 AboutBtnAnaSayfa=主页
 AboutBtnLisans=许可条款
 AboutBtnKapat=关闭
-
-; License Text
-LicenseTitle=WinLauncher - 个人使用许可证
-LicenseFree=此软件免费供个人使用。
-LicenseRights=保留所有权利。
-LicenseAsIs=此软件按"原样"提供。
-
-; Settings Form
+LicenseFree=本软件对个人和商业使用免费。
 SettingsTitle=设置
-SettingsLaunchMode=启动模式:
+SettingsLaunchMode=启动模式：
 SettingsSingleClick=单击
 SettingsDoubleClick=双击
-SettingsViewMode=查看模式:
-SettingsIconText=图标 + 文本
+SettingsViewMode=查看模式：
+SettingsIconText=图标 + 文字
 SettingsIconOnly=仅图标
-SettingsAlwaysOnTop=始终在顶部
+SettingsAlwaysOnTop=始终置顶
 SettingsBtnSave=保存
 SettingsBtnCancel=取消
-
-; Manual Sort Form
 ManualSortTitle=手动排序
 ManualSortColOrder=顺序
 ManualSortColIcon=图标
 ManualSortColName=项目名称
 ManualSortColPath=程序 / 路径
-ManualSortBtnUp=▲ 向上
-ManualSortBtnDown=▼ 向下
+ManualSortBtnUp=▲ 上移
+ManualSortBtnDown=▼ 下移
 ManualSortBtnSave=保存并退出
 ManualSortBtnCancel=✗ 取消
-ManualSortLabel1=选择项目(勾选复选框)并使用向上/向下按钮进行排序:
-
-; Copy/Move Form
+ManualSortLabel1=选择项目（勾选复选框）并使用上/下按钮进行排序：
 CopyMoveTitle=复制/移动
-CopyMoveSourceTab=源标签页:
-CopyMoveTargetTab=目标标签页:
-CopyMoveItemName=项目名称:
+CopyMoveSourceTab=源选项卡：
+CopyMoveTargetTab=目标选项卡：
+CopyMoveItemName=项目名称：
 CopyMoveBtnCopy=复制
 CopyMoveBtnMove=移动
 CopyMoveBtnCancel=取消
-
-; Settings Form
 Settings=设置
 LaunchMode=启动模式
 ViewMode=查看模式
 Language=语言
-LastActiveTab=最后活动标签页
-SelectLanguage=选择语言:
-SelectTab=选择标签页:
+LastActiveTab=上次活动选项卡
+SelectLanguage=选择语言：
+SelectTab=选择选项卡：
 LaunchDoubleClick=双击
 LaunchSingleClick=单击
-ViewIconText=图标+文本
+ViewIconText=图标+文字
 ViewIcon=图标
 ViewList=列表
-ViewTile=磁贴
-AlwaysOnTop=始终在最前面
+ViewTile=平铺
+AlwaysOnTop=始终置顶
+AutoUpdate=启用自动更新检查
 OK=确定
 Cancel=取消

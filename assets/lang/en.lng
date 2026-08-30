@@ -35,12 +35,16 @@ MenuAyarlar=Settings
 
 ; Menu - Help
 MenuYardim=Help
-MenuYardimDokumanlar=Help
-MenuYardimDokumanIndir=Download Documentation
+MenuYardimDokumanlar=Help Page
+MenuYardimWeb=Web Site
+MenuYardimWebSite=Rialauncher Web Site
+MenuYardimGithub=Github Repo
 MenuYardimLisans=License Terms
-MenuYardimBagis=Donate
-MenuYardimAnaSayfa=Home Page
 MenuYardimHakkinda=About...
+MenuSystem=System
+MenuSystemKlasor=Open RiaLauncher Folder
+MenuUpdate=Update
+MenuUpdateKontrol=Check for Updates
 
 ; Context Menu - Item
 MenuItemLaunch=Launch
@@ -97,8 +101,14 @@ MsgDonateTitle=Donate
 MsgDonateMessage=If you like the WinLauncher project, you can donate to support its development. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu Thank you! 🙏
 MsgDonateError=Cannot open donation page: {0}
 MsgHomePageError=Cannot open home page: {0}
+MsgUpdateUrlMissing=Update URL is not configured.
+MsgUpdateUpdaterNotFound=Updater not found: {0}
+MsgUpdateCheckError=Update check failed: {0}
+MsgUpdateNoNewVersion=You are using the latest version.
+MsgUpdateFound=A new version is available: v{0}{1}{1}{2}{1}{1}Download and install now?
 
 ; Messages - AboutForm
+AboutVersion=Version {0}
 MsgWebSiteError=Cannot open website: {0}
 MsgEmailError=Cannot open email application: {0}
 
@@ -133,6 +143,21 @@ MsgOpenFolderError=Error opening folder: {0}
 MsgDeleteItemConfirm=Are you sure you want to delete '{0}'?
 MsgDeleteItemTitle=Delete Item
 MsgItemPropertiesTitle=Item Properties
+PropertiesInfoGroup=Item Info
+PropertiesLblName=Name:
+PropertiesLblPath=Full path:
+PropertiesLblExists=Exists:
+PropertiesLblIcon=Custom icon:
+PropertiesBtnCopyName=Copy Name
+PropertiesBtnCopyPath=Copy Path
+PropertiesBtnCopyFullPath=Copy Full Path
+PropertiesBtnOpenFolder=Open in Explorer
+PropertiesBtnClose=Close
+PropertiesExistsFile=Yes (File)
+PropertiesExistsFolder=Yes (Folder)
+PropertiesExistsNo=No
+PropertiesIconNone=None
+PropertiesIconYes=Yes
 MsgSettingsSaved=Settings saved. Please exit the application for changes to take full effect.
 
 ; Common Buttons
@@ -144,9 +169,8 @@ BtnClose=Close
 
 ; AboutForm
 AboutTitle=About
-AboutAppName=WinLauncher - Windows Launcher
-AboutVersion=Version 2.0
-AboutLicenseStatus=Not Yet Licensed for Commercial Use
+AboutAppName=RiaLauncher
+AboutLicenseStatus=Free for Personal and Commercial Use
 AboutFreeUse=Free for Personal Use
 AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
 AboutWebSiteLabel=Web Site:
@@ -156,10 +180,7 @@ AboutBtnLisans=License Terms
 AboutBtnKapat=Close
 
 ; License Text
-LicenseTitle=WinLauncher - Personal Use License
-LicenseFree=This software is free for personal use.
-LicenseRights=All rights reserved.
-LicenseAsIs=This software is provided ""AS IS"".
+LicenseFree=This software is free for personal and commercial use.
 
 ; Settings Form
 SettingsTitle=Settings
@@ -209,5 +230,6 @@ ViewIcon=Icon
 ViewList=List
 ViewTile=Tile
 AlwaysOnTop=Always On Top
+AutoUpdate=Enable automatic update check
 OK=OK
 Cancel=Cancel

@@ -1,128 +1,101 @@
-; WinLauncher Arabic Language File
-; Format: Key=Value
-; Note: This file contains Arabic text (Right-to-Left)
-
-; Menu - File
 MenuDosya=ملف
-MenuDosyaCikis=إنهاء
-
-; Menu - Tabs
+MenuDosyaCikis=خروج
 MenuSekmeler=علامات التبويب
 MenuSekmelerYeni=علامة تبويب جديدة
-MenuSekmelerAdDegistir=إعادة تسمية العلامة
-MenuSekmelerSil=حذف العلامة
-MenuSekmelerYenile=تحديث العلامة
-
-; Menu - Sorting
+MenuSekmelerAdDegistir=إعادة تسمية علامة التبويب
+MenuSekmelerSil=حذف علامة التبويب
+MenuSekmelerYenile=تحديث علامة التبويب
 MenuSiralama=الفرز
 MenuManuelSiralama=فرز يدوي...
-
-; Menu - Tools
-MenuAraclar=أدوات
+MenuAraclar=الأدوات
 MenuToolsCmd=موجه الأوامر
 MenuToolsPowershell=PowerShell
-MenuToolsTaskMgr=إدارة المهام
-MenuToolsServices=إدارة الخدمات
+MenuToolsTaskMgr=مدير المهام
+MenuToolsServices=مدير الخدمات
 MenuToolsShowDesktop=إظهار سطح المكتب
 MenuToolsRestoreDesktop=استعادة سطح المكتب
 MenuToolsControlPanel=لوحة التحكم
 MenuToolsNetworkCenter=مركز الشبكة والمشاركة
-MenuToolsDeviceManager=إدارة الأجهزة
-MenuToolsComputerName=عرض اسم الحاسوب
+MenuToolsDeviceManager=مدير الأجهزة
+MenuToolsComputerName=عرض اسم الكمبيوتر
 MenuToolsIPAddress=عرض عناوين IP
-
-; Menu - Settings
 MenuAyarlar=الإعدادات
-
-; Menu - Help
 MenuYardim=مساعدة
-MenuYardimDokumanlar=مساعدة
-MenuYardimDokumanIndir=تحميل التوثيق
+MenuYardimDokumanlar=صفحة المساعدة
+MenuYardimWeb=الموقع الإلكتروني
+MenuYardimWebSite=موقع Rialauncher
+MenuYardimGithub=مستودع GitHub
 MenuYardimLisans=شروط الترخيص
-MenuYardimBagis=تبرع
-MenuYardimAnaSayfa=الصفحة الرئيسية
 MenuYardimHakkinda=حول...
-
-; Context Menu - Item
+MenuSystem=النظام
+MenuSystemKlasor=فتح مجلد RiaLauncher
+MenuUpdate=تحديث
+MenuUpdateKontrol=التحقق من التحديثات
 MenuItemLaunch=تشغيل
 MenuItemCopyMove=نسخ/نقل...
 MenuItemRename=إعادة تسمية
 MenuItemChangeIcon=تغيير الأيقونة
 MenuItemUpdatePath=تحديث المسار
-MenuItemOpenFolder=إظهار في المجلد
+MenuItemOpenFolder=عرض في المجلد
 MenuItemDelete=حذف
-MenuItemProperties=الخصائص
-
-; Context Menu - Tab
+MenuItemProperties=خصائص
 MenuTabYeni=علامة تبويب جديدة
-MenuTabAdDegistir=إعادة تسمية العلامة
-MenuTabSil=حذف العلامة
-
-; Search Panel
+MenuTabAdDegistir=إعادة تسمية علامة التبويب
+MenuTabSil=حذف علامة التبويب
 lblSearch=بحث:
 btnSearch=بحث
-
-; Messages - General
 MsgError=خطأ
 MsgWarning=تحذير
 MsgInfo=معلومات
 MsgConfirm=تأكيد
-MsgSuccess=نجح
+MsgSuccess=نجاح
 MsgCopiedToClipboard=(تم النسخ إلى الحافظة)
-
-; Messages - Tools Menu
-MsgToolsCmdError=لا يمكن فتح موجه الأوامر: {0}
-MsgToolsPowershellError=لا يمكن فتح PowerShell: {0}
-MsgToolsTaskMgrError=لا يمكن فتح إدارة المهام: {0}
-MsgToolsServicesError=لا يمكن فتح إدارة الخدمات: {0}
-MsgToolsShowDesktopError=لا يمكن إظهار سطح المكتب: {0}
-MsgToolsDesktopRestored=تم استعادة سطح المكتب.
-MsgToolsRestoreDesktopError=لا يمكن استعادة سطح المكتب: {0}
-MsgToolsControlPanelError=لا يمكن فتح لوحة التحكم: {0}
-MsgToolsNetworkCenterError=لا يمكن فتح مركز الشبكة والمشاركة: {0}
-MsgToolsDeviceManagerError=لا يمكن فتح إدارة الأجهزة: {0}
-MsgToolsComputerName=اسم الحاسوب: {0}
-MsgToolsComputerNameTitle=اسم الحاسوب
-MsgToolsComputerNameError=لا يمكن الحصول على اسم الحاسوب: {0}
+MsgToolsCmdError=تعذر فتح موجه الأوامر: {0}
+MsgToolsPowershellError=تعذر فتح PowerShell: {0}
+MsgToolsTaskMgrError=تعذر فتح مدير المهام: {0}
+MsgToolsServicesError=تعذر فتح مدير الخدمات: {0}
+MsgToolsShowDesktopError=تعذر إظهار سطح المكتب: {0}
+MsgToolsDesktopRestored=تمت استعادة سطح المكتب.
+MsgToolsRestoreDesktopError=تعذر استعادة سطح المكتب: {0}
+MsgToolsControlPanelError=تعذر فتح لوحة التحكم: {0}
+MsgToolsNetworkCenterError=تعذر فتح مركز الشبكة والمشاركة: {0}
+MsgToolsDeviceManagerError=تعذر فتح مدير الأجهزة: {0}
+MsgToolsComputerName=اسم الكمبيوتر: {0}
+MsgToolsComputerNameTitle=اسم الكمبيوتر
+MsgToolsComputerNameError=تعذر الحصول على اسم الكمبيوتر: {0}
 MsgToolsLocalIP=عنوان IP المحلي: {0}
 MsgToolsRemoteIP=عنوان IP البعيد: {0}
 MsgToolsIPTitle=عناوين IP
-MsgToolsIPError=لا يمكن الحصول على عناوين IP: {0}
-MsgToolsIPNotFound=لم يتم العثور عليه
-
-; Messages - Help Menu
-MsgHelpComingSoon=سيتم إضافة وثائق المساعدة قريباً.
+MsgToolsIPError=تعذر الحصول على عناوين IP: {0}
+MsgToolsIPNotFound=غير موجود
+MsgHelpComingSoon=ستتم إضافة وثائق المساعدة قريبًا.
 MsgHelpTitle=مساعدة
-MsgHelpDocError=لا يمكن فتح صفحة التوثيق: {0}
+MsgHelpDocError=تعذر فتح صفحة الوثائق: {0}
 MsgDonateTitle=تبرع
-MsgDonateMessage=إذا أحببت مشروع WinLauncher، يمكنك التبرع لدعم تطويره. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu شكراً! 🙏
-MsgDonateError=لا يمكن فتح صفحة التبرع: {0}
-MsgHomePageError=لا يمكن فتح الصفحة الرئيسية: {0}
-
-; Messages - AboutForm
-MsgWebSiteError=لا يمكن فتح موقع الويب: {0}
-MsgEmailError=لا يمكن فتح تطبيق البريد الإلكتروني: {0}
-
-; Messages - Manual Sort
+MsgDonateMessage=إذا أعجبك مشروع WinLauncher، يمكنك التبرع لدعم تطويره. رعاة GitHub: github.com/sponsors/hikmetalemdaroglu شكرًا لك!
+MsgDonateError=تعذر فتح صفحة التبرع: {0}
+MsgHomePageError=تعذر فتح الصفحة الرئيسية: {0}
+MsgUpdateUrlMissing=لم يتم تكوين عنوان URL للتحديث.
+MsgUpdateUpdaterNotFound=لم يتم العثور على برنامج التحديث: {0}
+MsgUpdateCheckError=فشل التحقق من التحديث: {0}
+MsgUpdateNoNewVersion=أنت تستخدم أحدث إصدار.
+MsgUpdateFound=يتوفر إصدار جديد: v{0}{1}{1}{2}{1}{1}هل تريد التنزيل والتثبيت الآن؟
+AboutVersion=الإصدار {0}
+MsgWebSiteError=تعذر فتح الموقع الإلكتروني: {0}
+MsgEmailError=تعذر فتح تطبيق البريد الإلكتروني: {0}
 MsgSortSaved=تم حفظ الفرز بنجاح!
-MsgSortNoTabSelected=يرجى تحديد علامة تبويب أولاً.
-MsgSortNoItems=لا توجد عناصر للفرز في هذه العلامة.
-
-; Messages - Copy/Move
+MsgSortNoTabSelected=يرجى تحديد علامة تبويب أولًا.
+MsgSortNoItems=لا توجد عناصر للفرز في هذه علامة التبويب.
 MsgCopyError=خطأ في النسخ: {0}
 MsgMoveError=خطأ في النقل: {0}
 MsgCopyFailed=فشلت عملية النسخ.
 MsgMoveFailed=فشلت عملية النقل.
-MsgCannotMoveSameTab=لا يمكن نقل العنصر داخل نفس العلامة.
-
-; Messages - Tab Operations
-MsgTabRefreshError=خطأ في تحديث العلامة: {0}
-MsgTabRefreshed=تم تحديث العلامة '{0}'.
-MsgAtLeastOneTab=يجب أن تبقى علامة تبويب واحدة على الأقل.
-MsgDeleteTabConfirm=هل أنت متأكد من حذف العلامة '{0}'؟
-MsgDeleteTabTitle=حذف العلامة
-
-; Messages - General Operations
+MsgCannotMoveSameTab=لا يمكن نقل العنصر داخل نفس علامة التبويب.
+MsgTabRefreshError=خطأ في تحديث علامة التبويب: {0}
+MsgTabRefreshed=تم تحديث علامة التبويب '{0}'.
+MsgAtLeastOneTab=يجب بقاء علامة تبويب واحدة على الأقل.
+MsgDeleteTabConfirm=هل أنت متأكد من حذف علامة التبويب '{0}'؟
+MsgDeleteTabTitle=حذف علامة التبويب
 MsgXMLLoadError=خطأ في تحميل XML: {0}
 MsgFileNotFound=الملف غير موجود: {0}
 MsgLaunchError=خطأ في التشغيل: {0}
@@ -134,35 +107,38 @@ MsgOpenFolderError=خطأ في فتح المجلد: {0}
 MsgDeleteItemConfirm=هل أنت متأكد من حذف '{0}'؟
 MsgDeleteItemTitle=حذف العنصر
 MsgItemPropertiesTitle=خصائص العنصر
-MsgSettingsSaved=تم حفظ الإعدادات. يرجى إغلاق التطبيق لتطبيق التغييرات بشكل كامل.
-
-; Common Buttons
+PropertiesInfoGroup=معلومات العنصر
+PropertiesLblName=الاسم:
+PropertiesLblPath=المسار الكامل:
+PropertiesLblExists=موجود:
+PropertiesLblIcon=أيقونة مخصصة:
+PropertiesBtnCopyName=نسخ الاسم
+PropertiesBtnCopyPath=نسخ المسار
+PropertiesBtnCopyFullPath=نسخ المسار الكامل
+PropertiesBtnOpenFolder=فتح في مستكشف الملفات
+PropertiesBtnClose=إغلاق
+PropertiesExistsFile=نعم (ملف)
+PropertiesExistsFolder=نعم (مجلد)
+PropertiesExistsNo=لا
+PropertiesIconNone=لا شيء
+PropertiesIconYes=نعم
+MsgSettingsSaved=تم حفظ الإعدادات. يرجى الخروج من التطبيق لتطبيق التغييرات بالكامل.
 BtnOK=موافق
 BtnCancel=إلغاء
 BtnYes=نعم
 BtnNo=لا
 BtnClose=إغلاق
-
-; AboutForm
 AboutTitle=حول
-AboutAppName=WinLauncher - مشغل Windows
-AboutVersion=الإصدار 2.0
-AboutLicenseStatus=لم يتم الترخيص بعد للاستخدام التجاري
+AboutAppName=RiaLauncher
+AboutLicenseStatus=مجاني للاستخدام الشخصي والتجاري
 AboutFreeUse=مجاني للاستخدام الشخصي
 AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
 AboutWebSiteLabel=الموقع الإلكتروني:
-AboutEmailLabel=بريد المساعدة:
+AboutEmailLabel=البريد الإلكتروني للدعم:
 AboutBtnAnaSayfa=الصفحة الرئيسية
 AboutBtnLisans=شروط الترخيص
 AboutBtnKapat=إغلاق
-
-; License Text
-LicenseTitle=WinLauncher - ترخيص الاستخدام الشخصي
-LicenseFree=هذا البرنامج مجاني للاستخدام الشخصي.
-LicenseRights=جميع الحقوق محفوظة.
-LicenseAsIs=يتم توفير هذا البرنامج "كما هو".
-
-; Settings Form
+LicenseFree=هذا البرنامج مجاني للاستخدام الشخصي والتجاري.
 SettingsTitle=الإعدادات
 SettingsLaunchMode=وضع التشغيل:
 SettingsSingleClick=نقرة واحدة
@@ -170,46 +146,40 @@ SettingsDoubleClick=نقرة مزدوجة
 SettingsViewMode=وضع العرض:
 SettingsIconText=أيقونة + نص
 SettingsIconOnly=أيقونة فقط
-SettingsAlwaysOnTop=دائماً في الأعلى
+SettingsAlwaysOnTop=دائمًا في المقدمة
 SettingsBtnSave=حفظ
 SettingsBtnCancel=إلغاء
-
-; Manual Sort Form
 ManualSortTitle=فرز يدوي
 ManualSortColOrder=الترتيب
-ManualSortColIcon=الأيقونة
+ManualSortColIcon=أيقونة
 ManualSortColName=اسم العنصر
 ManualSortColPath=البرنامج / المسار
-ManualSortBtnUp=▲ لأعلى
-ManualSortBtnDown=▼ لأسفل
+ManualSortBtnUp=▲ أعلى
+ManualSortBtnDown=▼ أسفل
 ManualSortBtnSave=حفظ والخروج
 ManualSortBtnCancel=✗ إلغاء
-ManualSortLabel1=حدد العناصر (حدد المربع) وقم بفرزها باستخدام أزرار لأعلى/لأسفل:
-
-; Copy/Move Form
+ManualSortLabel1=حدد العناصر (حدد خانة الاختيار) ورتبها باستخدام أزرار الأعلى/الأسفل:
 CopyMoveTitle=نسخ/نقل
-CopyMoveSourceTab=علامة المصدر:
-CopyMoveTargetTab=علامة الهدف:
+CopyMoveSourceTab=علامة التبويب المصدر:
+CopyMoveTargetTab=علامة التبويب الهدف:
 CopyMoveItemName=اسم العنصر:
 CopyMoveBtnCopy=نسخ
 CopyMoveBtnMove=نقل
 CopyMoveBtnCancel=إلغاء
-
-; Settings Form
 Settings=الإعدادات
-LaunchMode=وضع الإطلاق
+LaunchMode=وضع التشغيل
 ViewMode=وضع العرض
 Language=اللغة
-LastActiveTab=آخر علامة نشطة
+LastActiveTab=علامة التبويب النشطة الأخيرة
 SelectLanguage=اختر اللغة:
 SelectTab=اختر علامة التبويب:
-LaunchDoubleClick=انقر نقراً مزدوجاً
-LaunchSingleClick=انقر مرة واحدة
+LaunchDoubleClick=نقرة مزدوجة
+LaunchSingleClick=نقرة واحدة
 ViewIconText=أيقونة+نص
 ViewIcon=أيقونة
 ViewList=قائمة
-ViewTile=فسيفساء
-AlwaysOnTop=دائماً في الأمام
+ViewTile=بلاط
+AlwaysOnTop=دائمًا في المقدمة
+AutoUpdate=تمكين التحقق التلقائي من التحديثات
 OK=موافق
 Cancel=إلغاء
-CopyMoveBtnCancel=إلغاء

@@ -37,6 +37,7 @@ Partial Class SettingsForm
         Me.LblLastTab = New System.Windows.Forms.Label()
         Me.CmbLastTab = New System.Windows.Forms.ComboBox()
         Me.ChkAlwaysOnTop = New System.Windows.Forms.CheckBox()
+        Me.ChkAutoUpdate = New System.Windows.Forms.CheckBox()
         Me.BtnOK = New System.Windows.Forms.Button()
         Me.BtnCancel = New System.Windows.Forms.Button()
         Me.GrpLaunchMode.SuspendLayout()
@@ -195,9 +196,19 @@ Partial Class SettingsForm
         Me.ChkAlwaysOnTop.Text = "Always On Top"
         Me.ChkAlwaysOnTop.UseVisualStyleBackColor = True
         '
+        'ChkAutoUpdate
+        '
+        Me.ChkAutoUpdate.AutoSize = True
+        Me.ChkAutoUpdate.Location = New System.Drawing.Point(12, 273)
+        Me.ChkAutoUpdate.Name = "ChkAutoUpdate"
+        Me.ChkAutoUpdate.Size = New System.Drawing.Size(162, 17)
+        Me.ChkAutoUpdate.TabIndex = 7
+        Me.ChkAutoUpdate.Text = "Enable automatic update check"
+        Me.ChkAutoUpdate.UseVisualStyleBackColor = True
+        '
         'BtnOK
         '
-        Me.BtnOK.Location = New System.Drawing.Point(480, 250)
+        Me.BtnOK.Location = New System.Drawing.Point(480, 273)
         Me.BtnOK.Name = "BtnOK"
         Me.BtnOK.Size = New System.Drawing.Size(75, 23)
         Me.BtnOK.TabIndex = 5
@@ -206,7 +217,7 @@ Partial Class SettingsForm
         '
         'BtnCancel
         '
-        Me.BtnCancel.Location = New System.Drawing.Point(560, 250)
+        Me.BtnCancel.Location = New System.Drawing.Point(560, 273)
         Me.BtnCancel.Name = "BtnCancel"
         Me.BtnCancel.Size = New System.Drawing.Size(75, 23)
         Me.BtnCancel.TabIndex = 6
@@ -217,7 +228,8 @@ Partial Class SettingsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(645, 290)
+        Me.ClientSize = New System.Drawing.Size(645, 320)
+        Me.Controls.Add(Me.ChkAutoUpdate)
         Me.Controls.Add(Me.BtnCancel)
         Me.Controls.Add(Me.BtnOK)
         Me.Controls.Add(Me.ChkAlwaysOnTop)
@@ -259,6 +271,7 @@ Partial Class SettingsForm
     Friend WithEvents LblLastTab As Label
     Friend WithEvents CmbLastTab As ComboBox
     Friend WithEvents ChkAlwaysOnTop As CheckBox
+    Friend WithEvents ChkAutoUpdate As CheckBox
     Friend WithEvents BtnOK As Button
     Friend WithEvents BtnCancel As Button
 

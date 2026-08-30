@@ -28,12 +28,12 @@ Public Class CopyMoveForm
 
         ' Form title
         Dim titlePrefix As String = Form1.langManager.GetText("CopyMoveTitle", "Copy/Move")
-        Me.Text = $"{titlePrefix} - {itemName}"
+        Me.Text = titlePrefix & " - " & itemName
 
         ' Labels
         Dim sourceTabLabel As String = Form1.langManager.GetText("CopyMoveSourceTab", "Source tab:")
         Dim itemNameLabel As String = Form1.langManager.GetText("CopyMoveItemName", "Item name:")
-        lblSourceInfo.Text = $"{sourceTabLabel} {sourceTabName} / {itemNameLabel} {itemName}"
+        lblSourceInfo.Text = sourceTabLabel & " " & sourceTabName & " / " & itemNameLabel & " " & itemName
 
         GroupBox1.Text = Form1.langManager.GetText("CopyMoveTargetTab", "Select target tab")
 

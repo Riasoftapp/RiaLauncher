@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Imports System.Drawing
-Imports System.Xml.Linq
+Imports System.Reflection
 
 Public Class Form1
 
@@ -34,6 +34,11 @@ Public Class Form1
     Private lastActiveTab As Integer = 0
     Private lastOpenDir As String = ""
     Private currentLanguage As String = ""
+    Private winX As Integer = -1
+    Private winY As Integer = -1
+    Private winWidth As Integer = 0
+    Private winHeight As Integer = 0
+    Private autoUpdateEnabled As Boolean = True
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         sRootDir = GetRootDir()
         sAssetDir = sRootDir & "\assets\"
@@ -50,26 +55,30 @@ Public Class Form1
 
         If Not isSettingsIniExist() Then CreateDefaultIni()
 
-        LoadIni() ' 2. Settings.ini dosyasını oku ve değerleri yükle
+LoadIni()
 
-        InitializeLanguageManager() ' Dil yöneticisini başlat
-        LoadComboLang()             ' ComboLang'ı dil dosyalarıyla doldur
-        ApplyCurrentLang()          ' Seçili dili uygula
+        ' Önceki pencere konumu ve boyutunu geri yükle
+        RestoreWindowBounds()
 
+        InitializeLanguageManager()
+        LoadComboLang()
+        ApplyCurrentLang()
 
-        If Not isRiaLauncherXmlExist() Then CreateXml() ' 3. RiaLauncher.xml dosyasının varlığını kontrol et yoksa olustur
-
-
-        LoadDataFromXml()
-
-        ' SQLite veritabanını başlat
+        ' SQLite veritabanını başlat ve XML'den içe aktar (ilk geçiş)
         InitDatabase()
+
+        ' Mevcut .url ogelerini gercek URL ile guncelle (kisayol silinince kaybolmasin)
+        UpgradeUrlItems()
+
+        ' Veritabanından verileri yükle
+        LoadDataFromDb()
 
         ' Son açılan tab'ı geri yükle
         RestoreLastActiveTab()
 
-        ' Runtime'da oluşturulan tab'lar için AllowDrop'u etkinleştir
         FlowLayoutPanel1.AllowDrop = True
+
+        CheckForUpdates(False)
 
         ' Bilgilendirme mesajı
         ' MsgBox("Startup işlemleri tamamlandı:" & vbCrLf &
@@ -107,19 +116,108 @@ Public Class Form1
             Return exeDir
         End If
     End Function
+
+    Private Function GetCurrentVersion() As String
+        Dim asmVersion = Assembly.GetExecutingAssembly().GetName().Version
+        If asmVersion IsNot Nothing Then
+            Return asmVersion.ToString()
+        End If
+
+        Return Application.ProductVersion
+    End Function
+
+    Private Function GetConfigValue(keyName As String) As String
+        Try
+            Dim configPath As String = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile
+            If String.IsNullOrWhiteSpace(configPath) OrElse Not File.Exists(configPath) Then Return ""
+
+            Dim doc = System.Xml.Linq.XDocument.Load(configPath)
+            Dim appSettings = doc...<appSettings>.<add>
+            For Each setting In appSettings
+                Dim keyAttr = setting.Attribute("key")
+                If keyAttr IsNot Nothing AndAlso keyAttr.Value = keyName Then
+                    Dim valAttr = setting.Attribute("value")
+                    If valAttr IsNot Nothing Then Return valAttr.Value
+                End If
+            Next
+        Catch
+        End Try
+
+        Return ""
+    End Function
+
+    Private Sub CheckForUpdates(isManualCheck As Boolean)
+        If (Not isManualCheck) AndAlso (Not autoUpdateEnabled) Then
+            Return
+        End If
+
+        Try
+            Dim repo As String = GetConfigValue("UpdateRepo")
+            Dim assetName As String = GetConfigValue("UpdateAsset")
+            If String.IsNullOrWhiteSpace(repo) OrElse String.IsNullOrWhiteSpace(assetName) Then
+                If isManualCheck Then
+                    MessageBox.Show(langManager.GetText("MsgUpdateUrlMissing", "Update URL is not configured."),
+                                    langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+                Return
+            End If
+
+            Dim updaterPath As String = Path.Combine(sRootDir, "update", "Updater.exe")
+            If Not File.Exists(updaterPath) Then
+                If isManualCheck Then
+                    MessageBox.Show(langManager.GetText("MsgUpdateUpdaterNotFound", "Updater not found: {0}").Replace("{0}", updaterPath),
+                                    langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+                Return
+            End If
+
+            Dim mgr As New UpdateManager(sRootDir, repo, assetName, GetCurrentVersion())
+            Dim release As ReleaseInfo = mgr.GetLatestRelease()
+
+            If Not mgr.IsNewer(release) Then
+                If isManualCheck Then
+                    MessageBox.Show(langManager.GetText("MsgUpdateNoNewVersion", "You are using the latest version."),
+                                    langManager.GetText("MsgInfo", "Information"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+                Return
+            End If
+
+            Dim changelog As String = release.Changelog
+            If changelog = "" Then changelog = "-"
+            Dim question As String = String.Format(langManager.GetText("MsgUpdateFound", "A new version is available: v{0}{1}{1}{2}{1}{1}Download and install now?"),
+                                                   release.Version, vbCrLf, changelog)
+            Dim savedCulture As System.Globalization.CultureInfo = System.Threading.Thread.CurrentThread.CurrentUICulture
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en-US")
+            Dim updateAnswer As DialogResult = MessageBox.Show(question, "RiaLauncher Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+            System.Threading.Thread.CurrentThread.CurrentUICulture = savedCulture
+            If updateAnswer <> DialogResult.Yes Then
+                Return
+            End If
+
+            Dim stagingDir As String = mgr.DownloadAndStage(release)
+            If mgr.LaunchUpdater(stagingDir) Then
+                Application.Exit()
+            Else
+                MessageBox.Show(langManager.GetText("MsgUpdateUpdaterNotFound", "Updater not found: {0}").Replace("{0}", updaterPath),
+                                langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            If isManualCheck Then
+                Dim msg As String = String.Format(langManager.GetText("MsgUpdateCheckError", "Update check failed: {0}"), ex.Message)
+                MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        End Try
+    End Sub
     Public Function isSettingsIniExist() As Boolean
         Dim iniPath As String = Path.Combine(sAssetDir, "settings.ini")
         Return File.Exists(iniPath)
     End Function
-    Public Function isRiaLauncherXmlExist() As Boolean
-        Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
-        Return File.Exists(xmlPath)
-    End Function
-
     Public Sub InitDatabase()
         Try
             DatabaseManager.SetDataDir(sDataDir)
             DatabaseManager.InitializeDatabase()
+            DatabaseManager.RunMigrations()
+            If Not DatabaseManager.DatabaseExists() Then Return
             Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
             If File.Exists(sXmlPath) Then
                 DatabaseManager.ImportFromXml(sXmlPath)
@@ -147,42 +245,17 @@ Public Class Form1
             lines.Add("LaunchMode=DoubleClick")
             lines.Add("ViewMode=IconText")
             lines.Add("AlwaysOnTop=false")
+            lines.Add("AutoUpdate=true")
+            lines.Add("WindowX=0")
+            lines.Add("WindowY=0")
+            lines.Add("WindowWidth=0")
+            lines.Add("WindowHeight=0")
 
             File.WriteAllLines(iniPath, lines)
             Return True
 
         Catch ex As Exception
             MsgBox("Settings.ini oluşturulamadı: " & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Hata")
-            Return False
-        End Try
-    End Function
-    Public Function CreateXml() As Boolean
-        Try
-            Dim xmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
-
-            If Not System.IO.Directory.Exists(sDataDir) Then
-                System.IO.Directory.CreateDirectory(sDataDir)
-            End If
-
-            Dim xmlContent As String =
-                "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf &
-                "<RiaLauncher>" & vbCrLf &
-                "  <Settings>" & vbCrLf &
-                "    <IconSize>48</IconSize>" & vbCrLf &
-                "    <DefaultSort>XML</DefaultSort>" & vbCrLf &
-                "    <LaunchMode>DoubleClick</LaunchMode>" & vbCrLf &
-                "    <ViewMode>IconText</ViewMode>" & vbCrLf &
-                "    <AlwaysOnTop>false</AlwaysOnTop>" & vbCrLf &
-                "  </Settings>" & vbCrLf &
-                "  <Categories>" & vbCrLf &
-                "  </Categories>" & vbCrLf &
-                "</RiaLauncher>"
-
-            File.WriteAllText(xmlPath, xmlContent, System.Text.Encoding.UTF8)
-            Return True
-
-        Catch ex As Exception
-            MsgBox("RiaLauncher.xml oluşturulamadı: " & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Hata")
             Return False
         End Try
     End Function
@@ -206,6 +279,16 @@ Public Class Form1
                     viewMode = line.Split("=")(1)
                 ElseIf line.StartsWith("AlwaysOnTop=") Then
                     Boolean.TryParse(line.Split("=")(1), alwaysOnTop)
+                ElseIf line.StartsWith("AutoUpdate=") Then
+                    Boolean.TryParse(line.Split("=")(1), autoUpdateEnabled)
+                ElseIf line.StartsWith("WindowX=") Then
+                    Integer.TryParse(line.Split("=")(1), winX)
+                ElseIf line.StartsWith("WindowY=") Then
+                    Integer.TryParse(line.Split("=")(1), winY)
+                ElseIf line.StartsWith("WindowWidth=") Then
+                    Integer.TryParse(line.Split("=")(1), winWidth)
+                ElseIf line.StartsWith("WindowHeight=") Then
+                    Integer.TryParse(line.Split("=")(1), winHeight)
                 End If
             Next
 
@@ -373,6 +456,11 @@ Public Class Form1
             lines.Add("LaunchMode=" & launchMode)
             lines.Add("ViewMode=" & viewMode)
             lines.Add("AlwaysOnTop=" & alwaysOnTop.ToString().ToLower())
+            lines.Add("AutoUpdate=" & autoUpdateEnabled.ToString().ToLower())
+            lines.Add("WindowX=" & winX.ToString())
+            lines.Add("WindowY=" & winY.ToString())
+            lines.Add("WindowWidth=" & winWidth.ToString())
+            lines.Add("WindowHeight=" & winHeight.ToString())
 
             File.WriteAllLines(iniPath, lines)
         Catch ex As Exception
@@ -395,38 +483,31 @@ Public Class Form1
             TabControl1.SelectedIndex = lastActiveTab
         End If
     End Sub
-    Private Sub CreateDefaultXmlIfNotExists()
-        If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then
-            Dim defaultXml As New XDocument(
-                New XElement("RiaLauncher",
-                    New XElement("Settings",
-                        New XElement("IconSize", "48"),
-                        New XElement("DefaultSort", "XML"),
-                        New XElement("LaunchMode", "DoubleClick"),
-                        New XElement("ViewMode", "IconText"),
-                        New XElement("AlwaysOnTop", "false"),
-                        New XElement("CloseOnClickOutside", "false")
-                    ),
-                    New XElement("Categories",
-                        New XElement("Category",
-                            New XAttribute("Name", "Development")
-                        )
-                    )
-                )
-            )
-            defaultXml.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
+
+    ' Veritabanındaki bir öğeyi ekrana ekler.
+    ' - http(s) ile başlayanlar (URL) her zaman gösterilir.
+    ' - Dosya/klasör diskte varsa normal gösterilir.
+    ' - Bunların dışında kalanlar (diskte olmayan programlar) "unavailable"
+    '   ikonuyla ve adına " (missing)" eklenerek gösterilir.
+    Private Sub AddDbItem(flowPanel As FlowLayoutPanel, item As DatabaseManager.DbItem, unavailableIcon As String)
+        If IsUrl(item.Path) Then
+            AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
+        ElseIf File.Exists(item.Path) OrElse Directory.Exists(item.Path) Then
+            AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
+        Else
+            AddLauncherItem(flowPanel, item.Name & " (missing)", item.Path, item.IconPath, unavailableIcon)
         End If
     End Sub
-    Private Sub LoadDataFromXml()
-        Try
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
+    Private Sub LoadDataFromDb()
+        Try
             TabControl1.TabPages.Clear()
 
-            For Each categoryElement In doc.Root.Element("Categories").Elements("Category")
-                Dim categoryName As String = categoryElement.Attribute("Name").Value
-                Dim newTab As New TabPage(categoryName)
+            Dim categories = DatabaseManager.GetCategories()
+            Dim unavailableIcon As String = IO.Path.Combine(sIconDir, "unavailable24.png")
+
+            For Each cat In categories
+                Dim newTab As New TabPage(cat.Name)
 
                 Dim flowPanel As New FlowLayoutPanel With {
                     .Dock = DockStyle.Fill,
@@ -438,22 +519,8 @@ Public Class Form1
                 AddHandler flowPanel.DragOver, AddressOf FlowPanel_DragOver
                 AddHandler flowPanel.DragDrop, AddressOf FlowPanel_DragDrop
 
-                ' Item'ları OrderIndex'e göre sırala
-                Dim itemElements = categoryElement.Elements("Item").ToList()
-                itemElements = itemElements.OrderBy(Function(item)
-                                                        Dim orderIndex As Integer = 0
-                                                        Integer.TryParse(item.Element("OrderIndex")?.Value, orderIndex)
-                                                        Return orderIndex
-                                                    End Function).ToList()
-
-                For Each itemElement In itemElements
-                    Dim itemName As String = itemElement.Element("Name").Value
-                    Dim itemPath As String = itemElement.Element("Path").Value
-                    Dim iconPath As String = If(itemElement.Element("IconPath")?.Value, "")
-
-                    If File.Exists(itemPath) OrElse Directory.Exists(itemPath) Then
-                        AddLauncherItem(flowPanel, itemName, itemPath, iconPath)
-                    End If
+                For Each item In cat.Items
+                    AddDbItem(flowPanel, item, unavailableIcon)
                 Next
 
                 newTab.Controls.Add(flowPanel)
@@ -465,7 +532,7 @@ Public Class Form1
             End If
 
         Catch ex As Exception
-            Dim msg As String = String.Format(langManager.GetText("MsgXMLLoadError", "XML loading error: {0}"), ex.Message)
+            Dim msg As String = String.Format(langManager.GetText("MsgXMLLoadError", "Veritabanı yükleme hatası: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
             AddDefaultTab()
         End Try
@@ -487,11 +554,7 @@ Public Class Form1
     End Sub
 
     Private Sub FlowPanel_DragEnter(sender As Object, e As DragEventArgs)
-        ' FileDrop (dosya), Text (metin), Shell IDList Array (Denetim Masası, vb.) ve diğer format'ları accept et
-        If e.Data.GetDataPresent(DataFormats.FileDrop) OrElse
-            e.Data.GetDataPresent(DataFormats.Text) OrElse
-            e.Data.GetDataPresent("Shell IDList Array") OrElse
-            e.Data.GetDataPresent("FileGroupDescriptorW") Then
+        If HasUrlDragData(e) Then
             e.Effect = DragDropEffects.Copy
         Else
             e.Effect = DragDropEffects.None
@@ -499,9 +562,10 @@ Public Class Form1
     End Sub
 
     Private Sub FlowPanel_DragDrop(sender As Object, e As DragEventArgs)
-        Dim flowPanel As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
+        Dim flowPanel As FlowLayoutPanel = GetFlowPanel(sender)
+        If flowPanel Is Nothing Then Return
 
-        ' Dosya sürükle-bırak (Windows Explorer'dan)
+        ' 1) Dosya sürükle-bırak (Windows Explorer / masaüstü .url, .lnk, uygulama, klasör)
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
 
@@ -509,17 +573,140 @@ Public Class Form1
                 Dim itemName As String = Path.GetFileNameWithoutExtension(filePath)
                 Dim targetPath As String = filePath
 
-                If Path.GetExtension(filePath).ToLower() = ".lnk" Then
-                    targetPath = ResolveShortcut(filePath)
-                    If String.IsNullOrEmpty(targetPath) Then targetPath = filePath
+                If Path.GetExtension(filePath).ToLower() = ".url" Then
+                    Dim url As String = ReadUrlFromShortcut(filePath)
+                    If IsUrl(url) Then targetPath = url
+                ElseIf Path.GetExtension(filePath).ToLower() = ".lnk" Then
+                    Dim t As String = ResolveShortcut(filePath)
+                    If Not String.IsNullOrEmpty(t) Then targetPath = t
                 End If
 
                 AddLauncherItem(flowPanel, itemName, targetPath, "")
             Next
 
-            SaveDataToXml()
+            SaveDataToDb()
+        Else
+            ' 2) Doğrudan URL bırakıldı (tarayıcı adres çubuğu, bağlantı sürükleme,
+            '    masaüstü .url sanal dosyası, vb.). Mevcut tüm format'lardan ilk geçerli
+            '    http(s) adresini bulur.
+            Dim url As String = ExtractUrlFromDragData(e)
+            If IsUrl(url) Then AddUrlItem(flowPanel, url)
         End If
     End Sub
+
+    ' Metin içinden ilk geçerli http/https adresini bulur.
+    ' (düz URL, "URL=...", ya da <a href="..."> içeren HTML olabilir)
+    Private Function ExtractUrlFromText(text As String) As String
+        If String.IsNullOrEmpty(text) Then Return ""
+        Dim idx As Integer = text.IndexOf("https://", StringComparison.OrdinalIgnoreCase)
+        If idx < 0 Then idx = text.IndexOf("http://", StringComparison.OrdinalIgnoreCase)
+        If idx < 0 Then Return ""
+        Dim rest As String = text.Substring(idx)
+        Dim endIdx As Integer = rest.IndexOfAny(New Char() {ControlChars.Cr, ControlChars.Lf, " "c, vbTab, """"c, ">"c, "<"c, ")"c, "}"c, ";"c})
+        If endIdx >= 0 Then rest = rest.Substring(0, endIdx)
+        Return rest.Trim()
+    End Function
+
+    ' Sürükleme verisinde kabul edilebilir bir URL/dosya formatı var mı?
+    Private Function HasUrlDragData(e As DragEventArgs) As Boolean
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then Return True
+
+        For Each fmt In e.Data.GetFormats()
+            If fmt = "HTML Format" OrElse
+               fmt = "UniformResourceLocator" OrElse
+               fmt = "UniformResourceLocatorW" OrElse
+               fmt = "text/uri-list" OrElse
+               fmt = DataFormats.UnicodeText OrElse
+               fmt = DataFormats.Text OrElse
+               fmt = DataFormats.StringFormat OrElse
+               fmt = "FileGroupDescriptorW" OrElse
+               fmt = "Shell IDList Array" Then
+                Return True
+            End If
+        Next
+
+        Return False
+    End Function
+
+    ' Sürükleme verisindeki tüm olası format'lardan ilk geçerli http(s) adresini çıkarır.
+    ' Tarayıcılar URL'yi genellikle UnicodeText, text/uri-list veya HTML Format olarak verir;
+    ' bunların hiçbiri eski kodda denenmiyordu (sadece ANSI Text), bu yüzden bırakma reddediliyordu.
+    Private Function ExtractUrlFromDragData(e As DragEventArgs) As String
+        ' Öncelik sırasıyla denenecek bilinen metin tabanlı formatlar
+        Dim tryFormats As New List(Of String) From {
+            DataFormats.Text,
+            DataFormats.UnicodeText,
+            DataFormats.StringFormat,
+            "text/uri-list",
+            "HTML Format",
+            "UniformResourceLocator",
+            "UniformResourceLocatorW",
+            "FileContents"
+        }
+
+        For Each fmt In tryFormats
+            If e.Data.GetDataPresent(fmt) Then
+                Dim s As String = TryCast(e.Data.GetData(fmt), String)
+                If s Is Nothing Then
+                    Dim stream = TryCast(e.Data.GetData(fmt), IO.Stream)
+                    If stream IsNot Nothing Then
+                        Try
+                            Using r = New IO.StreamReader(stream)
+                                s = r.ReadToEnd()
+                            End Using
+                        Catch
+                        End Try
+                    End If
+                End If
+                If s IsNot Nothing Then
+                    Dim candidate As String = ExtractUrlFromText(s)
+                    If IsUrl(candidate) Then Return candidate
+                End If
+            End If
+        Next
+
+        ' Fallback: mevcut tüm formatları tara (bilinmeyen tarayıcı formatları için)
+        For Each fmt In e.Data.GetFormats()
+            Try
+                Dim obj = e.Data.GetData(fmt)
+                Dim s As String = TryCast(obj, String)
+                If s Is Nothing Then
+                    Dim stream = TryCast(obj, IO.Stream)
+                    If stream IsNot Nothing Then
+                        Using r = New IO.StreamReader(stream)
+                            s = r.ReadToEnd()
+                        End Using
+                    End If
+                End If
+                If s IsNot Nothing AndAlso s.Length > 0 Then
+                    Dim candidate As String = ExtractUrlFromText(s)
+                    If IsUrl(candidate) Then Return candidate
+                End If
+            Catch
+            End Try
+        Next
+
+        Return ""
+    End Function
+
+    Private Sub AddUrlItem(flowPanel As FlowLayoutPanel, url As String)
+        If String.IsNullOrEmpty(url) Then Return
+        AddLauncherItem(flowPanel, UrlToName(url), url.Trim(), "")
+        SaveDataToDb()
+    End Sub
+
+    Private Function UrlToName(url As String) As String
+        Try
+            Dim u As New Uri(url)
+            For i As Integer = u.Segments.Length - 1 To 0 Step -1
+                Dim seg = u.Segments(i).TrimEnd("/"c)
+                If seg.Length > 0 Then Return Uri.UnescapeDataString(seg)
+            Next
+            Return u.Host
+        Catch
+            Return url
+        End Try
+    End Function
     Private Function ResolveShortcut(shortcutPath As String) As String
         Try
             Dim shell = CreateObject("WScript.Shell")
@@ -529,7 +716,52 @@ Public Class Form1
             Return ""
         End Try
     End Function
-    Private Sub AddLauncherItem(flowPanel As FlowLayoutPanel, name As String, path As String, iconPath As String)
+
+    Private Function IsUrl(path As String) As Boolean
+        If String.IsNullOrEmpty(path) Then Return False
+        Return path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) OrElse
+               path.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    ' Sürükle-bırak olayını tetikleyen kontrolden (öğe paneli, ikon, etiket) en yakın
+    ' FlowLayoutPanel'e ulaşır. Böylece bırakma boş alanda da, mevcut bir öğenin
+    ' üzerinde de olsa aynı akış çalışır.
+    Private Function GetFlowPanel(sender As Object) As FlowLayoutPanel
+        Dim c = TryCast(sender, Control)
+        While c IsNot Nothing
+            If TypeOf c Is FlowLayoutPanel Then Return DirectCast(c, FlowLayoutPanel)
+            c = c.Parent
+        End While
+        Return Nothing
+    End Function
+
+    Private Function ReadUrlFromShortcut(shortcutPath As String) As String
+        Try
+            Dim bytes = IO.File.ReadAllBytes(shortcutPath)
+            ' .url dosyaları bazen UTF-16 (Unicode) veya ANSI ile kaydedilir;
+            ' birkaç kodlamayla deneyip ilk bulunan http(s) adresini döndürelim.
+            Dim candidates As New List(Of String) From {
+                System.Text.Encoding.UTF8.GetString(bytes),
+                System.Text.Encoding.Unicode.GetString(bytes),
+                System.Text.Encoding.Default.GetString(bytes)
+            }
+            For Each content In candidates
+                For Each line In content.Split(New Char() {ControlChars.Cr, ControlChars.Lf}, StringSplitOptions.RemoveEmptyEntries)
+                    Dim t = line.Trim()
+                    If t.StartsWith("URL", StringComparison.OrdinalIgnoreCase) Then
+                        Dim eq = t.IndexOf("="c)
+                        If eq >= 0 Then
+                            Dim u = t.Substring(eq + 1).Trim()
+                            If IsUrl(u) Then Return u
+                        End If
+                    End If
+                Next
+            Next
+        Catch
+        End Try
+        Return ""
+    End Function
+    Private Sub AddLauncherItem(flowPanel As FlowLayoutPanel, name As String, path As String, iconPath As String, Optional forcedIconPath As String = "")
         Dim itemPanel As New Panel With {
             .Width = 80,
             .Height = 100,
@@ -550,7 +782,22 @@ Public Class Form1
         Dim imageExtensions() As String = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"}
         Dim extension As String = IO.Path.GetExtension(path).ToLower()
 
-        If extension = ".svg" Then
+        If Not String.IsNullOrEmpty(forcedIconPath) AndAlso IO.File.Exists(forcedIconPath) Then
+            ' Zorunlu ikon (ör. diskte olmayan öğeler için "unavailable" ikonu)
+            Try
+                picBox.Image = New Bitmap(forcedIconPath)
+            Catch
+            End Try
+        ElseIf IsUrl(path) Then
+            ' URL ogeleri icin web ikonu (web48.png)
+            Dim webIconPath As String = IO.Path.Combine(sIconDir, "web48.png")
+            If IO.File.Exists(webIconPath) Then
+                Try
+                    picBox.Image = New Bitmap(webIconPath)
+                Catch
+                End Try
+            End If
+        ElseIf extension = ".svg" Then
             ' SVG dosyası ise özel SVG iconu kullan
             Dim svgIconPath As String = IO.Path.Combine(sIconDir, "system", "svg64.png")
             If File.Exists(svgIconPath) Then
@@ -661,6 +908,19 @@ Public Class Form1
         itemPanel.Controls.Add(picBox)
         itemPanel.Controls.Add(lblName)
         flowPanel.Controls.Add(itemPanel)
+
+        ' Öğe paneli ve alt kontrolleri de sürükle-bırak hedefi olsun; böylece
+        ' bir öğenin / ikonun üzerine bırakıldığında "yasak" imleci çıkmaz.
+        ' Olaylar üst FlowLayoutPanel'e yönlendirilir.
+        itemPanel.AllowDrop = True
+        picBox.AllowDrop = True
+        lblName.AllowDrop = True
+        AddHandler itemPanel.DragEnter, AddressOf FlowPanel_DragEnter
+        AddHandler itemPanel.DragDrop, AddressOf FlowPanel_DragDrop
+        AddHandler picBox.DragEnter, AddressOf FlowPanel_DragEnter
+        AddHandler picBox.DragDrop, AddressOf FlowPanel_DragDrop
+        AddHandler lblName.DragEnter, AddressOf FlowPanel_DragEnter
+        AddHandler lblName.DragDrop, AddressOf FlowPanel_DragDrop
     End Sub
     Private Function ExtractIcon(filePath As String, customIconPath As String) As Icon
         Try
@@ -741,7 +1001,10 @@ Public Class Form1
 
     Private Sub LaunchItem(path As String)
         Try
-            If File.Exists(path) Then
+            If IsUrl(path) Then
+                ' URL dogrudan tarayicida acilir (.url kisayolu silinmis olsa bile calisir)
+                Process.Start(path)
+            ElseIf File.Exists(path) Then
                 ' Tüm dosyalar sistemin default viewer/uygulaması ile açılır
                 Process.Start(path)
             ElseIf Directory.Exists(path) Then
@@ -757,43 +1020,9 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub SaveDataToXml()
+    Private Sub SaveDataToDb()
         Try
-            File.Copy(Path.Combine(sDataDir, "RiaLauncher.xml"), Path.Combine(sDataDir, "RiaLauncher.xml") & ".bak", True)
-
-            Dim doc As New XDocument(
-                New XElement("RiaLauncher",
-                    New XElement("Settings",
-                        New XElement("IconSize", ICON_SIZE.ToString()),
-                        New XElement("DefaultSort", "XML"),
-                        New XElement("LaunchMode", launchMode),
-                        New XElement("ViewMode", viewMode),
-                        New XElement("AlwaysOnTop", alwaysOnTop.ToString().ToLower())
-                    ),
-                    New XElement("Categories",
-                        From tab As TabPage In TabControl1.TabPages
-                        Select New XElement("Category",
-                            New XAttribute("Name", tab.Text),
-                            From ctrl In tab.Controls.OfType(Of FlowLayoutPanel)()
-                            From itemPanel In ctrl.Controls.OfType(Of Panel)().Select(Function(p, index) New With {.Panel = p, .Index = index})
-                            Let itemData = TryCast(itemPanel.Panel.Tag, Object)
-                            Let itemPath = If(itemData IsNot Nothing, itemData.Path, "")
-                            Let itemIconPath = If(itemData IsNot Nothing, itemData.IconPath, "")
-                            Let itemName = itemPanel.Panel.Controls.OfType(Of Label)().FirstOrDefault()?.Text
-                            Where Not String.IsNullOrEmpty(itemPath)
-                            Select New XElement("Item",
-                                New XElement("Name", itemName),
-                                New XElement("Path", itemPath),
-                                New XElement("IconPath", If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)),
-                                New XElement("OrderIndex", itemPanel.Index),
-                                New XElement("IconSource", "Auto")
-                            )
-                        )
-                    )
-                )
-            )
-
-            doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
+            DatabaseManager.SaveAllData(TabControl1)
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgSaveError", "Save error: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -821,7 +1050,7 @@ Public Class Form1
         TabControl1.TabPages.Add(newTab)
         TabControl1.SelectedTab = newTab
 
-        SaveDataToXml()
+        SaveDataToDb()
     End Sub
 
     Private Sub btnDeleteTab_Click(sender As Object, e As EventArgs)
@@ -837,7 +1066,7 @@ Public Class Form1
 
         If result = DialogResult.Yes Then
             TabControl1.TabPages.Remove(TabControl1.SelectedTab)
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
 
@@ -849,7 +1078,7 @@ Public Class Form1
         Dim newName As String = InputBox(prompt, title, TabControl1.SelectedTab.Text)
         If Not String.IsNullOrWhiteSpace(newName) Then
             TabControl1.SelectedTab.Text = newName
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
 
@@ -875,7 +1104,7 @@ Public Class Form1
         Dim newName As String = InputBox(prompt, title, lblName.Text)
         If Not String.IsNullOrWhiteSpace(newName) Then
             lblName.Text = newName
-            SaveDataToXml()
+            SaveDataToDb()
         End If
     End Sub
 
@@ -908,7 +1137,7 @@ Public Class Form1
                                 selectedItemPanel.Tag = New With {.Path = currentTag.Path, .IconPath = ofd.FileName}
                             End If
 
-                            SaveDataToXml()
+                            SaveDataToDb()
                         End If
                     End If
                 End If
@@ -952,7 +1181,7 @@ Public Class Form1
                     End If
                 End If
 
-                SaveDataToXml()
+                SaveDataToDb()
                 MessageBox.Show(langManager.GetText("MsgPathUpdated", "Path updated successfully."), langManager.GetText("MsgInfo", "Information"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End Using
@@ -969,15 +1198,24 @@ Public Class Form1
         Dim itemPath As String = itemData.Path
 
         Try
-            If File.Exists(itemPath) Then
+            If IsUrl(itemPath) Then
+                ' URL öğeleri için Explorer'da Aç anlamsız; işlem yapma
+                Return
+            ElseIf File.Exists(itemPath) Then
                 ' Dosya ise, dosyanın bulunduğu klasörü aç ve dosyayı seç
-                Process.Start("explorer.exe", $"/select,""{itemPath}""")
+                Process.Start("explorer.exe", "/select,""" & itemPath & """")
             ElseIf Directory.Exists(itemPath) Then
                 ' Klasör ise, direkt klasörü aç
                 Process.Start("explorer.exe", itemPath)
             Else
-                Dim msg As String = String.Format(langManager.GetText("MsgFileOrFolderNotFound", "File or folder not found: {0}"), itemPath)
-                MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ' Dosya/klasör silinmiş olabilir: üst klasörü yine de aç
+                Dim parentDir As String = IO.Path.GetDirectoryName(itemPath)
+                If Not String.IsNullOrEmpty(parentDir) AndAlso Directory.Exists(parentDir) Then
+                    Process.Start("explorer.exe", parentDir)
+                Else
+                    Dim msg As String = String.Format(langManager.GetText("MsgFileOrFolderNotFound", "File or folder not found: {0}"), itemPath)
+                    MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
             End If
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgOpenFolderError", "An error occurred while opening the folder: {0}"), ex.Message)
@@ -999,7 +1237,7 @@ Public Class Form1
             If parent IsNot Nothing Then
                 parent.Controls.Remove(selectedItemPanel)
                 selectedItemPanel.Dispose()
-                SaveDataToXml()
+                SaveDataToDb()
             End If
         End If
     End Sub
@@ -1014,47 +1252,9 @@ Public Class Form1
         Dim itemPath As String = If(itemData IsNot Nothing, itemData.Path, "Unknown")
         Dim itemIconPath As String = If(itemData IsNot Nothing, itemData.IconPath, "")
 
-        Dim fileExists As String = "No"
-        If File.Exists(itemPath) Then
-            fileExists = "Yes (File)"
-        ElseIf Directory.Exists(itemPath) Then
-            fileExists = "Yes (Folder)"
-        End If
-
-        Dim properties As String = $"Name: {itemName}" & vbCrLf &
-                                   $"Path: {itemPath}" & vbCrLf &
-                                   $"Exists: {fileExists}" & vbCrLf &
-                                   $"Custom Icon: {If(String.IsNullOrEmpty(itemIconPath), "None", "Yes")}"
-
-        MessageBox.Show(properties, langManager.GetText("MsgItemPropertiesTitle", "Item Properties"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-    End Sub
-
-    Private Sub LoadSettingsFromXml()
-        ' XML'den ayar yükleme artık kullanılmıyor - INI kullanılıyor
-        ' Geriye dönük uyumluluk için bırakıldı
-        Try
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
-
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
-            Dim settings = doc.Root.Element("Settings")
-
-            If settings IsNot Nothing Then
-                ' XML'de ayar varsa INI'ye kopyala ve INI'den kullan
-                Dim xmlLaunchMode = If(settings.Element("LaunchMode")?.Value, "")
-                Dim xmlViewMode = If(settings.Element("ViewMode")?.Value, "")
-                Dim xmlAlwaysOnTop As Boolean = False
-                Boolean.TryParse(settings.Element("AlwaysOnTop")?.Value, xmlAlwaysOnTop)
-
-                ' Eğer INI'de ayar yoksa XML'den aktar
-                If String.IsNullOrEmpty(ReadIniKey("LaunchMode")) AndAlso Not String.IsNullOrEmpty(xmlLaunchMode) Then
-                    launchMode = xmlLaunchMode
-                    viewMode = xmlViewMode
-                    alwaysOnTop = xmlAlwaysOnTop
-                    SaveSettingsToIni()
-                End If
-            End If
-        Catch ex As Exception
-        End Try
+        Dim propsForm As New PropertiesForm(itemName, itemPath, itemIconPath)
+        propsForm.ShowDialog(Me)
+        propsForm.Dispose()
     End Sub
 
     Private Sub ApplySettings()
@@ -1105,12 +1305,16 @@ Public Class Form1
 
         REM MenuAyarlar.Text = langManager.GetText("MenuAyarlar", "&Settings")
 
+        MenuSystem.Text = langManager.GetText("MenuSystem", "&System")
+        MenuSystemKlasor.Text = langManager.GetText("MenuSystemKlasor", "Open RiaLauncher &Folder")
+        MenuUpdate.Text = langManager.GetText("MenuUpdate", "&Update")
+        MenuUpdateKontrol.Text = langManager.GetText("MenuUpdateKontrol", "Check for &Updates")
         MenuYardim.Text = langManager.GetText("MenuYardim", "&Help")
-        MenuYardimDokumanlar.Text = langManager.GetText("MenuYardimDokumanlar", "&Help")
-        MenuYardimDokumanIndir.Text = langManager.GetText("MenuYardimDokumanIndir", "&Download Docs")
+        MenuYardimDokumanlar.Text = langManager.GetText("MenuYardimDokumanlar", "&Help Page")
+        MenuYardimWeb.Text = langManager.GetText("MenuYardimWeb", "&Web Site")
+        MenuYardimWebSite.Text = langManager.GetText("MenuYardimWebSite", "Rialauncher &Web Site")
+        MenuYardimGithub.Text = langManager.GetText("MenuYardimGithub", "&Github Repo")
         MenuYardimLisans.Text = langManager.GetText("MenuYardimLisans", "&License Terms")
-        MenuYardimBagis.Text = langManager.GetText("MenuYardimBagis", "&Donate")
-        MenuYardimAnaSayfa.Text = langManager.GetText("MenuYardimAnaSayfa", "Home &Page")
         MenuYardimHakkinda.Text = langManager.GetText("MenuYardimHakkinda", "&About...")
 
         ' Context Menu - Item
@@ -1137,12 +1341,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub SaveSettingsToXml()
-        ' Artık XML'e ayar kaydetmiyoruz, sadece INI kullanıyoruz
-        ' Metod geriye dönük uyumluluk için bırakıldı
-        SaveSettingsToIni()
-    End Sub
-
     Private Sub btnSettings_Click(sender As Object, e As EventArgs)
         Dim wasTopMost As Boolean = Me.TopMost
         Me.TopMost = False
@@ -1152,6 +1350,7 @@ Public Class Form1
             settingsForm.LaunchMode = launchMode
             settingsForm.ViewMode = viewMode
             settingsForm.AlwaysOnTop = alwaysOnTop
+            settingsForm.AutoUpdateEnabled = autoUpdateEnabled
             settingsForm.CurrentLanguage = currentLanguage
             settingsForm.LastActiveTab = TabControl1.SelectedIndex
 
@@ -1166,6 +1365,7 @@ Public Class Form1
                 launchMode = settingsForm.LaunchMode
                 viewMode = settingsForm.ViewMode
                 alwaysOnTop = settingsForm.AlwaysOnTop
+                autoUpdateEnabled = settingsForm.AutoUpdateEnabled
                 Dim newLanguage = settingsForm.CurrentLanguage
                 Dim newTab = settingsForm.LastActiveTab
 
@@ -1268,9 +1468,34 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Son aktif tab'ı kaydet (opsiyonel, Settings'te zaten kaydedilmiş olabilir)
-        ' Tüm ayarları yeniden yazmıyoruz, sadece lastActiveTab güncelleniyor
-        ' iniManager.WriteInteger("General", "LastActiveTab", TabControl1.SelectedIndex)
+        ' Pencere konumu ve boyutunu kaydet (maximize ise normal boyutlar kaydedilir)
+        If Me.WindowState = FormWindowState.Normal Then
+            winX = Me.Location.X
+            winY = Me.Location.Y
+            winWidth = Me.Width
+            winHeight = Me.Height
+        Else
+            Dim rb = Me.RestoreBounds
+            winX = rb.X
+            winY = rb.Y
+            winWidth = rb.Width
+            winHeight = rb.Height
+        End If
+        SaveSettingsToIni()
+    End Sub
+
+    Private Sub RestoreWindowBounds()
+        If winWidth <= 0 OrElse winHeight <= 0 OrElse winX < 0 OrElse winY < 0 Then Return
+
+        Dim rect As New Rectangle(winX, winY, winWidth, winHeight)
+        For Each scr In Screen.AllScreens
+            If scr.WorkingArea.IntersectsWith(rect) Then
+                Me.StartPosition = FormStartPosition.Manual
+                Me.Location = New Point(winX, winY)
+                Me.Size = New Size(winWidth, winHeight)
+                Exit For
+            End If
+        Next
     End Sub
 
     ' ============================================
@@ -1304,24 +1529,11 @@ Public Class Form1
             Dim currentTabIndex As Integer = TabControl1.SelectedIndex
             Dim currentTabName As String = TabControl1.SelectedTab.Text
 
-            ' XML'den veriyi yeniden yükle
-        LoadDataFromXml()
+            LoadDataFromDb()
 
-        ' SQLite veritabanını başlat ve XML'den içe aktar
-        DatabaseManager.InitializeDatabase()
-        Dim sDbPath As String = Path.Combine(sDataDir, "RiaLauncher.db")
-        Dim sXmlPath As String = Path.Combine(sDataDir, "RiaLauncher.xml")
-            If File.Exists(sXmlPath) Then
-                DatabaseManager.ImportFromXml(sXmlPath)
-            End If
-
-            ' Aynı tab'a geri dön
             If currentTabIndex < TabControl1.TabPages.Count Then
                 TabControl1.SelectedIndex = currentTabIndex
             End If
-
-            Dim msg As String = String.Format(langManager.GetText("MsgTabRefreshed", "'{0}' tab refreshed."), currentTabName)
-            MessageBox.Show(msg, langManager.GetText("MsgInfo", "Information"), MessageBoxButtons.OK, MessageBoxIcon.Information)
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgTabRefreshError", "Tab refresh error: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1479,88 +1691,55 @@ Public Class Form1
     End Function
 
     ' ============================================
-    ' Yardım Menu Event Handlers
+    ' System / Update / Help Menu Event Handlers
     ' ============================================
 
-    Private Sub MenuYardimDokumanlar_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanlar.Click
+    Private Sub MenuSystemKlasor_Click(sender As Object, e As EventArgs) Handles MenuSystemKlasor.Click
         Try
-            ' ComboLang'dan seçili dili al
-            Dim selectedLang As String = ComboLang.SelectedValue?.ToString()
-
-            ' Eğer seçili dil Türkçe ise Türkçe help dosyasını aç
-            Dim helpFileName As String = If(selectedLang = "tr", "RiaLauncherHelp-tr.html", "RiaLauncherHelp-tr.html")
-            Dim helpPath As String = IO.Path.Combine(sHelpDir, helpFileName)
-
-            If IO.File.Exists(helpPath) Then
-                System.Diagnostics.Process.Start(helpPath)
-            Else
-                MessageBox.Show("Help dosyası bulunamadı: " & helpPath, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            If Not String.IsNullOrEmpty(sRootDir) AndAlso Directory.Exists(sRootDir) Then
+                Process.Start("explorer.exe", sRootDir)
             End If
         Catch ex As Exception
-            MessageBox.Show("Help dosyası açılırken hata oluştu: " & ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Dim msg As String = String.Format(langManager.GetText("MsgOpenFolderError", "An error occurred while opening the folder: {0}"), ex.Message)
+            MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub MenuYardimDokumanIndir_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanIndir.Click
-        Try
-            ' Aktif dile göre doğru dökümanı aç
-            Dim currentLang As String = langManager.GetCurrentLanguage()
-            Dim docFileName As String = If(currentLang = "tr", "KullanımKlavuzu.md", "UserManual.md")
-            Dim docPath As String = IO.Path.Combine(sAssetDir, "documentation", docFileName)
+    Private Sub MenuUpdateKontrol_Click(sender As Object, e As EventArgs) Handles MenuUpdateKontrol.Click
+        CheckForUpdates(True)
+    End Sub
 
-            If IO.File.Exists(docPath) Then
-                ' MD dosyasını varsayılan editör ile aç
-                Process.Start(docPath)
-            Else
-                ' Dosya yoksa GitHub sayfasını aç
-                Process.Start("https://github.com/hikmetalemdaroglu/999Projects/wiki")
-            End If
+    Private Sub MenuYardimDokumanlar_Click(sender As Object, e As EventArgs) Handles MenuYardimDokumanlar.Click
+        Try
+            Process.Start("https://riasoft.net/assets/docs/rialauncher/RiaLauncherHelp-en.html?lang=en")
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgHelpDocError", "The document page could not be opened: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub MenuYardimLisans_Click(sender As Object, e As EventArgs) Handles MenuYardimLisans.Click
-        Dim lisansBaslik As String = langManager.GetText("LicenseTitle", "WinLauncher - Personal Use License")
-        Dim lisansFree As String = langManager.GetText("LicenseFree", "This software is free for personal use.")
-        Dim lisansCopyright As String = langManager.GetText("AboutCopyright", "© 2024-2025 Hikmet Alp Alemdaroğlu")
-        Dim lisansRights As String = langManager.GetText("LicenseRights", "All rights reserved.")
-        Dim lisansAsIs As String = langManager.GetText("LicenseAsIs", "This software is provided ""AS IS"".")
-
-        Dim lisansMetni As String = lisansBaslik & vbCrLf & vbCrLf &
-                                    lisansFree & vbCrLf & vbCrLf &
-                                    lisansCopyright & vbCrLf & vbCrLf &
-                                    lisansRights & vbCrLf & vbCrLf &
-                                    lisansAsIs
-
-        MessageBox.Show(lisansMetni, langManager.GetText("MenuYardimLisans", "License Terms"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-    End Sub
-
-    Private Sub MenuYardimBagis_Click(sender As Object, e As EventArgs) Handles MenuYardimBagis.Click
-        Dim bagisMsg As String = langManager.GetText("MsgDonateMessage", "If you like the WinLauncher project," & vbCrLf &
-                                 "you can donate to support its development." & vbCrLf & vbCrLf &
-                                 "GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu" & vbCrLf & vbCrLf &
-                                 "Thank you! ??")
-
-        Dim result = MessageBox.Show(bagisMsg, langManager.GetText("MsgDonateTitle", "Donate"), MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-        If result = DialogResult.OK Then
-            Try
-                Process.Start("https://github.com/sponsors/hikmetalemdaroglu")
-            Catch ex As Exception
-                Dim errMsg As String = String.Format(langManager.GetText("MsgDonateError", "The donation page could not be opened: {0}"), ex.Message)
-                MessageBox.Show(errMsg, langManager.GetText("MsgError", "Hata"), MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-        End If
-    End Sub
-
-    Private Sub MenuYardimAnaSayfa_Click(sender As Object, e As EventArgs) Handles MenuYardimAnaSayfa.Click
+    Private Sub MenuYardimWebSite_Click(sender As Object, e As EventArgs) Handles MenuYardimWebSite.Click
         Try
-            Process.Start("https://github.com/hikmetalemdaroglu/999Projects/tree/winluncher-v1.2-release/ProjectVs/ProjectVb.net/winLuncher")
+            Process.Start("https://riasoft.net/en/rialauncher.html")
         Catch ex As Exception
-            Dim msg As String = String.Format(langManager.GetText("MsgHomePageError", "Ana sayfa açılamadı: {0}"), ex.Message)
-            MessageBox.Show(msg, langManager.GetText("MsgError", "Hata"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Dim msg As String = String.Format(langManager.GetText("MsgWebSiteError", "Website could not be opened: {0}"), ex.Message)
+            MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+    Private Sub MenuYardimGithub_Click(sender As Object, e As EventArgs) Handles MenuYardimGithub.Click
+        Try
+            Process.Start("https://github.com/Riasoftapp/RiaLauncher")
+        Catch ex As Exception
+            Dim msg As String = String.Format(langManager.GetText("MsgWebSiteError", "Website could not be opened: {0}"), ex.Message)
+            MessageBox.Show(msg, langManager.GetText("MsgError", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub MenuYardimLisans_Click(sender As Object, e As EventArgs) Handles MenuYardimLisans.Click
+        Using f As New LicenseForm()
+            f.ShowDialog(Me)
+        End Using
     End Sub
 
     Private Sub MenuYardimHakkinda_Click(sender As Object, e As EventArgs) Handles MenuYardimHakkinda.Click
@@ -1650,7 +1829,7 @@ Public Class Form1
     ' ============================================
 
     Private Sub FlowPanel_DragOver(sender As Object, e As DragEventArgs)
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+        If HasUrlDragData(e) Then
             e.Effect = DragDropEffects.Copy
         Else
             e.Effect = DragDropEffects.None
@@ -1711,8 +1890,8 @@ Public Class Form1
             AddLauncherItem(flowPanel, item.Name, item.Path, item.IconPath)
         Next
 
-        ' XML'i kaydet
-        SaveDataToXml()
+        ' Veritabanına kaydet
+        SaveDataToDb()
 
         MessageBox.Show(langManager.GetText("MsgSortSaved", "Sıralama başarıyla kaydedildi!"), langManager.GetText("MsgInfo", "Bilgi"), MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
@@ -1783,7 +1962,6 @@ Public Class Form1
     ' Public metodlar - CopyMoveForm tarafından çağrılacak
     Public Function CopyItemToTab(sourceTabName As String, targetTabName As String, itemName As String, itemPath As String, itemIconPath As String, itemIcon As Icon) As Boolean
         Try
-            ' Hedef tab'ı bul
             Dim targetTab As TabPage = Nothing
             For Each tab As TabPage In TabControl1.TabPages
                 If tab.Text = targetTabName Then
@@ -1792,74 +1970,13 @@ Public Class Form1
                 End If
             Next
 
-            If targetTab Is Nothing Then
+            If targetTab Is Nothing Then Return False
+
+            If Not DatabaseManager.CopyItemToCategory(sourceTabName, targetTabName, itemName, itemPath, itemIconPath) Then
                 Return False
             End If
 
-            ' XML'i yükle
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return False
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
-
-            ' Source ve target category'leri bul
-            Dim categories = doc.Root.Element("Categories")
-            If categories Is Nothing Then Return False
-
-            Dim sourceCategory = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = sourceTabName)
-            Dim targetCategory = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = targetTabName)
-
-            If sourceCategory Is Nothing Then Return False
-
-            ' Hedef category yoksa oluştur
-            If targetCategory Is Nothing Then
-                targetCategory = New XElement("Category", New XAttribute("Name", targetTabName))
-                categories.Add(targetCategory)
-            End If
-
-            ' Source item'ı bul
-            Dim sourceItem = sourceCategory.Elements("Item").FirstOrDefault(Function(i) i.Element("Name").Value = itemName AndAlso i.Element("Path").Value = itemPath)
-            If sourceItem Is Nothing Then Return False
-
-            ' Target'ta aynı item var mı kontrol et (Path'e göre)
-            Dim existingItem = targetCategory.Elements("Item").FirstOrDefault(Function(i) i.Element("Path").Value = itemPath)
-
-            ' Hedef OrderIndex'i belirle
-            Dim targetOrderIndex As Integer = 0
-            Dim existingItems = targetCategory.Elements("Item").ToList()
-            If existingItems.Count > 0 Then
-                targetOrderIndex = existingItems.Select(Function(i)
-                                                            Dim orderIdx As Integer = 0
-                                                            Integer.TryParse(i.Element("OrderIndex")?.Value, orderIdx)
-                                                            Return orderIdx
-                                                        End Function).Max() + 1
-            End If
-
-            If existingItem IsNot Nothing Then
-                ' Varsa güncelle (üstüne yaz)
-                existingItem.Element("Name").Value = itemName
-                existingItem.Element("Path").Value = itemPath
-                If existingItem.Element("IconPath") IsNot Nothing Then
-                    existingItem.Element("IconPath").Value = If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)
-                Else
-                    existingItem.Add(New XElement("IconPath", If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)))
-                End If
-            Else
-                ' Yoksa yeni item oluştur
-                Dim newItem As New XElement("Item",
-                    New XElement("Name", itemName),
-                    New XElement("Path", itemPath),
-                    New XElement("IconPath", If(String.IsNullOrEmpty(itemIconPath), "", itemIconPath)),
-                    New XElement("OrderIndex", targetOrderIndex),
-                    New XElement("IconSource", "Auto")
-                )
-                targetCategory.Add(newItem)
-            End If
-
-            ' XML'i kaydet
-            doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
-
-            ' UI'ı güncelle - sadece hedef tab'ı refresh et
             RefreshTab(targetTab)
-
             Return True
 
         Catch ex As Exception
@@ -1871,41 +1988,31 @@ Public Class Form1
 
     Public Function MoveItemToTab(sourceTabName As String, targetTabName As String, itemName As String, itemPath As String, itemIconPath As String, itemIcon As Icon) As Boolean
         Try
-            ' Önce kopyala
-            If Not CopyItemToTab(sourceTabName, targetTabName, itemName, itemPath, itemIconPath, itemIcon) Then
+            Dim sourceTab As TabPage = Nothing
+            For Each tab As TabPage In TabControl1.TabPages
+                If tab.Text = sourceTabName Then
+                    sourceTab = tab
+                    Exit For
+                End If
+            Next
+
+            If Not DatabaseManager.MoveItemToCategory(sourceTabName, targetTabName, itemName, itemPath, itemIconPath) Then
                 Return False
             End If
 
-            ' Sonra source tab'dan sil
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return False
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
+            If sourceTab IsNot Nothing Then
+                RefreshTab(sourceTab)
+            End If
 
-            Dim categories = doc.Root.Element("Categories")
-            If categories Is Nothing Then Return False
-
-            Dim sourceCategory = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = sourceTabName)
-            If sourceCategory Is Nothing Then Return False
-
-            ' Source item'ı bul ve sil
-            Dim sourceItem = sourceCategory.Elements("Item").FirstOrDefault(Function(i) i.Element("Name").Value = itemName AndAlso i.Element("Path").Value = itemPath)
-            If sourceItem IsNot Nothing Then
-                sourceItem.Remove()
-
-                ' XML'i kaydet
-                doc.Save(Path.Combine(sDataDir, "RiaLauncher.xml"))
-
-                ' Source tab'ı refresh et
-                Dim sourceTab As TabPage = Nothing
-                For Each tab As TabPage In TabControl1.TabPages
-                    If tab.Text = sourceTabName Then
-                        sourceTab = tab
-                        Exit For
-                    End If
-                Next
-
-                If sourceTab IsNot Nothing Then
-                    RefreshTab(sourceTab)
+            Dim targetTab As TabPage = Nothing
+            For Each tab As TabPage In TabControl1.TabPages
+                If tab.Text = targetTabName Then
+                    targetTab = tab
+                    Exit For
                 End If
+            Next
+            If targetTab IsNot Nothing Then
+                RefreshTab(targetTab)
             End If
 
             Return True
@@ -1924,37 +2031,35 @@ Public Class Form1
 
             flowPanel.Controls.Clear()
 
-            ' XML'den bu tab'ın verilerini yükle
-            If Not File.Exists(Path.Combine(sDataDir, "RiaLauncher.xml")) Then Return
+            Dim items = DatabaseManager.GetItemsByCategory(tab.Text)
+            Dim unavailableIcon As String = IO.Path.Combine(sIconDir, "unavailable24.png")
 
-            Dim doc As XDocument = XDocument.Load(Path.Combine(sDataDir, "RiaLauncher.xml"))
-            Dim categories = doc.Root.Element("Categories")
-            If categories Is Nothing Then Return
-
-            Dim category = categories.Elements("Category").FirstOrDefault(Function(c) c.Attribute("Name").Value = tab.Text)
-            If category Is Nothing Then Return
-
-            ' Item'ları OrderIndex'e göre sırala
-            Dim itemElements = category.Elements("Item").ToList()
-            itemElements = itemElements.OrderBy(Function(item)
-                                                    Dim orderIndex As Integer = 0
-                                                    Integer.TryParse(item.Element("OrderIndex")?.Value, orderIndex)
-                                                    Return orderIndex
-                                                End Function).ToList()
-
-            For Each itemElement In itemElements
-                Dim itemName As String = itemElement.Element("Name").Value
-                Dim itemPath As String = itemElement.Element("Path").Value
-                Dim iconPath As String = If(itemElement.Element("IconPath")?.Value, "")
-
-                If File.Exists(itemPath) OrElse Directory.Exists(itemPath) Then
-                    AddLauncherItem(flowPanel, itemName, itemPath, iconPath)
-                End If
+            For Each item In items
+                AddDbItem(flowPanel, item, unavailableIcon)
             Next
 
         Catch ex As Exception
             Dim msg As String = String.Format(langManager.GetText("MsgTabRefreshError", "Tab yenileme hatası: {0}"), ex.Message)
             MessageBox.Show(msg, langManager.GetText("MsgError", "Hata"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    ' Mevcut .url ogelerini gercek URL ile gunceller; boylece kisayol dosyasi
+    ' silinse bile ogeler veritabaninda kalir ve calistirilabilir durumda olur.
+    Private Sub UpgradeUrlItems()
+        Try
+            Dim cats = DatabaseManager.GetCategories()
+            For Each cat In cats
+                For Each it In cat.Items
+                    If it.Path IsNot Nothing AndAlso it.Path.ToLower().EndsWith(".url") AndAlso IO.File.Exists(it.Path) Then
+                        Dim u = ReadUrlFromShortcut(it.Path)
+                        If Not String.IsNullOrEmpty(u) Then
+                            DatabaseManager.UpdateItemPath(cat.Name, it.Path, u)
+                        End If
+                    End If
+                Next
+            Next
+        Catch
         End Try
     End Sub
 

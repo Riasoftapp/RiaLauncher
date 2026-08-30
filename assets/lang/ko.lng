@@ -1,48 +1,36 @@
-; WinLauncher Korean Language File
-; Format: Key=Value
-
-; Menu - File
 MenuDosya=파일
 MenuDosyaCikis=종료
-
-; Menu - Tabs
 MenuSekmeler=탭
 MenuSekmelerYeni=새 탭
-MenuSekmelerAdDegistir=탭 이름 변경
+MenuSekmelerAdDegistir=탭 이름 바꾸기
 MenuSekmelerSil=탭 삭제
-MenuSekmelerYenile=탭 새로고침
-
-; Menu - Sorting
+MenuSekmelerYenile=탭 새로 고침
 MenuSiralama=정렬
 MenuManuelSiralama=수동 정렬...
-
-; Menu - Tools
 MenuAraclar=도구
 MenuToolsCmd=명령 프롬프트
 MenuToolsPowershell=PowerShell
 MenuToolsTaskMgr=작업 관리자
 MenuToolsServices=서비스 관리자
-MenuToolsShowDesktop=바탕화면 표시
-MenuToolsRestoreDesktop=바탕화면 복원
+MenuToolsShowDesktop=바탕 화면 표시
+MenuToolsRestoreDesktop=바탕 화면 복원
 MenuToolsControlPanel=제어판
 MenuToolsNetworkCenter=네트워크 및 공유 센터
 MenuToolsDeviceManager=장치 관리자
 MenuToolsComputerName=컴퓨터 이름 표시
 MenuToolsIPAddress=IP 주소 표시
-
-; Menu - Settings
 MenuAyarlar=설정
-
-; Menu - Help
 MenuYardim=도움말
-MenuYardimDokumanlar=도움말
-MenuYardimDokumanIndir=설명서 다운로드
-MenuYardimLisans=라이선스 조건
-MenuYardimBagis=기부
-MenuYardimAnaSayfa=홈페이지
+MenuYardimDokumanlar=도움말 페이지
+MenuYardimWeb=웹사이트
+MenuYardimWebSite=Rialauncher 웹사이트
+MenuYardimGithub=GitHub 저장소
+MenuYardimLisans=라이선스 조항
 MenuYardimHakkinda=정보...
-
-; Context Menu - Item
+MenuSystem=시스템
+MenuSystemKlasor=RiaLauncher 폴더 열기
+MenuUpdate=업데이트
+MenuUpdateKontrol=업데이트 확인
 MenuItemLaunch=실행
 MenuItemCopyMove=복사/이동...
 MenuItemRename=이름 바꾸기
@@ -51,129 +39,116 @@ MenuItemUpdatePath=경로 업데이트
 MenuItemOpenFolder=폴더에서 표시
 MenuItemDelete=삭제
 MenuItemProperties=속성
-
-; Context Menu - Tab
 MenuTabYeni=새 탭
-MenuTabAdDegistir=탭 이름 변경
+MenuTabAdDegistir=탭 이름 바꾸기
 MenuTabSil=탭 삭제
-
-; Search Panel
 lblSearch=검색:
 btnSearch=검색
-
-; Messages - General
 MsgError=오류
 MsgWarning=경고
 MsgInfo=정보
 MsgConfirm=확인
 MsgSuccess=성공
 MsgCopiedToClipboard=(클립보드에 복사됨)
-
-; Messages - Tools Menu
-MsgToolsCmdError=명령 프롬프트를 열 수 없음: {0}
-MsgToolsPowershellError=PowerShell을 열 수 없음: {0}
-MsgToolsTaskMgrError=작업 관리자를 열 수 없음: {0}
-MsgToolsServicesError=서비스 관리자를 열 수 없음: {0}
-MsgToolsShowDesktopError=바탕화면을 표시할 수 없음: {0}
-MsgToolsDesktopRestored=바탕화면이 복원되었습니다.
-MsgToolsRestoreDesktopError=바탕화면을 복원할 수 없음: {0}
-MsgToolsControlPanelError=제어판을 열 수 없음: {0}
-MsgToolsNetworkCenterError=네트워크 및 공유 센터를 열 수 없음: {0}
-MsgToolsDeviceManagerError=장치 관리자를 열 수 없음: {0}
+MsgToolsCmdError=명령 프롬프트를 열 수 없습니다: {0}
+MsgToolsPowershellError=PowerShell을 열 수 없습니다: {0}
+MsgToolsTaskMgrError=작업 관리자를 열 수 없습니다: {0}
+MsgToolsServicesError=서비스 관리자를 열 수 없습니다: {0}
+MsgToolsShowDesktopError=바탕 화면을 표시할 수 없습니다: {0}
+MsgToolsDesktopRestored=바탕 화면이 복원되었습니다.
+MsgToolsRestoreDesktopError=바탕 화면을 복원할 수 없습니다: {0}
+MsgToolsControlPanelError=제어판을 열 수 없습니다: {0}
+MsgToolsNetworkCenterError=네트워크 및 공유 센터를 열 수 없습니다: {0}
+MsgToolsDeviceManagerError=장치 관리자를 열 수 없습니다: {0}
 MsgToolsComputerName=컴퓨터 이름: {0}
 MsgToolsComputerNameTitle=컴퓨터 이름
-MsgToolsComputerNameError=컴퓨터 이름을 가져올 수 없음: {0}
+MsgToolsComputerNameError=컴퓨터 이름을 가져올 수 없습니다: {0}
 MsgToolsLocalIP=로컬 IP: {0}
 MsgToolsRemoteIP=원격 IP: {0}
 MsgToolsIPTitle=IP 주소
-MsgToolsIPError=IP 주소를 가져올 수 없음: {0}
+MsgToolsIPError=IP 주소를 가져올 수 없습니다: {0}
 MsgToolsIPNotFound=찾을 수 없음
-
-; Messages - Help Menu
-MsgHelpComingSoon=도움말 설명서가 곧 추가될 예정입니다.
+MsgHelpComingSoon=도움말 문서는 곧 추가될 예정입니다.
 MsgHelpTitle=도움말
-MsgHelpDocError=설명서 페이지를 열 수 없음: {0}
-MsgDonateTitle=기부
-MsgDonateMessage=WinLauncher 프로젝트를 좋아하신다면 개발을 지원하기 위해 기부할 수 있습니다. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu 감사합니다! 🙏
-MsgDonateError=기부 페이지를 열 수 없음: {0}
-MsgHomePageError=홈페이지를 열 수 없음: {0}
-
-; Messages - AboutForm
-MsgWebSiteError=웹사이트를 열 수 없음: {0}
-MsgEmailError=이메일 애플리케이션을 열 수 없음: {0}
-
-; Messages - Manual Sort
-MsgSortSaved=정렬이 성공적으로 저장되었습니다!
-MsgSortNoTabSelected=먼저 탭을 선택하십시오.
+MsgHelpDocError=문서 페이지를 열 수 없습니다: {0}
+MsgDonateTitle=후원
+MsgDonateMessage=WinLauncher 프로젝트가 마음에 드신다면 개발을 후원해 주세요. GitHub Sponsors: github.com/sponsors/hikmetalemdaroglu 감사합니다!
+MsgDonateError=후원 페이지를 열 수 없습니다: {0}
+MsgHomePageError=홈페이지를 열 수 없습니다: {0}
+MsgUpdateUrlMissing=업데이트 URL이 구성되지 않았습니다.
+MsgUpdateUpdaterNotFound=업데이터를 찾을 수 없습니다: {0}
+MsgUpdateCheckError=업데이트 확인에 실패했습니다: {0}
+MsgUpdateNoNewVersion=최신 버전을 사용 중입니다.
+MsgUpdateFound=새 버전을 사용할 수 있습니다: v{0}{1}{1}{2}{1}{1}지금 다운로드하여 설치하시겠습니까?
+AboutVersion=버전 {0}
+MsgWebSiteError=웹사이트를 열 수 없습니다: {0}
+MsgEmailError=이메일 앱을 열 수 없습니다: {0}
+MsgSortSaved=정렬이 저장되었습니다!
+MsgSortNoTabSelected=먼저 탭을 선택하세요.
 MsgSortNoItems=이 탭에 정렬할 항목이 없습니다.
-
-; Messages - Copy/Move
 MsgCopyError=복사 오류: {0}
 MsgMoveError=이동 오류: {0}
-MsgCopyFailed=복사 작업이 실패했습니다.
-MsgMoveFailed=이동 작업이 실패했습니다.
+MsgCopyFailed=복사 작업에 실패했습니다.
+MsgMoveFailed=이동 작업에 실패했습니다.
 MsgCannotMoveSameTab=같은 탭 내에서 항목을 이동할 수 없습니다.
-
-; Messages - Tab Operations
-MsgTabRefreshError=탭 새로고침 오류: {0}
-MsgTabRefreshed=탭 '{0}'이(가) 새로고쳐졌습니다.
-MsgAtLeastOneTab=최소한 하나의 탭이 남아있어야 합니다.
+MsgTabRefreshError=탭 새로 고침 오류: {0}
+MsgTabRefreshed=탭 '{0}'이(가) 새로 고쳐졌습니다.
+MsgAtLeastOneTab=최소한 하나의 탭은 남아 있어야 합니다.
 MsgDeleteTabConfirm=탭 '{0}'을(를) 삭제하시겠습니까?
 MsgDeleteTabTitle=탭 삭제
-
-; Messages - General Operations
 MsgXMLLoadError=XML 로드 오류: {0}
-MsgFileNotFound=파일을 찾을 수 없음: {0}
-MsgLaunchError=시작 오류: {0}
+MsgFileNotFound=파일을 찾을 수 없습니다: {0}
+MsgLaunchError=실행 오류: {0}
 MsgSaveError=저장 오류: {0}
 MsgIconLoadError=아이콘 로드 오류: {0}
-MsgPathUpdated=경로가 성공적으로 업데이트되었습니다.
-MsgFileOrFolderNotFound=파일 또는 폴더를 찾을 수 없음: {0}
-MsgOpenFolderError=폴더를 열 수 없음: {0}
-MsgDeleteItemConfirm='{0}'을(를) 삭제하시겠습니까?
+MsgPathUpdated=경로가 업데이트되었습니다.
+MsgFileOrFolderNotFound=파일 또는 폴더를 찾을 수 없습니다: {0}
+MsgOpenFolderError=폴더를 여는 중 오류: {0}
+MsgDeleteItemConfirm='{0}'(을)를 삭제하시겠습니까?
 MsgDeleteItemTitle=항목 삭제
 MsgItemPropertiesTitle=항목 속성
-MsgSettingsSaved=설정이 저장되었습니다. 변경사항을 완전히 적용하려면 애플리케이션을 종료하세요.
-
-; Common Buttons
+PropertiesInfoGroup=항목 정보
+PropertiesLblName=이름:
+PropertiesLblPath=전체 경로:
+PropertiesLblExists=존재:
+PropertiesLblIcon=사용자 지정 아이콘:
+PropertiesBtnCopyName=이름 복사
+PropertiesBtnCopyPath=경로 복사
+PropertiesBtnCopyFullPath=전체 경로 복사
+PropertiesBtnOpenFolder=탐색기에서 열기
+PropertiesBtnClose=닫기
+PropertiesExistsFile=예(파일)
+PropertiesExistsFolder=예(폴더)
+PropertiesExistsNo=아니요
+PropertiesIconNone=없음
+PropertiesIconYes=예
+MsgSettingsSaved=설정이 저장되었습니다. 변경 사항을 완전히 적용하려면 애플리케이션을 종료하세요.
 BtnOK=확인
 BtnCancel=취소
 BtnYes=예
-BtnNo=아니오
+BtnNo=아니요
 BtnClose=닫기
-
-; AboutForm
 AboutTitle=정보
-AboutAppName=WinLauncher - Windows 런처
-AboutVersion=버전 2.0
-AboutLicenseStatus=상업용 사용에 대한 라이선스 없음
-AboutFreeUse=개인 사용으로 무료
+AboutAppName=RiaLauncher
+AboutLicenseStatus=개인 및 상업적 무료
+AboutFreeUse=개인 사용 무료
 AboutCopyright=© 2024-2025 Hikmet Alp Alemdaroğlu
 AboutWebSiteLabel=웹사이트:
 AboutEmailLabel=지원 이메일:
 AboutBtnAnaSayfa=홈페이지
-AboutBtnLisans=라이선스 조건
+AboutBtnLisans=라이선스 조항
 AboutBtnKapat=닫기
-
-; License Text
-LicenseTitle=WinLauncher - 개인용 라이선스
-LicenseFree=이 소프트웨어는 개인 사용으로 무료입니다.
-LicenseRights=모든 권리가 보유됩니다.
-LicenseAsIs=이 소프트웨어는 "있는 그대로" 제공됩니다.
-
-; Settings Form
+LicenseFree=이 소프트웨어는 개인 및 상업적으로 무료입니다.
 SettingsTitle=설정
-SettingsLaunchMode=시작 모드:
+SettingsLaunchMode=실행 모드:
 SettingsSingleClick=단일 클릭
 SettingsDoubleClick=더블 클릭
 SettingsViewMode=보기 모드:
 SettingsIconText=아이콘 + 텍스트
 SettingsIconOnly=아이콘만
-SettingsAlwaysOnTop=항상 맨 위
+SettingsAlwaysOnTop=항상 위에 표시
 SettingsBtnSave=저장
 SettingsBtnCancel=취소
-
-; Manual Sort Form
 ManualSortTitle=수동 정렬
 ManualSortColOrder=순서
 ManualSortColIcon=아이콘
@@ -181,11 +156,9 @@ ManualSortColName=항목 이름
 ManualSortColPath=프로그램 / 경로
 ManualSortBtnUp=▲ 위로
 ManualSortBtnDown=▼ 아래로
-ManualSortBtnSave=저장 및 종료
+ManualSortBtnSave=저장 후 종료
 ManualSortBtnCancel=✗ 취소
-ManualSortLabel1=항목을 선택하고 (확인란 체크) 위로/아래로 버튼을 사용하여 정렬하세요:
-
-; Copy/Move Form
+ManualSortLabel1=항목을 선택(확인란)한 후 위/아래 버튼으로 정렬하세요:
 CopyMoveTitle=복사/이동
 CopyMoveSourceTab=원본 탭:
 CopyMoveTargetTab=대상 탭:
@@ -193,21 +166,20 @@ CopyMoveItemName=항목 이름:
 CopyMoveBtnCopy=복사
 CopyMoveBtnMove=이동
 CopyMoveBtnCancel=취소
-
-; Settings Form
 Settings=설정
-LaunchMode=시작 모드
+LaunchMode=실행 모드
 ViewMode=보기 모드
 Language=언어
 LastActiveTab=마지막 활성 탭
 SelectLanguage=언어 선택:
 SelectTab=탭 선택:
-LaunchDoubleClick=더블클릭
-LaunchSingleClick=싱글클릭
+LaunchDoubleClick=더블 클릭
+LaunchSingleClick=단일 클릭
 ViewIconText=아이콘+텍스트
 ViewIcon=아이콘
 ViewList=목록
 ViewTile=타일
-AlwaysOnTop=항상 맨 앞
+AlwaysOnTop=항상 위에 표시
+AutoUpdate=자동 업데이트 확인 사용
 OK=확인
 Cancel=취소
